@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Creador de examen UT1–UT2 · Lenguajes de Marcas</title>
+<meta name="description" content="Creador de examen de Lenguajes de Marcas: XML, DTD y teoría básica, como el examen real.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23FF007A'/%3E%3Cstop offset='.5' stop-color='%237A22FF'/%3E%3Cstop offset='1' stop-color='%230052FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%230B0B0C'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='url(%23g)' stroke-width='3' stroke-dasharray='40 6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   ConcepDesign — tokens y componentes base de la marca CONCEP
+   Fuente: Manual de Identidad Visual CONCEP (references/manual-identidad-concep.pdf)
+   Uso: pega este bloque entero en el <style> de la pieza (los artifacts
+   no cargan CSS local) o enlázalo con <link> en un proyecto.
+   Fuentes: añade antes
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+   ===================================================================== */
+
+:root {
+  /* ---- Paleta oficial (estricta) ---- */
+  --c-azul: #0052FF;        /* inicio del degradado: tecnología, estructura */
+  --c-azul-2: #00D2FF;      /* secundario */
+  --c-morado: #7A22FF;      /* transición: creatividad, IA */
+  --c-morado-2: #8A2BE2;    /* secundario */
+  --c-rosa: #FF007A;        /* cierre y destello: energía */
+  --c-rosa-2: #FF2E93;      /* secundario */
+  --c-negro: #0B0B0C;       /* fondo oscuro, texto sobre claro */
+  --c-blanco: #FFFFFF;      /* texto sobre oscuro, fondo PDF */
+
+  /* ---- Degradado oficial ---- */
+  --c-gradiente: linear-gradient(135deg, #0052FF 0%, #7A22FF 50%, #FF007A 100%);
+  --c-gradiente-h: linear-gradient(90deg, #0052FF 0%, #7A22FF 50%, #FF007A 100%);
+
+  /* ---- Tipografía ---- */
+  --f-marca: "Comfortaa", "Poppins", system-ui, sans-serif;   /* SOLO el wordmark CONCEP, nunca párrafos */
+  --f-titulo: "Poppins", "Inter", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+  --t-xs: .75rem;  --t-sm: .875rem; --t-base: 1rem;  --t-lg: 1.125rem;
+  --t-xl: 1.375rem; --t-2xl: 1.75rem; --t-3xl: 2.25rem; --t-4xl: clamp(2.5rem, 5vw, 3.5rem);
+  --t-hero: clamp(3rem, 8vw, 5.5rem);
+
+  /* ---- Espacio (base 4) ---- */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+
+  /* ---- Radios: esquinas suavemente redondeadas ---- */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --r-full: 999px;
+
+  /* ---- Movimiento ---- */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --dur-1: 140ms; --dur-2: 240ms; --dur-3: 420ms;
+
+}
+
+/* ---- Tema CLARO (documentos, PDF) — por defecto, y también en .concep anidado dentro de oscuro ---- */
+:root, .concep {
+  --bg: #FFFFFF;
+  --surface: #F6F6F9;
+  --surface-2: #EEEEF3;
+  --border: #E4E4EB;
+  --border-strong: #CFCFD9;
+  --text: #0B0B0C;
+  --text-2: #4E4E5A;
+  --text-3: #7A7A87;
+  --accent-text: #0047E0;   /* enlaces/acento legible sobre blanco */
+  --th-bg: #0B0B0C;         /* cabecera de tabla */
+  --focus: #7A22FF;
+  --glass: rgba(255, 255, 255, .72);
+  --shadow: 0 1px 2px rgba(11,11,12,.06), 0 8px 24px rgba(11,11,12,.06);
+  --ok: #0E9F6E; --warn: #C27803; --error: #E0115F;
+  color-scheme: light;
+}
+
+/* ---- Tema OSCURO (apps, web) — preferente en interfaces ---- */
+.concep-dark, [data-concep="dark"] {
+  --bg: #0B0B0C;
+  --surface: #131316;
+  --surface-2: #1B1B20;
+  --border: rgba(255, 255, 255, .08);
+  --border-strong: rgba(255, 255, 255, .16);
+  --text: #F5F5F7;
+  --text-2: #A6A6B3;
+  --text-3: #6F6F7C;
+  --accent-text: #7DA2FF;   /* tinte claro del azul: legible sobre negro */
+  --th-bg: #1B1B20;
+  --focus: #A274FF;
+  --glass: rgba(19, 19, 22, .62);
+  --shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 12px 40px rgba(0,0,0,.45);
+  --ok: #34D399; --warn: #FBBF24; --error: #FF2E93;
+  color-scheme: dark;
+}
+
+/* =========================== Base =========================== */
+.concep, .concep-dark { background: var(--bg); color: var(--text); font-family: var(--f-texto); font-size: var(--t-base); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.concep h1, .concep h2, .concep h3, .concep-dark h1, .concep-dark h2, .concep-dark h3 { font-family: var(--f-titulo); font-weight: 600; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 .5em; text-wrap: balance; }
+:where(.concep, .concep-dark) a:where(:not(.c-btn, .c-lockup)) { color: var(--accent-text); text-underline-offset: 3px; }
+.c-lockup { color: var(--text); }
+/* Todo <svg><use href="#concep-simbolo"/></svg> debe llevar viewBox="0 0 200 200" para escalar bien. */
+.concep :focus-visible, .concep-dark :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+/* ========================= Marca ========================= */
+.c-wordmark { font-family: var(--f-marca); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text); }
+.c-lockup { display: inline-flex; align-items: center; gap: .5em; text-decoration: none; }
+.c-lockup svg { width: 1.9em; height: 1.9em; }
+.c-lockup--vertical { flex-direction: column; gap: .35em; }
+.c-eyebrow { font: 600 var(--t-xs)/1 var(--f-titulo); letter-spacing: .18em; text-transform: uppercase; background: var(--c-gradiente-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.c-grad-text { background: var(--c-gradiente-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.c-accent-line { height: 3px; border: 0; border-radius: 3px; background: var(--c-gradiente-h); margin: 0; }
+
+/* ======================= Componentes ======================= */
+.c-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-5); border-radius: var(--r-md); border: 1px solid transparent; font: 600 var(--t-sm)/1 var(--f-titulo); letter-spacing: .01em; cursor: pointer; text-decoration: none; transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-2), border-color var(--dur-2), box-shadow var(--dur-2); }
+.c-btn:active { transform: scale(.98); }
+.c-btn--primary { background: var(--c-gradiente); color: #fff; box-shadow: 0 6px 24px -8px rgba(122, 34, 255, .6); }
+.c-btn--primary:hover { box-shadow: 0 10px 32px -8px rgba(255, 0, 122, .55); }
+.c-btn--secondary { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+.c-btn--secondary:hover { background: var(--surface-2); }
+.c-btn--ghost { background: transparent; color: var(--text-2); }
+.c-btn--ghost:hover { color: var(--text); background: var(--surface); }
+.c-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.c-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5); }
+.c-card--glass { background: var(--glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.c-card--accent { position: relative; overflow: hidden; }
+.c-card--accent::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--c-gradiente-h); }
+
+.c-badge { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--r-full); font: 500 var(--t-xs)/1 var(--f-texto); background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
+.c-badge--ai { color: #fff; background: var(--c-gradiente); border: 0; }
+.c-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+
+.c-field { display: grid; gap: 6px; }
+.c-label { font: 500 var(--t-sm)/1.3 var(--f-texto); color: var(--text-2); }
+.c-input { min-height: 44px; padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: 400 var(--t-base)/1 var(--f-texto); transition: border-color var(--dur-2), box-shadow var(--dur-2); }
+.c-input:focus { outline: none; border-color: var(--c-morado); box-shadow: 0 0 0 3px rgba(122, 34, 255, .25); }
+.c-hint { font-size: var(--t-xs); color: var(--text-3); }
+.c-hint--error { color: var(--error); }
+
+/* Tablas: cabecera oscura, filas aireadas (igual que el manual) */
+.c-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-md); }
+.c-table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.c-table th { background: #0B0B0C; color: #fff; text-align: left; font: 600 var(--t-sm)/1.3 var(--f-titulo); padding: 12px 16px; }
+.c-table td { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--text-2); vertical-align: top; }
+.c-table td:first-child { color: var(--text); font-weight: 600; }
+.c-table tr:nth-child(even) td { background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.c-table th { background: var(--th-bg); }
+
+.c-code { font-family: var(--f-mono); font-size: .9em; background: #0B0B0C; color: #fff; padding: 2px 8px; border-radius: 6px; }
+
+/* Al imprimir, el texto con degradado (background-clip:text) deja un recuadro: pásalo a color sólido */
+@media print {
+  .c-eyebrow { background: none; color: var(--c-morado); }
+  .c-grad-text { background: none; color: var(--c-rosa); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concep *, .concep-dark * { transition: none !important; animation: none !important; }
+}
+
+/* ===== CONCEP · Creador de examen LND — mismo estilo que el menú de repaso y los otros creadores ===== */
+:root {
+  --f-ui: "JetBrains Mono", "Cascadia Code", "Cascadia Mono", Consolas, ui-monospace, monospace;
+  --f-prosa: "Inter", "Segoe UI", system-ui, sans-serif;
+  /* Color de LND (portada de EVAGD), el mismo que en el menú de repaso. En claro lleva tinta blanca; en oscuro se aclara. */
+  --asig: #C83C3B;
+  --asig-tinta: #FFFFFF;
+}
+.concep-dark { --asig: #E2645F; --asig-tinta: #0B0B0C; }
+/* Contraste AA para texto pequeño (los tokens de marca se quedan algo cortos a 11–13 px) */
+.concep { --text-3: #62626E; --ok-txt: #0B7A55; --warn-txt: #8A5500; --err-txt: #B00D4A; }
+.concep-dark { --text-3: #8A8A98; --ok-txt: var(--ok); --warn-txt: var(--warn); --err-txt: var(--error); }
+#app > div { --acento-texto: color-mix(in srgb, var(--asig) 62%, var(--text)); --focus: var(--asig); --ok-bg: color-mix(in srgb, var(--ok) 12%, transparent); --err-bg: color-mix(in srgb, var(--error) 10%, transparent); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: #0B0B0C; }
+body.claro { background: #fff; }
+#app { min-height: 100%; font-family: var(--f-ui); font-size: 13px; line-height: 1.55; }
+#app > div { min-height: 100vh; min-height: 100dvh; }
+#app h1, #app h2, #app h3 { font-family: var(--f-titulo); }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.concep-dark ::-webkit-scrollbar { width: 12px; height: 12px; }
+.concep-dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border: 3px solid transparent; background-clip: content-box; border-radius: 10px; }
+
+/* ---------- botones ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 34px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font: 500 12.5px/1 var(--f-ui); white-space: nowrap; text-decoration: none; transition: background-color var(--dur-1), border-color var(--dur-1), transform var(--dur-1) var(--ease-out), box-shadow var(--dur-2), filter var(--dur-1); }
+.btn:hover { background: var(--surface-2); }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn svg { width: 15px; height: 15px; flex: none; }
+.btn--primary { background: var(--asig); border-color: transparent; color: var(--asig-tinta); font-weight: 600; box-shadow: 0 6px 22px -10px var(--asig); }
+.btn--primary:hover { background: var(--asig); filter: brightness(1.06); }
+.btn--ghost { background: transparent; border-color: transparent; color: var(--text-2); }
+.btn--ghost:hover { background: var(--surface); color: var(--text); }
+.btn--danger { color: var(--err-txt); border-color: color-mix(in srgb, var(--error) 40%, transparent); background: transparent; }
+.btn--sm { min-height: 28px; padding: 0 10px; font-size: 12px; border-radius: 8px; }
+.btn--lg { min-height: 46px; padding: 0 22px; font-size: 14px; border-radius: 12px; }
+.icon-btn { width: 34px; padding: 0; }
+
+/* ---------- barra superior ---------- */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 8px 18px; border-bottom: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.top::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--asig); }
+.top .c-lockup { font-size: 14px; color: var(--text); text-decoration: none; }
+.top .sep { width: 1px; height: 22px; background: var(--border-strong); flex: none; }
+.top .modulo { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.top .modulo b { font: 600 13px var(--f-titulo); letter-spacing: -.01em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top .modulo span { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top .grow { flex: 1; min-width: 0; }
+.top .acc { display: flex; align-items: center; gap: 8px; }
+.progreso { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--border); font: 600 13px var(--f-ui); font-variant-numeric: tabular-nums; color: var(--text); }
+
+/* ---------- página ---------- */
+.page { max-width: 1080px; margin: 0 auto; padding: 28px 24px 64px; }
+.hero { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding: 8px 0 4px; isolation: isolate; }
+.hero h1 { font: 700 clamp(30px, 4.4vw, 46px)/1.05 var(--f-titulo); letter-spacing: -.035em; margin: 10px 0 12px; color: var(--text); max-width: 16ch; text-wrap: balance; }
+.hero p { margin: 0; color: var(--text-2); font: 400 15px/1.6 var(--f-prosa); max-width: 58ch; }
+.hero .halo { position: absolute; inset: -80px auto auto -120px; width: 520px; height: 320px; max-width: 120vw; background: radial-gradient(closest-side, color-mix(in srgb, var(--asig) 28%, transparent), transparent 70%); pointer-events: none; filter: blur(10px); z-index: -1; }
+.eyebrow { font: 600 11px/1 var(--f-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--acento-texto); }
+.hero-stats { display: flex; gap: 10px; }
+.stat { min-width: 120px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); }
+.stat .v { font: 600 26px/1 var(--f-titulo); letter-spacing: -.02em; color: var(--text); font-variant-numeric: tabular-nums; }
+.stat .l { margin-top: 6px; font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 30px; align-items: start; }
+.card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px; overflow: hidden; }
+.card--accent::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--asig); }
+.card h2 { font: 600 17px/1.2 var(--f-titulo); letter-spacing: -.015em; margin: 0 0 4px; color: var(--text); }
+.card .sub { color: var(--text-3); font-size: 12px; margin: 0 0 18px; font-family: var(--f-prosa); line-height: 1.5; }
+.lbl { display: block; font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.reglas { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 8px; }
+.reglas li { display: flex; gap: 10px; align-items: baseline; color: var(--text-2); font: 400 13.5px/1.5 var(--f-prosa); }
+.reglas li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--asig); flex: none; transform: translateY(-2px); }
+.check { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text-2); font-size: 12.5px; cursor: pointer; margin-bottom: 18px; }
+.check input { accent-color: var(--asig); width: 16px; height: 16px; margin: 0; }
+.fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.hist { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 11.5px; color: var(--text-3); }
+.nota-chip { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2); font: 600 11px var(--f-ui); font-variant-numeric: tabular-nums; }
+.nota-chip.ap { color: var(--ok-txt); }
+.nota-chip.su { color: var(--err-txt); }
+.vacio-txt { color: var(--text-3); font: 400 13px/1.55 var(--f-prosa); margin: 0 0 16px; }
+.lista-fallos { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; max-height: 360px; overflow: auto; }
+.lista-fallos li { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); font: 400 13px/1.45 var(--f-prosa); color: var(--text); }
+.lista-fallos li .ok { display: block; margin-top: 4px; color: var(--ok-txt); font-size: 12px; }
+.lista-fallos li .x { float: right; margin-left: 8px; font: 600 11px var(--f-ui); color: var(--err-txt); }
+textarea.copia { width: 100%; min-height: 90px; margin-top: 10px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--bg); font: 400 11.5px/1.4 var(--f-ui); resize: vertical; }
+.msg { font-size: 12px; color: var(--text-3); }
+
+/* ---------- examen ---------- */
+.examen-page { max-width: 820px; margin: 0 auto; padding: 26px 24px 120px; }
+.q { padding: 22px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 14px; scroll-margin-top: 80px; }
+.q .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 11px; color: var(--text-3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .08em; }
+.q .meta .n { color: var(--acento-texto); font-weight: 600; }
+.q h3 { font: 600 17px/1.35 var(--f-titulo); letter-spacing: -.01em; margin: 0 0 14px; color: var(--text); text-wrap: pretty; }
+.opts { display: grid; gap: 8px; }
+.opt { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: 400 14px/1.5 var(--f-prosa); cursor: pointer; transition: border-color var(--dur-1), background-color var(--dur-1); }
+.opt:hover { border-color: var(--border-strong); }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .l { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--border-strong); font: 600 12px var(--f-ui); color: var(--text-2); }
+.opt .t { padding-top: 2px; }
+.opt:has(input:checked) { border-color: var(--asig); background: color-mix(in srgb, var(--asig) 9%, var(--bg)); }
+.opt:has(input:checked) .l { background: var(--asig); border-color: var(--asig); color: var(--asig-tinta); }
+.opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.q.hecha .opt { cursor: default; }
+.q.hecha .opt.bien { border-color: var(--ok); background: var(--ok-bg); }
+.q.hecha .opt.bien .l { background: var(--ok); border-color: var(--ok); color: #0B0B0C; }
+.q.hecha .opt.mal { border-color: var(--error); background: var(--err-bg); }
+.q.hecha .opt.mal .l { background: var(--error); border-color: var(--error); color: #0B0B0C; }
+.concep .q.hecha .opt.mal .l { color: #fff; }
+.estado { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; font: 600 11px var(--f-ui); letter-spacing: 0; text-transform: none; }
+.estado.bien { color: var(--ok-txt); background: var(--ok-bg); }
+.estado.mal { color: var(--err-txt); background: var(--err-bg); }
+.estado.blanco { color: var(--text-2); background: var(--surface-2); }
+.expl { margin-top: 12px; padding: 12px 14px; border-radius: 12px; border-left: 3px solid var(--asig); background: color-mix(in srgb, var(--asig) 6%, transparent); color: var(--text-2); font: 400 13.5px/1.55 var(--f-prosa); }
+.expl b { color: var(--text); font-weight: 600; }
+.barra-fija { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.barra-fija .in { max-width: 820px; margin: 0 auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.barra-fija .aviso { font-size: 12px; color: var(--warn-txt); }
+.puntos { display: flex; gap: 4px; flex-wrap: wrap; }
+.puntos a { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 6px; border: 1px solid var(--border); font: 600 10px var(--f-ui); color: var(--text-3); text-decoration: none; }
+.puntos a.r { background: color-mix(in srgb, var(--asig) 16%, transparent); border-color: color-mix(in srgb, var(--asig) 50%, transparent); color: var(--acento-texto); }
+
+/* ---------- resultado ---------- */
+.resultado { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; margin-bottom: 22px; }
+.resultado .big { font: 700 64px/1 var(--f-titulo); letter-spacing: -.04em; font-variant-numeric: tabular-nums; color: var(--text); }
+.resultado .big small { font-size: 18px; color: var(--text-3); font-weight: 500; letter-spacing: 0; }
+.resultado .veredicto { font: 600 15px var(--f-titulo); margin-bottom: 8px; }
+.resultado .veredicto.ap { color: var(--ok-txt); }
+.resultado .veredicto.su { color: var(--err-txt); }
+.medidor { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.medidor > div { height: 100%; border-radius: inherit; background: var(--asig); }
+.resumen { margin-top: 10px; color: var(--text-2); font-size: 12.5px; }
+.seccion-t { font: 600 11px var(--f-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); margin: 26px 0 12px; }
+
+.fade-in { animation: entra var(--dur-3) var(--ease-out) both; }
+@keyframes entra { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } .btn, .opt { transition: none; } }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; }
+  .stat { flex: 1; min-width: 96px; }
+  .grid2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .top { gap: 10px; padding: 8px 16px; }
+  .top .c-wordmark, .top .sep { display: none; }
+  .page, .examen-page { padding-left: 16px; padding-right: 16px; }
+  .q, .card { padding: 18px 16px; }
+  .resultado { grid-template-columns: 1fr; gap: 10px; }
+  .resultado .big { font-size: 52px; }
+  .barra-fija { padding-left: 16px; padding-right: 16px; }
+  .puntos { display: none; }
+}
+
+/* ---------- Desarrollo y autocorrección ---------- */
+.q .tipo { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; background: color-mix(in srgb, var(--asig) 16%, transparent); color: var(--acento-texto); font: 600 10.5px var(--f-ui); letter-spacing: .04em; }
+.q textarea.resp { width: 100%; min-height: 120px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: 400 14px/1.55 var(--f-prosa); resize: vertical; }
+.q textarea.resp::placeholder { color: var(--text-3); opacity: 1; }
+.q textarea.resp:focus { outline: none; border-color: var(--asig); box-shadow: 0 0 0 3px color-mix(in srgb, var(--asig) 25%, transparent); }
+.q textarea.resp[readonly] { background: var(--surface-2); }
+.contador { margin-top: 6px; font-size: 11px; color: var(--text-3); text-align: right; }
+.modelo { margin-top: 12px; padding: 12px 14px; border-radius: 12px; border-left: 3px solid var(--ok); background: var(--ok-bg); color: var(--text-2); font: 400 13.5px/1.55 var(--f-prosa); }
+.modelo b { color: var(--text); }
+.ideas { margin-top: 12px; display: grid; gap: 6px; }
+.ideas .lbl { margin: 0 0 2px; }
+.idea { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: 400 13.5px/1.45 var(--f-prosa); cursor: pointer; }
+.idea input { accent-color: var(--asig); width: 16px; height: 16px; margin: 2px 0 0; flex: none; }
+.idea:has(input:checked) { border-color: color-mix(in srgb, var(--ok) 55%, transparent); background: var(--ok-bg); }
+.puntos-dev { margin-top: 8px; font: 600 12px var(--f-ui); color: var(--acento-texto); }
+.pendiente { margin: 0 0 14px; padding: 12px 14px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--asig) 45%, transparent); background: color-mix(in srgb, var(--asig) 8%, transparent); color: var(--text-2); font: 400 13.5px/1.5 var(--f-prosa); }
+.pendiente b { color: var(--text); }
+.desglose { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 12px; }
+.desglose div { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); }
+.desglose .v { font: 600 17px var(--f-titulo); color: var(--text); font-variant-numeric: tabular-nums; }
+.desglose .l { font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; }
+/* ---------- LND: código, líneas marcables, valida / no valida y huecos ---------- */
+.q .pts { margin-left: auto; font: 600 11px var(--f-ui); color: var(--acento-texto); letter-spacing: 0; text-transform: none; }
+.q .enun { margin: -6px 0 14px; color: var(--text-2); font: 400 13.5px/1.55 var(--f-prosa); }
+.codigo { margin: 0 0 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); overflow: hidden; }
+.codigo .fich { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-bottom: 1px solid var(--border); font: 600 11px var(--f-ui); color: var(--text-3); letter-spacing: .04em; }
+.codigo pre { margin: 0; padding: 10px 12px; overflow-x: auto; font: 400 13px/1.6 var(--f-ui); color: var(--text); white-space: pre; tab-size: 2; }
+.lineas { margin: 0; padding: 6px 0; overflow-x: auto; font: 400 13px/1.6 var(--f-ui); }
+.ln { display: flex; align-items: stretch; min-width: max-content; cursor: pointer; border-left: 3px solid transparent; }
+.ln:hover { background: color-mix(in srgb, var(--asig) 6%, transparent); }
+.ln input { position: absolute; opacity: 0; pointer-events: none; }
+.ln .num { flex: none; width: 40px; padding-right: 10px; text-align: right; color: var(--text-3); user-select: none; }
+.ln code { white-space: pre; padding-right: 14px; color: var(--text); font: inherit; }
+.ln:has(input:checked) { border-left-color: var(--asig); background: color-mix(in srgb, var(--asig) 12%, transparent); }
+.ln:has(input:checked) .num { color: var(--acento-texto); font-weight: 600; }
+.ln:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: -2px; }
+.q.hecha .ln { cursor: default; }
+.q.hecha .ln.bien { border-left-color: var(--ok); background: var(--ok-bg); }
+.q.hecha .ln.mal { border-left-color: var(--error); background: var(--err-bg); }
+.q.hecha .ln.falta { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, transparent); }
+.ayuda { margin: 0 0 10px; font-size: 12px; color: var(--text-3); }
+.marcadas { display: grid; gap: 8px; }
+.marcada { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
+.marcada b { font: 600 12px var(--f-ui); color: var(--acento-texto); white-space: nowrap; }
+.campo { width: 100%; min-width: 0; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: 400 13.5px/1.4 var(--f-prosa); }
+.campo:focus { outline: none; border-color: var(--asig); box-shadow: 0 0 0 3px color-mix(in srgb, var(--asig) 25%, transparent); }
+.campo[readonly] { background: var(--surface-2); }
+.leyenda { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--text-2); }
+.leyenda span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.leyenda .b::before { background: var(--ok); } .leyenda .m::before { background: var(--error); } .leyenda .f::before { background: var(--warn); }
+.sol { display: grid; gap: 8px; margin-top: 12px; }
+.sol-it { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); font: 400 13.5px/1.5 var(--f-prosa); color: var(--text-2); }
+.sol-it .cab { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 4px; color: var(--text); font-weight: 600; }
+.sol-it code, .sol-it .mono { font: 400 12.5px/1.5 var(--f-ui); color: var(--text); background: var(--surface-2); padding: 1px 5px; border-radius: 5px; white-space: pre-wrap; word-break: break-word; }
+.sol-it .tuyo { margin-top: 4px; font-size: 12.5px; color: var(--text-3); }
+.sol-it .idea { margin-top: 8px; }
+.xmls { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.xml-it { padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg); min-width: 0; }
+.xml-it .codigo { margin-bottom: 10px; }
+.vnv { display: flex; gap: 8px; margin-bottom: 8px; }
+.vnv label { flex: 1; display: flex; justify-content: center; align-items: center; gap: 6px; height: 36px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); font: 600 12.5px var(--f-ui); color: var(--text-2); cursor: pointer; }
+.vnv input { position: absolute; opacity: 0; pointer-events: none; }
+.vnv label:has(input:checked) { border-color: var(--asig); background: var(--asig); color: var(--asig-tinta); }
+.vnv label:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.q.hecha .vnv label { cursor: default; }
+.q.hecha .vnv label.bien { border-color: var(--ok); background: var(--ok-bg); color: var(--ok-txt); }
+.q.hecha .vnv label.mal { border-color: var(--error); background: var(--err-bg); color: var(--err-txt); }
+.xml-it textarea.resp { min-height: 70px; }
+.xml-it .expl { margin-top: 8px; }
+.hueco { display: inline-block; width: auto; min-width: 5ch; padding: 0 4px; margin: 0 1px; border: 0; border-bottom: 2px solid var(--asig); border-radius: 4px 4px 0 0; background: color-mix(in srgb, var(--asig) 10%, var(--bg)); color: var(--text); font: 600 13px/1.5 var(--f-ui); vertical-align: baseline; }
+.hueco:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+.hueco-n { font: 700 9.5px var(--f-ui); color: var(--acento-texto); vertical-align: super; margin-left: 2px; }
+.hueco.bien { border-bottom-color: var(--ok); background: var(--ok-bg); }
+.hueco.mal { border-bottom-color: var(--error); background: var(--err-bg); }
+.dos { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+.dos .codigo { margin: 0; min-width: 0; }
+.corta + .corta { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border); }
+.corta h4 { margin: 0 0 8px; font: 600 15px/1.4 var(--f-titulo); color: var(--text); }
+.corta textarea.resp { min-height: 80px; }
+.lista-ej { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.lista-ej li { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: baseline; font: 400 13.5px/1.45 var(--f-prosa); color: var(--text-2); }
+.lista-ej .n { font: 700 12px var(--f-ui); color: var(--acento-texto); }
+.lista-ej .p { font: 600 11.5px var(--f-ui); color: var(--text-3); white-space: nowrap; }
+@media (max-width: 520px) { .marcada { grid-template-columns: 1fr; gap: 4px; } .q { padding: 16px; } }
+.concep-dark .q.hecha .ln.falta .num, .concep-dark .q.hecha .ln.mal .num { color: var(--text-2); }
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="cg" x1="20" y1="180" x2="180" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FF007A"/><stop offset=".5" stop-color="#7A22FF"/><stop offset="1" stop-color="#0052FF"/></linearGradient>
+    <radialGradient id="cf"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".25" stop-color="#FF2E93" stop-opacity=".9"/><stop offset="1" stop-color="#FF007A" stop-opacity="0"/></radialGradient>
+  </defs>
+  <symbol id="concep-simbolo" viewBox="0 0 200 200">
+    <g fill="none" stroke="url(#cg)">
+      <circle cx="100" cy="100" r="80" pathLength="100" stroke-width="8" stroke-dasharray="30 3 28 3 22 14" transform="rotate(-20 100 100)"/>
+      <circle cx="100" cy="100" r="64" pathLength="100" stroke-width="7" stroke-dasharray="18 4 40 4 20 14" transform="rotate(-8 100 100)"/>
+      <circle cx="100" cy="100" r="48" pathLength="100" stroke-width="6" stroke-dasharray="44 5 36 15" transform="rotate(-34 100 100)"/>
+    </g>
+    <g transform="translate(152 48)">
+      <circle r="22" fill="url(#cf)"/>
+      <path d="M1.4 -1.4 L-46 46 L-1.4 1.4 Z" fill="#FF2E93" opacity=".85"/>
+      <path d="M-1 1 L30 -30 L1 -1 Z" fill="#7A9BFF"/>
+      <path d="M0 -24 L2.6 -2.6 L24 0 L2.6 2.6 L0 24 L-2.6 2.6 L-24 0 L-2.6 -2.6 Z" fill="#FFFFFF"/>
+      <path d="M0 -12 L1.6 -1.6 L12 0 L1.6 1.6 L0 12 L-1.6 1.6 L-12 0 L-1.6 -1.6 Z" fill="#FF2E93" transform="rotate(45)"/>
+      <circle r="3.2" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+</svg>
+
+<div id="app"></div>
+<noscript><p style="padding:24px;color:#fff;font-family:sans-serif">Este creador de examen necesita JavaScript activado.</p></noscript>
+<script>
+const CONFIG = {"id":"lnd_ut1-2","unidades":"UT1–UT2","titulo":"XML bien formado y DTD"};
+</script>
+<script>
+// Banco de ejercicios de Lenguajes de Marcas (1.º DAM, UT1-UT2): XML bien formado y DTD.
+// JavaScript plano, sin import/export. Se incrusta en un <script>.
+
+// EJ1: variantes de la pregunta HTML vs XML.
+const EJ1 = [
+  {
+    q: '¿Qué es HTML y qué es XML? Explica en qué se diferencian.',
+    modelo: 'HTML es el lenguaje con el que se escriben las páginas web: sus etiquetas están fijadas de antemano (p, h1, table...) y describen cómo se muestra el contenido. XML sirve para guardar e intercambiar datos: las etiquetas las inventa quien lo escribe (paciente, precio...) y describen qué significa cada dato. HTML es permisivo, porque el navegador perdona errores, y no distingue mayúsculas. XML es estricto: un solo fallo y el documento no se puede leer, y sí distingue mayúsculas de minúsculas.',
+    ideas: ['HTML sirve para mostrar páginas web y XML para guardar e intercambiar datos', 'En HTML las etiquetas son fijas y en XML las define el autor', 'HTML tolera errores y XML es estricto (un fallo y no se lee)', 'XML distingue mayúsculas y minúsculas; HTML no']
+  },
+  {
+    q: 'Define HTML y XML y compara su finalidad, sus etiquetas y lo estrictos que son con los errores.',
+    modelo: 'HTML describe el aspecto de una página web; XML describe el significado de los datos. En HTML se usan etiquetas predefinidas como <p> o <table>; en XML cada autor crea las suyas, como <libro> o <precio>. Si en HTML falta un cierre, el navegador lo arregla y muestra la página igual. Si en XML falta un cierre, el analizador se detiene y da error. Por eso XML se usa para intercambiar información entre programas.',
+    ideas: ['HTML se centra en la presentación y XML en el contenido o significado', 'Etiquetas predefinidas en HTML frente a etiquetas inventadas en XML', 'El navegador corrige errores de HTML, pero un error en XML impide leer el documento', 'XML se usa para intercambiar datos entre aplicaciones']
+  },
+  {
+    q: 'Un compañero dice que HTML y XML son lo mismo porque los dos usan etiquetas con < y >. ¿Qué le contestarías?',
+    modelo: 'Que comparten la sintaxis de etiquetas, pero sirven para cosas distintas. HTML muestra información en el navegador y tiene un conjunto cerrado de etiquetas. XML no tiene etiquetas propias: es una forma de crear tus propios vocabularios para guardar datos, como un listado de alumnos o de productos. Además, XML exige que el documento esté bien formado (todo cerrado, un solo raíz, mayúsculas coherentes) y HTML no es tan exigente.',
+    ideas: ['Comparten la forma de escribir con etiquetas, pero no la finalidad', 'HTML presenta y XML almacena e intercambia datos', 'XML permite crear etiquetas propias; HTML tiene un conjunto fijo', 'XML exige estar bien formado y HTML es más permisivo']
+  },
+  {
+    q: 'Explica con un ejemplo la diferencia entre HTML y XML: ¿para qué usarías cada uno?',
+    modelo: 'HTML lo usaría para publicar la página de una tienda: con <h1> pongo un título y con <table> una tabla, y el navegador la dibuja. XML lo usaría para guardar el catálogo de esa tienda, con etiquetas como <producto>, <nombre> y <precio> que yo mismo he elegido, de modo que otro programa pueda leerlo sin ambigüedad. En HTML importa cómo se ve; en XML, qué es cada dato.',
+    ideas: ['HTML para mostrar una página y XML para guardar los datos', 'Ejemplo correcto de etiquetas HTML fijas (h1, table, p...)', 'Ejemplo de etiquetas XML inventadas (producto, precio...)', 'En HTML importa el aspecto; en XML, el significado de los datos']
+  },
+  {
+    q: '¿Qué diferencia hay entre un documento HTML y uno XML cuando tienen un error de sintaxis, por ejemplo una etiqueta sin cerrar?',
+    modelo: 'En HTML el navegador es permisivo: intenta adivinar lo que quería el autor y muestra la página igualmente. En XML no hay perdón: un documento con una etiqueta sin cerrar no está bien formado y el analizador se niega a procesarlo. Esa rigidez es una ventaja, porque los programas que leen el XML saben que la estructura es siempre correcta. Además, en XML Nota y nota serían etiquetas distintas.',
+    ideas: ['HTML es permisivo y el navegador perdona el error', 'XML es estricto: si no está bien formado, no se puede procesar', 'La rigidez de XML garantiza una estructura fiable para los programas', 'XML distingue mayúsculas y minúsculas']
+  }
+];
+
+// EJ2: XML con exactamente 5 fallos de buena formación, cada uno en una línea distinta.
+const EJ2 = [
+  {
+    tema: 'Biblioteca',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<biblioteca>',
+      '  <libro isbn=978-84-01 prestado="no">',
+      '    <titulo>La ciudad y los perros</titulo>',
+      '    <autor>Mario Vargas Llosa</Autor>',
+      '    <editorial>Alfaguara & Hijos</editorial>',
+      '    <precio moneda="EUR" moneda="USD">19.95</precio>',
+      '  </libro>',
+      '  <libro isbn="978-84-02" prestado="si">',
+      '    <titulo>Cien años de soledad</titulo>',
+      '    <autor>Gabriel García Márquez</autor>',
+      '    <agotado>',
+      '  </libro>',
+      '</biblioteca>'
+    ],
+    fallos: [
+      { linea: 3, que: 'El valor del atributo isbn no está entre comillas.', arreglo: '  <libro isbn="978-84-01" prestado="no">' },
+      { linea: 5, que: 'La etiqueta de cierre es </Autor> y la de apertura <autor>: XML distingue mayúsculas y minúsculas.', arreglo: '    <autor>Mario Vargas Llosa</autor>' },
+      { linea: 6, que: 'El carácter & suelto en el texto debe escribirse &amp;.', arreglo: '    <editorial>Alfaguara &amp; Hijos</editorial>' },
+      { linea: 7, que: 'El atributo moneda está repetido en el mismo elemento.', arreglo: '    <precio moneda="EUR">19.95</precio>' },
+      { linea: 12, que: 'El elemento vacío <agotado> no se cierra; debe ser <agotado/>.', arreglo: '    <agotado/>' }
+    ]
+  },
+  {
+    tema: 'Tienda de ropa',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<tienda nombre="Moda Sur">',
+      '  <producto codigo="A12">',
+      '    <nombre>Camiseta <b><i>básica</b></i></nombre>',
+      '    <precio>12.50</precio>',
+      '    <1color>azul</1color>',
+      '    <descuento>solo si el pedido es < 50 euros</descuento>',
+      '  </producto>',
+      '  <producto codigo="B07">',
+      '    <nombre>Pantalón</nombre>',
+      '    <precio>29.90</Precio>',
+      '    <fecha de alta>2026-01-10</fecha de alta>',
+      '  </producto>',
+      '</tienda>'
+    ],
+    fallos: [
+      { linea: 4, que: 'Las etiquetas <b> e <i> están cruzadas: hay que cerrar primero la última que se abrió.', arreglo: '    <nombre>Camiseta <b><i>básica</i></b></nombre>' },
+      { linea: 6, que: 'El nombre <1color> empieza por un número; un nombre debe empezar por letra o guion bajo.', arreglo: '    <color>azul</color>' },
+      { linea: 7, que: 'El carácter < suelto en el texto debe escribirse &lt;.', arreglo: '    <descuento>solo si el pedido es &lt; 50 euros</descuento>' },
+      { linea: 11, que: 'La apertura es <precio> y el cierre </Precio>: no coinciden las mayúsculas.', arreglo: '    <precio>29.90</precio>' },
+      { linea: 12, que: 'El nombre de la etiqueta lleva un espacio (fecha de alta); hay que usar un guion bajo.', arreglo: '    <fecha_alta>2026-01-10</fecha_alta>' }
+    ]
+  },
+  {
+    tema: 'Hospital',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<hospital>',
+      '  <!-- Datos de la planta -- segunda -->',
+      '  <medico id="m1" id="m2">',
+      '    <nombre>Ana Ruiz</nombre>',
+      '    <especialidad>Cardiología',
+      '    <consulta>Planta 2</consulta>',
+      '  </medico>',
+      '  <medico id="m2">',
+      '    <nombre>Luis Gil</nombre>',
+      '    <especialidad>Neurología</especialidad>',
+      '    <centro>Salud & Vida</centro>',
+      '    <foto archivo="gil.jpg">',
+      '  </medico>',
+      '</hospital>'
+    ],
+    fallos: [
+      { linea: 3, que: 'Un comentario no puede contener dos guiones seguidos (--) en su interior.', arreglo: '  <!-- Datos de la planta: segunda -->' },
+      { linea: 4, que: 'El atributo id aparece dos veces en el mismo elemento.', arreglo: '  <medico id="m1">' },
+      { linea: 6, que: 'La etiqueta <especialidad> no se cierra.', arreglo: '    <especialidad>Cardiología</especialidad>' },
+      { linea: 12, que: 'El carácter & suelto debe escribirse &amp;.', arreglo: '    <centro>Salud &amp; Vida</centro>' },
+      { linea: 13, que: 'El elemento vacío <foto> no se cierra; debe ser <foto archivo="gil.jpg"/>.', arreglo: '    <foto archivo="gil.jpg"/>' }
+    ]
+  },
+  {
+    tema: 'Instituto',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<instituto nombre="CIFP César Manrique">',
+      '  <grupo curso="1DAM">',
+      '    <alumno edad="18>',
+      '      <nombre>Luis Pérez</nombre>',
+      '      <nota modulo="LM">7.5<nota>',
+      '    </alumno>',
+      '    <alumno edad="19">',
+      '      <Nombre>Marta Gil</nombre>',
+      '      <nota modulo=LM>8</nota>',
+      '      <nota modulo="PRO">6</nota>',
+      '    </alumno>',
+      '  </grupo>',
+      '  <tutor curso="1DAM" curso="2DAM">Carmen Díaz</tutor>',
+      '</instituto>'
+    ],
+    fallos: [
+      { linea: 4, que: 'Al valor del atributo edad le falta la comilla de cierre.', arreglo: '    <alumno edad="18">' },
+      { linea: 6, que: 'Donde debería ir </nota> hay otra apertura <nota>, así que la etiqueta no se cierra.', arreglo: '      <nota modulo="LM">7.5</nota>' },
+      { linea: 9, que: 'La apertura es <Nombre> y el cierre </nombre>: las mayúsculas no coinciden.', arreglo: '      <nombre>Marta Gil</nombre>' },
+      { linea: 10, que: 'El valor del atributo modulo no está entre comillas.', arreglo: '      <nota modulo="LM">8</nota>' },
+      { linea: 14, que: 'El atributo curso está repetido en el elemento <tutor>.', arreglo: '  <tutor curso="1DAM">Carmen Díaz</tutor>' }
+    ]
+  },
+  {
+    tema: 'Cine',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<cine>',
+      '  <sala numero="1" aforo="120">',
+      '    <pelicula titulo="Dune: Parte Dos" duracion="166">',
+      '      <director>Denis Villeneuve</director>',
+      '      <sinopsis>Paul se une a los Fremen & busca venganza.</sinopsis>',
+      '      <horario>',
+      '        <sesion hora="18:00"/>',
+      '        <sesion hora="21:30">',
+      '      </horario>',
+      '    </pelicula>',
+      '  </sala>',
+      '  <Sala numero="2" aforo="80">',
+      '    <pelicula titulo="Mi vecino Totoro" duracion=86>',
+      '      <director>Hayao Miyazaki</director>',
+      '      <aviso><b>Apta <i>para todos</b></i></aviso>',
+      '    </pelicula>',
+      '  </sala>',
+      '</cine>'
+    ],
+    fallos: [
+      { linea: 6, que: 'El carácter & suelto debe escribirse &amp;.', arreglo: '      <sinopsis>Paul se une a los Fremen &amp; busca venganza.</sinopsis>' },
+      { linea: 9, que: 'El elemento vacío <sesion> no se cierra; debe ser <sesion hora="21:30"/>.', arreglo: '        <sesion hora="21:30"/>' },
+      { linea: 13, alt: [18], que: 'La apertura es <Sala> y el cierre </sala>: las mayúsculas no coinciden (vale marcar la apertura o el cierre).', arreglo: '  <sala numero="2" aforo="80">' },
+      { linea: 14, que: 'El valor del atributo duracion no está entre comillas.', arreglo: '    <pelicula titulo="Mi vecino Totoro" duracion="86">' },
+      { linea: 16, que: 'Las etiquetas <b> e <i> están cruzadas.', arreglo: '      <aviso><b>Apta <i>para todos</i></b></aviso>' }
+    ]
+  },
+  {
+    tema: 'Restaurante',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<restaurante>',
+      '  <menu dia="lunes">',
+      '    <plato precio="9.50">',
+      '      <nombre>Paella mixta</nombre>',
+      '      <ingredientes>arroz, pollo, gambas</ingredientes>',
+      '      <nota>solo si el grupo es < 20 personas</nota>',
+      '    </plato>',
+      '    <plato precio="7.00">',
+      '      <nombre>Gazpacho</nombre>',
+      '      <vegano>si</vegano>',
+      '      <2sabor>frio</2sabor>',
+      '    </plato>',
+      '    <postre nombre="Flan" nombre="Tarta"/>',
+      '    <tipo de cocina>casera</tipo de cocina>',
+      '  </menu>',
+      '</Restaurante>'
+    ],
+    fallos: [
+      { linea: 7, que: 'El carácter < suelto en el texto debe escribirse &lt;.', arreglo: '      <nota>solo si el grupo es &lt; 20 personas</nota>' },
+      { linea: 12, que: 'El nombre <2sabor> empieza por un número.', arreglo: '      <sabor>frio</sabor>' },
+      { linea: 14, que: 'El atributo nombre está repetido en <postre>.', arreglo: '    <postre nombre="Flan"/>' },
+      { linea: 15, que: 'El nombre de la etiqueta lleva un espacio (tipo de cocina).', arreglo: '    <tipo_cocina>casera</tipo_cocina>' },
+      { linea: 17, alt: [2], que: 'El elemento raíz se abre como <restaurante> y se cierra como </Restaurante>: no coinciden las mayúsculas (vale marcar la apertura o el cierre).', arreglo: '</restaurante>' }
+    ]
+  },
+  {
+    tema: 'Videojuegos',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<catalogo>',
+      '  <juego plataforma="PC" genero="Rol & Aventura">',
+      '    <titulo>The Witcher 3</titulo>',
+      '    <estudio>CD Projekt Red</estudio>',
+      '    <precio moneda="EUR">29.99</precio>',
+      '    <!-- pendiente de revisar -- importante -->',
+      '  </juego>',
+      '  <juego plataforma="PS5" genero="Deportes">',
+      '    <titulo>EA Sports FC</titulo>',
+      '    <resumen><b>Fútbol <i>online</b></i></resumen>',
+      '    <precio moneda=EUR>69.99</precio>',
+      '    <valoracion>8.5<valoracion>',
+      '  </juego>',
+      '</catalogo>'
+    ],
+    fallos: [
+      { linea: 3, que: 'El carácter & dentro del valor de un atributo debe escribirse &amp;.', arreglo: '  <juego plataforma="PC" genero="Rol &amp; Aventura">' },
+      { linea: 7, que: 'Un comentario no puede llevar dos guiones seguidos (--) dentro.', arreglo: '    <!-- pendiente de revisar: importante -->' },
+      { linea: 11, que: 'Las etiquetas <b> e <i> están cruzadas.', arreglo: '    <resumen><b>Fútbol <i>online</i></b></resumen>' },
+      { linea: 12, que: 'El valor del atributo moneda no está entre comillas.', arreglo: '    <precio moneda="EUR">69.99</precio>' },
+      { linea: 13, que: 'Se escribe <valoracion> dos veces: el cierre debería ser </valoracion>.', arreglo: '    <valoracion>8.5</valoracion>' }
+    ]
+  },
+  {
+    tema: 'Zoo',
+    xml: [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<zoo ciudad="Puerto de la Cruz">',
+      '  <zona nombre="Sabana">',
+      '    <animal especie="León" edad="7">',
+      '      <apodo>Simba</apodo>',
+      '      <peso unidad="kg">190</peso>',
+      '    </animal>',
+      '    <animal especie="Jirafa" edad="4>',
+      '      <apodo>Melman</apodo>',
+      '      <peso unidad="kg">800</Peso>',
+      '      <ficha de salud>buena</ficha de salud>',
+      '    </animal>',
+      '  </zona>',
+      '  <zona nombre="Selva">',
+      '    <animal especie="Mono" edad="3">',
+      '    <cuidador>Pepe & Ana</cuidador>',
+      '  </zona>',
+      '</zoo>'
+    ],
+    fallos: [
+      { linea: 8, que: 'Al valor del atributo edad le falta la comilla de cierre.', arreglo: '    <animal especie="Jirafa" edad="4">' },
+      { linea: 10, que: 'La apertura es <peso> y el cierre </Peso>: no coinciden las mayúsculas.', arreglo: '      <peso unidad="kg">800</peso>' },
+      { linea: 11, que: 'El nombre de la etiqueta lleva un espacio (ficha de salud).', arreglo: '      <ficha_salud>buena</ficha_salud>' },
+      { linea: 15, que: 'El elemento vacío <animal> no se cierra; debe terminar en />.', arreglo: '    <animal especie="Mono" edad="3"/>' },
+      { linea: 16, que: 'El carácter & suelto debe escribirse &amp;.', arreglo: '    <cuidador>Pepe &amp; Ana</cuidador>' }
+    ]
+  },
+  {
+    tema: 'Agenda de contactos',
+    xml: [
+      '<?xml version=1.0 encoding="UTF-8"?>',
+      '<agenda>',
+      '  <contacto id="c1">',
+      '    <nombre>Lucía Marrero</nombre>',
+      '    <telefono tipo="movil">600111222</telefono>',
+      '    <email>lucia@ejemplo.com</email>',
+      '  </contacto>',
+      '  <contacto id="c2">',
+      '    <nombre>Carlos Pérez</nombre>',
+      '    <telefono tipo="movil" tipo="fijo">600555666</telefono>',
+      '    <direccion><calle>Plaza España <numero>4</calle></numero></direccion>',
+      '    <email>carlos@ejemplo.com</email>',
+      '  </contacto>',
+      '  <contacto id="c3">',
+      '    <nombre>Rosa Díaz</nombre>',
+      '    <web>https://ejemplo.com/?a=1&b=2</web>',
+      '  </contacto>',
+      '</Agenda>'
+    ],
+    fallos: [
+      { linea: 1, que: 'En la declaración XML el valor de version no está entre comillas.', arreglo: '<?xml version="1.0" encoding="UTF-8"?>' },
+      { linea: 10, que: 'El atributo tipo está repetido en el mismo elemento.', arreglo: '    <telefono tipo="movil">600555666</telefono>' },
+      { linea: 11, que: 'Las etiquetas <calle> y <numero> están cruzadas.', arreglo: '    <direccion><calle>Plaza España <numero>4</numero></calle></direccion>' },
+      { linea: 16, que: 'El carácter & suelto en la dirección debe escribirse &amp;.', arreglo: '    <web>https://ejemplo.com/?a=1&amp;b=2</web>' },
+      { linea: 18, alt: [2], que: 'El raíz se abre como <agenda> y se cierra como </Agenda>: no coinciden las mayúsculas (vale marcar la apertura o el cierre).', arreglo: '</agenda>' }
+    ]
+  }
+];
+
+// EJ3: una DTD externa y 4 XML que la usan. Dicen cuál valida y, si no, por qué.
+const EJ3 = [
+  {
+    tema: 'Agenda de contactos',
+    archivo: 'agenda.dtd',
+    dtd: `<!ELEMENT agenda (contacto+)>
+<!ELEMENT contacto (nombre, telefono+, email?)>
+<!ATTLIST contacto id ID #REQUIRED>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT telefono (#PCDATA)>
+<!ELEMENT email (#PCDATA)>`,
+    xmls: [
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE agenda SYSTEM "agenda.dtd">
+<agenda>
+  <contacto id="c1">
+    <nombre>Lucía</nombre>
+    <telefono>600111222</telefono>
+    <telefono>922333444</telefono>
+    <email>lucia@ejemplo.com</email>
+  </contacto>
+</agenda>`,
+        valido: true,
+        motivo: 'Sí valida: el orden es nombre, teléfonos y email; hay dos teléfonos (+), el email es opcional y el id está presente.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE agenda SYSTEM "agenda.dtd">
+<agenda>
+  <contacto id="c1">
+    <nombre>Lucía</nombre>
+    <email>lucia@ejemplo.com</email>
+  </contacto>
+</agenda>`,
+        valido: false,
+        motivo: 'Falta el teléfono: telefono+ exige al menos uno.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE agenda SYSTEM "agenda.dtd">
+<agenda>
+  <contacto id="c2">
+    <nombre>Carlos</nombre>
+    <email>carlos@ejemplo.com</email>
+    <telefono>600555666</telefono>
+  </contacto>
+</agenda>`,
+        valido: false,
+        motivo: 'El orden es incorrecto: la DTD pide nombre, telefono y después email, y aquí el email va antes del teléfono.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE agenda SYSTEM "agenda.dtd">
+<agenda>
+  <contacto>
+    <nombre>Rosa</nombre>
+    <telefono>600777888</telefono>
+  </contacto>
+</agenda>`,
+        valido: false,
+        motivo: 'El elemento contacto no tiene el atributo id, que es #REQUIRED.'
+      }
+    ]
+  },
+  {
+    tema: 'Tienda',
+    archivo: 'tienda.dtd',
+    dtd: `<!ELEMENT tienda (producto*)>
+<!ELEMENT producto (nombre, precio, stock?)>
+<!ATTLIST producto categoria (ropa|calzado|hogar) #REQUIRED>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT precio (#PCDATA)>
+<!ATTLIST precio moneda CDATA #FIXED "EUR">
+<!ELEMENT stock (#PCDATA)>`,
+    xmls: [
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tienda SYSTEM "tienda.dtd">
+<tienda>
+  <producto categoria="ropa">
+    <nombre>Camiseta</nombre>
+    <precio moneda="EUR">12.50</precio>
+    <stock>40</stock>
+  </producto>
+  <producto categoria="hogar">
+    <nombre>Lámpara</nombre>
+    <precio>25</precio>
+  </producto>
+</tienda>`,
+        valido: true,
+        motivo: 'Sí valida: las dos categorías están en la lista, el stock es opcional y moneda, cuando aparece, vale EUR.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tienda SYSTEM "tienda.dtd">
+<tienda>
+  <producto categoria="juguetes">
+    <nombre>Puzle</nombre>
+    <precio>9.90</precio>
+  </producto>
+</tienda>`,
+        valido: false,
+        motivo: 'El valor "juguetes" no está en la lista de categoria (ropa|calzado|hogar).'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tienda SYSTEM "tienda.dtd">
+<tienda>
+  <producto categoria="calzado">
+    <nombre>Zapatillas</nombre>
+    <precio moneda="USD">59</precio>
+  </producto>
+</tienda>`,
+        valido: false,
+        motivo: 'El atributo moneda es #FIXED "EUR": si aparece, solo puede valer EUR, y aquí vale USD.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tienda SYSTEM "tienda.dtd">
+<tienda/>`,
+        valido: true,
+        motivo: 'Sí valida: producto* admite cero productos, así que una tienda vacía es correcta.'
+      }
+    ]
+  },
+  {
+    tema: 'Hospital',
+    archivo: 'hospital.dtd',
+    dtd: `<!ELEMENT hospital (medico+, cita*)>
+<!ELEMENT medico (nombre)>
+<!ATTLIST medico id ID #REQUIRED>
+<!ELEMENT cita (paciente, observaciones?)>
+<!ATTLIST cita medico IDREF #REQUIRED
+               prioridad (normal|urgente) "normal">
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT paciente (#PCDATA)>
+<!ELEMENT observaciones (#PCDATA)>`,
+    xmls: [
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hospital SYSTEM "hospital.dtd">
+<hospital>
+  <medico id="m1"><nombre>Ana Ruiz</nombre></medico>
+  <medico id="m2"><nombre>Luis Gil</nombre></medico>
+  <cita medico="m2" prioridad="urgente">
+    <paciente>Marta López</paciente>
+    <observaciones>Dolor persistente</observaciones>
+  </cita>
+</hospital>`,
+        valido: true,
+        motivo: 'Sí valida: el atributo medico de la cita apunta a m2, que existe como ID, y prioridad es uno de los valores permitidos.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hospital SYSTEM "hospital.dtd">
+<hospital>
+  <medico id="m1"><nombre>Ana Ruiz</nombre></medico>
+  <cita medico="m9">
+    <paciente>Pedro Díaz</paciente>
+  </cita>
+</hospital>`,
+        valido: false,
+        motivo: 'El IDREF medico="m9" apunta a un ID que no existe: ningún médico tiene id="m9".'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hospital SYSTEM "hospital.dtd">
+<hospital>
+  <medico id="m1"><nombre>Ana Ruiz</nombre></medico>
+  <medico id="m1"><nombre>Luis Gil</nombre></medico>
+</hospital>`,
+        valido: false,
+        motivo: 'El valor m1 de un atributo ID se repite en dos médicos; los ID deben ser únicos en todo el documento.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hospital SYSTEM "hospital.dtd">
+<hospital>
+  <medico id="m1"><nombre>Ana Ruiz</nombre></medico>
+  <cita medico="m1">
+    <paciente>Marta López</paciente>
+    <observaciones>Revisión</observaciones>
+    <observaciones>Análisis pendiente</observaciones>
+  </cita>
+</hospital>`,
+        valido: false,
+        motivo: 'Hay dos elementos observaciones en la cita y la DTD solo permite uno como máximo (observaciones?).'
+      }
+    ]
+  },
+  {
+    tema: 'Liga de fútbol',
+    archivo: 'liga.dtd',
+    dtd: `<!ELEMENT liga (equipo+)>
+<!ELEMENT equipo (nombre, jugador+)>
+<!ATTLIST equipo fundado CDATA #IMPLIED>
+<!ELEMENT jugador (nombre, dorsal)>
+<!ATTLIST jugador posicion (portero|defensa|medio|delantero) #REQUIRED>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT dorsal (#PCDATA)>`,
+    xmls: [
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE liga SYSTEM "liga.dtd">
+<liga>
+  <equipo fundado="1912">
+    <nombre>CD Tenerife</nombre>
+    <jugador posicion="portero">
+      <nombre>Juan Soriano</nombre>
+      <dorsal>1</dorsal>
+    </jugador>
+  </equipo>
+</liga>`,
+        valido: true,
+        motivo: 'Sí valida: el equipo tiene nombre y un jugador con posición permitida y dorsal; fundado es opcional.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE liga SYSTEM "liga.dtd">
+<liga>
+  <equipo>
+    <nombre>UD Las Palmas</nombre>
+    <jugador>
+      <nombre>Álvaro Valles</nombre>
+      <dorsal>13</dorsal>
+    </jugador>
+  </equipo>
+</liga>`,
+        valido: false,
+        motivo: 'Al jugador le falta el atributo posicion, que es #REQUIRED.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE liga SYSTEM "liga.dtd">
+<liga>
+  <equipo>
+    <nombre>Real Madrid</nombre>
+  </equipo>
+</liga>`,
+        valido: false,
+        motivo: 'El equipo no tiene ningún jugador y jugador+ exige al menos uno.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE liga SYSTEM "liga.dtd">
+<liga>
+  <equipo>
+    <nombre>FC Barcelona</nombre>
+    <entrenador>Hansi Flick</entrenador>
+    <jugador posicion="medio">
+      <nombre>Pedri</nombre>
+      <dorsal>8</dorsal>
+    </jugador>
+  </equipo>
+</liga>`,
+        valido: false,
+        motivo: 'El elemento entrenador no está declarado en la DTD y el equipo solo admite nombre y jugadores.'
+      }
+    ]
+  },
+  {
+    tema: 'Menú del restaurante',
+    archivo: 'menu.dtd',
+    dtd: `<!ELEMENT menu (entrante, (carne | pescado), postre?)>
+<!ATTLIST menu precio CDATA #REQUIRED>
+<!ELEMENT entrante (#PCDATA)>
+<!ELEMENT carne (#PCDATA)>
+<!ELEMENT pescado (#PCDATA)>
+<!ELEMENT postre (#PCDATA)>`,
+    xmls: [
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE menu SYSTEM "menu.dtd">
+<menu precio="14.50">
+  <entrante>Ensalada</entrante>
+  <pescado>Merluza</pescado>
+  <postre>Flan</postre>
+</menu>`,
+        valido: true,
+        motivo: 'Sí valida: entrante, uno de los dos platos principales (pescado) y un postre opcional.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE menu SYSTEM "menu.dtd">
+<menu precio="16">
+  <entrante>Sopa</entrante>
+  <carne>Pollo asado</carne>
+  <pescado>Atún</pescado>
+</menu>`,
+        valido: false,
+        motivo: 'La barra (carne | pescado) permite uno solo de los dos y aquí aparecen los dos.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE menu SYSTEM "menu.dtd">
+<menu precio="12">
+  <carne>Ternera</carne>
+  <entrante>Croquetas</entrante>
+</menu>`,
+        valido: false,
+        motivo: 'El orden es incorrecto: la coma exige entrante antes del plato principal.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE menu SYSTEM "menu.dtd">
+<menu precio="12">
+  <entrante>Croquetas</entrante>
+  <carne>Ternera</carne>
+</menu>`,
+        valido: true,
+        motivo: 'Sí valida: el postre es opcional y se puede omitir.'
+      }
+    ]
+  },
+  {
+    tema: 'Biblioteca con autores',
+    archivo: 'biblioteca.dtd',
+    dtd: `<!ELEMENT biblioteca (autor+, libro*)>
+<!ELEMENT autor (#PCDATA)>
+<!ATTLIST autor id ID #REQUIRED>
+<!ELEMENT libro (titulo, agotado?)>
+<!ATTLIST libro autores IDREFS #REQUIRED>
+<!ELEMENT titulo (#PCDATA)>
+<!ELEMENT agotado EMPTY>`,
+    xmls: [
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE biblioteca SYSTEM "biblioteca.dtd">
+<biblioteca>
+  <autor id="a1">Ana Rey</autor>
+  <autor id="a2">Luis Mora</autor>
+  <libro autores="a1 a2">
+    <titulo>XML paso a paso</titulo>
+    <agotado/>
+  </libro>
+</biblioteca>`,
+        valido: true,
+        motivo: 'Sí valida: IDREFS admite varios ID separados por espacios y ambos existen; agotado está vacío.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE biblioteca SYSTEM "biblioteca.dtd">
+<biblioteca>
+  <autor id="a1">Ana Rey</autor>
+  <libro autores="a1">
+    <titulo>Bases de datos</titulo>
+    <agotado>sí</agotado>
+  </libro>
+</biblioteca>`,
+        valido: false,
+        motivo: 'agotado está declarado como EMPTY y aquí lleva texto dentro.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE biblioteca SYSTEM "biblioteca.dtd">
+<biblioteca>
+  <autor id="a1">Ana Rey</autor>
+  <libro autores="a1 a5">
+    <titulo>Programación</titulo>
+  </libro>
+</biblioteca>`,
+        valido: false,
+        motivo: 'El valor a5 de autores no corresponde a ningún ID: no hay ningún autor con id="a5".'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE biblioteca SYSTEM "biblioteca.dtd">
+<biblioteca>
+  <libro autores="a1">
+    <titulo>Sistemas</titulo>
+  </libro>
+  <autor id="a1">Ana Rey</autor>
+</biblioteca>`,
+        valido: false,
+        motivo: 'El orden es incorrecto: la DTD pide primero los autores y después los libros.'
+      }
+    ]
+  },
+  {
+    tema: 'Artículo con texto mixto',
+    archivo: 'articulo.dtd',
+    dtd: `<!ELEMENT articulo (titulo, parrafo+)>
+<!ATTLIST articulo autor CDATA #IMPLIED>
+<!ELEMENT titulo (#PCDATA)>
+<!ELEMENT parrafo (#PCDATA | b | i)*>
+<!ELEMENT b (#PCDATA)>
+<!ELEMENT i (#PCDATA)>`,
+    xmls: [
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE articulo SYSTEM "articulo.dtd">
+<articulo autor="Marta">
+  <titulo>Aprender XML</titulo>
+  <parrafo>Un XML debe estar <b>bien formado</b> y, si hay DTD, ser <i>válido</i>.</parrafo>
+</articulo>`,
+        valido: true,
+        motivo: 'Sí valida: parrafo admite texto mezclado con b e i en cualquier orden.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE articulo SYSTEM "articulo.dtd">
+<articulo>
+  <titulo>Aprender DTD</titulo>
+  <parrafo>Texto <b>importante y <i>muy</i> claro</b>.</parrafo>
+</articulo>`,
+        valido: false,
+        motivo: 'El elemento b solo puede contener texto (#PCDATA) y aquí lleva dentro un elemento i.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE articulo SYSTEM "articulo.dtd">
+<articulo>
+  <titulo>Subrayados</titulo>
+  <parrafo>Esto va <u>subrayado</u>.</parrafo>
+</articulo>`,
+        valido: false,
+        motivo: 'El elemento u no está declarado en la DTD y parrafo solo admite texto, b e i.'
+      },
+      {
+        xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE articulo SYSTEM "articulo.dtd">
+<articulo>
+  <titulo>Sin autor</titulo>
+  <parrafo/>
+</articulo>`,
+        valido: true,
+        motivo: 'Sí valida: autor es #IMPLIED (opcional) y parrafo, con *, puede estar vacío.'
+      }
+    ]
+  }
+];
+
+// EJ4: DTD con 5 huecos __1__ ... __5__ y el XML que debe validar con ella.
+const EJ4 = [
+  {
+    tema: 'Instituto',
+    archivo: 'instituto.dtd',
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instituto SYSTEM "instituto.dtd">
+<instituto>
+  <grupo turno="diurno">
+    <nombre>1DAM</nombre>
+    <alumno><nombre>Luis</nombre><email>luis@ejemplo.com</email></alumno>
+    <alumno><nombre>Marta</nombre></alumno>
+  </grupo>
+  <grupo>
+    <nombre>1ASIR</nombre>
+  </grupo>
+</instituto>`,
+    dtd: `<!ELEMENT instituto (grupo__1__)>
+<!ELEMENT grupo (nombre, alumno__2__)>
+<!ATTLIST grupo turno (diurno|vespertino) __3__>
+<!ELEMENT alumno (nombre, email__4__)>
+<!ELEMENT nombre (__5__)>
+<!ELEMENT email (#PCDATA)>`,
+    huecos: [
+      { ok: ['+', '*'], explicacion: 'Hay dos grupos y nunca ninguno: uno o más, es decir, +.' },
+      { ok: ['*'], explicacion: 'El primer grupo tiene dos alumnos y el segundo ninguno: cero o más, es decir, *.' },
+      { ok: ['#IMPLIED'], explicacion: 'El primer grupo lleva turno y el segundo no, así que el atributo es opcional: #IMPLIED.' },
+      { ok: ['?', '*'], explicacion: 'Un alumno tiene email y el otro no, y nunca hay dos: cero o uno, es decir, ?.' },
+      { ok: ['#PCDATA'], explicacion: 'nombre solo contiene texto, así que su contenido es #PCDATA.' }
+    ]
+  },
+  {
+    tema: 'Tienda online',
+    archivo: 'tienda.dtd',
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tienda SYSTEM "tienda.dtd">
+<tienda>
+  <cliente id="c1"><nombre>Ana</nombre></cliente>
+  <cliente id="c2"><nombre>Luis</nombre></cliente>
+  <pedido cliente="c2" estado="enviado">
+    <articulo>Teclado</articulo>
+    <pago><tarjeta/></pago>
+  </pedido>
+  <pedido cliente="c1" estado="pendiente">
+    <articulo>Ratón</articulo>
+    <articulo>Alfombrilla</articulo>
+    <pago><efectivo/></pago>
+  </pedido>
+</tienda>`,
+    dtd: `<!ELEMENT tienda (cliente+, pedido*)>
+<!ELEMENT cliente (nombre)>
+<!ATTLIST cliente id __1__ #REQUIRED>
+<!ELEMENT pedido (articulo__2__, pago)>
+<!ATTLIST pedido cliente __3__ #REQUIRED
+                 estado (pendiente|enviado) "pendiente">
+<!ELEMENT pago (tarjeta __4__ efectivo)>
+<!ELEMENT tarjeta __5__>
+<!ELEMENT efectivo EMPTY>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT articulo (#PCDATA)>`,
+    huecos: [
+      { ok: ['ID'], explicacion: 'El atributo id identifica de forma única a cada cliente y otros elementos lo referencian: es de tipo ID.' },
+      { ok: ['+', '*'], explicacion: 'Un pedido tiene un artículo y el otro tiene dos, y ninguno tiene cero: uno o más, es decir, +.' },
+      { ok: ['IDREF', 'IDREFS'], explicacion: 'El atributo cliente del pedido contiene el id de un cliente (c1, c2): es una referencia, IDREF.' },
+      { ok: ['|'], explicacion: 'Cada pago contiene tarjeta o efectivo, nunca los dos: se separan con la barra |.' },
+      { ok: ['EMPTY', 'ANY', '(#PCDATA)'], explicacion: 'Se escribe <tarjeta/>, sin contenido: EMPTY.' }
+    ]
+  },
+  {
+    tema: 'Cine',
+    archivo: 'cine.dtd',
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cine SYSTEM "cine.dtd">
+<cine>
+  <pelicula codigo="p1" idioma="es">
+    <titulo>Dune</titulo>
+    <sinopsis>Guerra por la especia.</sinopsis>
+  </pelicula>
+  <pelicula codigo="p2" idioma="es">
+    <titulo>Totoro</titulo>
+  </pelicula>
+  <sala numero="1" proyecta="p1 p2" formato="3D">
+    <sesion hora="18:00"/>
+    <sesion hora="21:30"/>
+  </sala>
+  <sala numero="2" proyecta="p2">
+  </sala>
+</cine>`,
+    dtd: `<!ELEMENT cine (pelicula+, sala+)>
+<!ELEMENT pelicula (titulo, sinopsis__1__)>
+<!-- el idioma de todas las películas es siempre "es" -->
+<!ATTLIST pelicula codigo ID #REQUIRED
+                   idioma CDATA __2__>
+<!ELEMENT sala (sesion__3__)>
+<!ATTLIST sala numero CDATA #REQUIRED
+               proyecta __4__ #REQUIRED
+               formato __5__ "2D">
+<!ELEMENT sesion EMPTY>
+<!ATTLIST sesion hora CDATA #REQUIRED>
+<!ELEMENT titulo (#PCDATA)>
+<!ELEMENT sinopsis (#PCDATA)>`,
+    huecos: [
+      { ok: ['?', '*'], explicacion: 'Una película tiene sinopsis y la otra no, y nunca hay dos: cero o una, es decir, ?.' },
+      { ok: ['#FIXED "es"'], explicacion: 'El comentario dice que el idioma es siempre "es": un valor constante, #FIXED "es".' },
+      { ok: ['*'], explicacion: 'La sala 1 tiene dos sesiones y la sala 2 ninguna: cero o más, es decir, *.' },
+      { ok: ['IDREFS'], explicacion: 'La sala 1 proyecta "p1 p2": varios códigos de película separados por espacios, es decir, IDREFS.' },
+      { ok: ['(2D|3D)', '(3D|2D)'], explicacion: 'El formato solo toma valores de una lista; en el XML aparece 3D y el valor por defecto es 2D, así que la lista es (2D|3D).' }
+    ]
+  },
+  {
+    tema: 'Taller mecánico',
+    archivo: 'taller.dtd',
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taller SYSTEM "taller.dtd">
+<taller>
+  <mecanico codigo="m1"><nombre>Pepe</nombre></mecanico>
+  <mecanico codigo="m2"><nombre>Rosa</nombre></mecanico>
+  <coche matricula="1234-ABC" revisado="si">
+    <marca>Seat</marca>
+    <reparacion mecanico="m1"><descripcion>Frenos</descripcion></reparacion>
+    <reparacion mecanico="m2" ayudante="m1"><descripcion>Aceite</descripcion></reparacion>
+  </coche>
+  <coche matricula="5678-XYZ">
+    <marca>Ford</marca>
+  </coche>
+</taller>`,
+    dtd: `<!ELEMENT taller (mecanico+, coche*)>
+<!ELEMENT mecanico (nombre)>
+<!ATTLIST mecanico codigo __1__ #REQUIRED>
+<!ELEMENT coche (marca, reparacion__2__)>
+<!ATTLIST coche matricula __3__ #REQUIRED
+                revisado (si|no) __4__>
+<!ELEMENT reparacion (descripcion)>
+<!ATTLIST reparacion mecanico IDREF #REQUIRED
+                     ayudante __5__ #IMPLIED>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT marca (#PCDATA)>
+<!ELEMENT descripcion (#PCDATA)>`,
+    huecos: [
+      { ok: ['ID'], explicacion: 'El código m1, m2 identifica a cada mecánico y las reparaciones lo referencian: es de tipo ID.' },
+      { ok: ['*'], explicacion: 'El primer coche tiene dos reparaciones y el segundo ninguna: cero o más, es decir, *.' },
+      { ok: ['CDATA', 'NMTOKEN'], explicacion: 'La matrícula es un texto libre; no puede ser ID porque empieza por un número (1234-ABC).' },
+      { ok: ['#IMPLIED'], explicacion: 'El primer coche lleva revisado y el segundo no, así que el atributo es opcional: #IMPLIED.' },
+      { ok: ['IDREF', 'IDREFS'], explicacion: 'ayudante="m1" contiene el código de un mecánico: es una referencia, IDREF.' }
+    ]
+  },
+  {
+    tema: 'Recetario',
+    archivo: 'recetario.dtd',
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE recetario SYSTEM "recetario.dtd">
+<recetario>
+  <receta dificultad="facil">
+    <nombre>Tortilla</nombre>
+    <ingrediente cantidad="4">huevos</ingrediente>
+    <ingrediente>sal</ingrediente>
+    <tiempo>20</tiempo>
+    <nota>Usar <destacado>poca</destacado> sal.</nota>
+  </receta>
+  <receta dificultad="media">
+    <nombre>Gazpacho</nombre>
+    <ingrediente cantidad="6">tomates</ingrediente>
+    <calorias>90</calorias>
+    <imagen archivo="gazpacho.jpg"/>
+  </receta>
+</recetario>`,
+    dtd: `<!ELEMENT recetario (receta+)>
+<!ELEMENT receta (nombre __1__ ingrediente+, (tiempo | calorias), nota?, imagen*)>
+<!-- toda receta indica su dificultad -->
+<!ATTLIST receta dificultad (facil|media|dificil) __2__>
+<!ELEMENT ingrediente (#PCDATA)>
+<!ATTLIST ingrediente cantidad CDATA __3__>
+<!ELEMENT nota (#PCDATA | destacado)__4__>
+<!ELEMENT destacado (#PCDATA)>
+<!ELEMENT imagen __5__>
+<!ATTLIST imagen archivo CDATA #REQUIRED>
+<!ELEMENT nombre (#PCDATA)>
+<!ELEMENT tiempo (#PCDATA)>
+<!ELEMENT calorias (#PCDATA)>`,
+    huecos: [
+      { ok: [','], explicacion: 'El nombre y los ingredientes aparecen los dos y en ese orden: se unen con una coma.' },
+      { ok: ['#REQUIRED'], explicacion: 'Las dos recetas llevan dificultad y el comentario dice que toda receta la indica: #REQUIRED.' },
+      { ok: ['#IMPLIED'], explicacion: 'El ingrediente sal no lleva cantidad, así que el atributo es opcional: #IMPLIED.' },
+      { ok: ['*'], explicacion: 'nota mezcla texto y el elemento destacado: en un contenido mixto el grupo termina en )*.' },
+      { ok: ['EMPTY', 'ANY', '(#PCDATA)'], explicacion: 'imagen se escribe <imagen archivo="..."/>, sin contenido: EMPTY.' }
+    ]
+  },
+  {
+    tema: 'Discoteca',
+    archivo: 'musica.dtd',
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE musica SYSTEM "musica.dtd">
+<musica>
+  <artista id="a1">Rosalía</artista>
+  <artista id="a2">C. Tangana</artista>
+  <disco autor="a1 a2" formato="CD">
+    <titulo>Singles</titulo>
+    <cancion duracion="3:20">Pienso en tu mirá</cancion>
+    <cancion>Tú me dejaste de querer</cancion>
+  </disco>
+  <disco autor="a1" formato="CD">
+    <titulo>Motomami</titulo>
+    <cancion duracion="2:55">Saoko</cancion>
+  </disco>
+</musica>`,
+    dtd: `<!ELEMENT musica (artista+, disco*)>
+<!ELEMENT artista (#PCDATA)>
+<!ATTLIST artista id __1__ #REQUIRED>
+<!ELEMENT disco (titulo, cancion__2__)>
+<!-- todos los discos son siempre en formato "CD" -->
+<!ATTLIST disco autor __3__ #REQUIRED
+                formato CDATA __4__>
+<!ELEMENT titulo (#PCDATA)>
+<!ELEMENT cancion (#PCDATA)>
+<!ATTLIST cancion duracion CDATA __5__>`,
+    huecos: [
+      { ok: ['ID'], explicacion: 'id identifica a cada artista y los discos lo referencian en autor: es de tipo ID.' },
+      { ok: ['+', '*'], explicacion: 'Un disco tiene dos canciones y el otro una, y ninguno cero: uno o más, es decir, +.' },
+      { ok: ['IDREFS'], explicacion: 'El primer disco tiene autor="a1 a2": varias referencias separadas por espacio, IDREFS.' },
+      { ok: ['#FIXED "CD"'], explicacion: 'El comentario dice que el formato es siempre "CD": valor constante, #FIXED "CD".' },
+      { ok: ['#IMPLIED'], explicacion: 'Hay una canción sin duracion, así que el atributo es opcional: #IMPLIED.' }
+    ]
+  },
+  {
+    tema: 'Parque de atracciones',
+    archivo: 'parque.dtd',
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE parque SYSTEM "parque.dtd">
+<parque>
+  <zona nombre="Norte">
+    <atraccion codigo="a1" tipo="noria"/>
+    <atraccion codigo="a2" tipo="montana" cierre="a1"/>
+  </zona>
+  <zona nombre="Sur">
+  </zona>
+  <avisos>Cerrado por <b>lluvia</b> hasta las <hora>18:00</hora></avisos>
+</parque>`,
+    dtd: `<!ELEMENT parque (zona__1__, avisos)>
+<!ELEMENT zona (atraccion__2__)>
+<!ATTLIST zona nombre CDATA #REQUIRED>
+<!ELEMENT atraccion EMPTY>
+<!ATTLIST atraccion codigo ID #REQUIRED
+                    tipo __3__ #REQUIRED
+                    cierre __4__ #IMPLIED>
+<!ELEMENT avisos __5__>
+<!ELEMENT b (#PCDATA)>
+<!ELEMENT hora (#PCDATA)>`,
+    huecos: [
+      { ok: ['+', '*'], explicacion: 'Hay dos zonas y siempre al menos una: uno o más, es decir, +.' },
+      { ok: ['*'], explicacion: 'La zona Norte tiene dos atracciones y la Sur ninguna: cero o más, es decir, *.' },
+      { ok: ['(noria|montana)', '(montana|noria)'], explicacion: 'tipo solo admite valores de una lista; en el XML aparecen noria y montana, así que la lista es (noria|montana).' },
+      { ok: ['IDREF', 'IDREFS'], explicacion: 'cierre="a1" apunta al código de otra atracción: es una referencia, IDREF.' },
+      { ok: ['ANY', '(#PCDATA|b|hora)*'], explicacion: 'avisos mezcla texto con varios elementos (b y hora) en un orden libre: vale ANY (cualquier contenido) o el contenido mixto (#PCDATA|b|hora)*, en cualquier orden dentro del paréntesis.' }
+    ]
+  }
+];
+
+// EJ5: preguntas cortas de teoría básica.
+const EJ5 = [
+  { t: 'DTD', q: '¿Qué es una DTD y para qué sirve?', modelo: 'Una DTD (definición de tipo de documento) es un conjunto de reglas que dice qué elementos y atributos puede tener un XML, en qué orden y cuántas veces. Sirve para comprobar que un documento es válido.', ideas: ['Conjunto de reglas para un XML', 'Define elementos, atributos, orden y cantidad', 'Permite validar el documento'] },
+  { t: 'Bien formado y válido', q: '¿Qué diferencia hay entre un XML bien formado y uno válido?', modelo: 'Un XML bien formado cumple las reglas de sintaxis de XML (todo cerrado, un solo raíz, comillas...). Uno válido, además, cumple las reglas de su DTD. Todo XML válido está bien formado, pero no al revés.', ideas: ['Bien formado: cumple la sintaxis de XML', 'Válido: además cumple su DTD', 'Un válido siempre está bien formado, pero no al contrario'] },
+  { t: 'Entidades predefinidas', q: 'Escribe las cinco entidades predefinidas de XML y di para qué sirven.', modelo: 'Son &lt; (<), &gt; (>), &amp; (&), &quot; (") y &apos; (\'). Sirven para escribir esos caracteres en el texto o en los atributos sin que se confundan con la sintaxis. Los que dan error si van sueltos son & y <.', ideas: ['&lt; &gt; &amp; &quot; &apos;', 'Se usan para escribir caracteres reservados', '& y < no pueden ir sueltos'] },
+  { t: 'CDATA', q: '¿Para qué sirve una sección CDATA? Pon un ejemplo.', modelo: 'Sirve para meter un texto tal cual, sin escapar los caracteres especiales, porque el analizador no lo interpreta. Se escribe <![CDATA[ if (a < b && c) ]]>. Lo único que no puede contener es ]]>.', ideas: ['El contenido se toma como texto literal', 'No hace falta escapar < ni &', 'Se escribe <![CDATA[ ... ]]>'] },
+  { t: '#PCDATA', q: '¿Qué significa #PCDATA en una DTD?', modelo: 'Significa que el elemento contiene solo texto, sin otros elementos dentro. Se escribe, por ejemplo, <!ELEMENT titulo (#PCDATA)>.', ideas: ['El elemento contiene solo texto', 'No admite elementos hijos', 'Ejemplo: <!ELEMENT titulo (#PCDATA)>'] },
+  { t: 'Comentarios', q: '¿Cómo se escribe un comentario en XML y qué normas tiene?', modelo: 'Se escribe <!-- comentario -->. No puede colocarse antes de la declaración <?xml ...?> ni dentro de una etiqueta, y tampoco puede contener dos guiones seguidos (--) en su interior.', ideas: ['Sintaxis <!-- ... -->', 'No puede ir antes de la declaración ni dentro de una etiqueta', 'No puede contener -- dentro'] },
+  { t: 'Prólogo', q: '¿Qué es el prólogo de un XML y qué lleva?', modelo: 'Es la declaración <?xml version="1.0" encoding="UTF-8"?> que se escribe al principio. Indica la versión de XML y la codificación de caracteres, y debe ser lo primero del documento, sin líneas en blanco ni comentarios antes.', ideas: ['Declaración <?xml ...?>', 'Indica versión y codificación', 'Tiene que ser lo primero del documento'] },
+  { t: 'Elemento raíz', q: '¿Qué es el elemento raíz y cuántos puede tener un documento XML?', modelo: 'Es el elemento que contiene a todos los demás. Un documento XML tiene uno solo; si hay varios elementos al nivel más alto, el documento no está bien formado y hay que envolverlos en un raíz común.', ideas: ['Contiene a todos los demás elementos', 'Solo puede haber uno', 'Si hay dos, se envuelven en un raíz común'] },
+  { t: 'Nombres válidos', q: 'Di tres reglas que deben cumplir los nombres de etiquetas y atributos en XML.', modelo: 'Empiezan por una letra o un guion bajo, no llevan espacios, después solo pueden llevar letras, números, guiones, guiones bajos y puntos, y no deben empezar por "xml". Además distinguen mayúsculas de minúsculas.', ideas: ['Empiezan por letra o guion bajo', 'Sin espacios ni caracteres como # o @', 'No empiezan por xml; distinguen mayúsculas'] },
+  { t: 'Elemento o atributo', q: '¿Cuándo conviene usar un atributo y cuándo un elemento para guardar un dato?', modelo: 'Un atributo es mejor para datos cortos que describen al elemento, como un identificador, un tipo o una unidad. Un elemento es mejor si el dato tiene partes, es largo o puede repetirse. En caso de duda, elemento.', ideas: ['Atributo: datos cortos que describen al elemento (id, tipo, unidad)', 'Elemento: datos con partes, largos o repetibles', 'En caso de duda, elemento'] },
+  { t: 'ID e IDREF', q: '¿Para qué sirven los atributos de tipo ID e IDREF?', modelo: 'Un atributo ID da a un elemento un identificador único en todo el documento (y no puede empezar por número). Un IDREF contiene el valor de un ID de otro elemento, así que sirve para referenciarlo y relacionar datos.', ideas: ['ID: identificador único en todo el XML', 'IDREF: referencia al ID de otro elemento', 'Un ID no puede empezar por número'] },
+  { t: 'Valores por defecto', q: 'Explica la diferencia entre #REQUIRED, #IMPLIED y #FIXED en un atributo.', modelo: '#REQUIRED significa que el atributo es obligatorio. #IMPLIED significa que es opcional. #FIXED "valor" significa que, si aparece, solo puede tener ese valor.', ideas: ['#REQUIRED: obligatorio', '#IMPLIED: opcional', '#FIXED "valor": si aparece, debe valer eso'] },
+  { t: 'Cardinalidad', q: '¿Qué significan los símbolos ?, + y * en una DTD?', modelo: 'Indican cuántas veces puede aparecer un elemento. ? significa cero o una vez, + significa una o más veces y * significa cero o más. Si no lleva ningún símbolo, debe aparecer exactamente una vez.', ideas: ['? es cero o una vez', '+ es una o más veces', '* es cero o más; sin símbolo, exactamente una'] },
+  { t: 'EMPTY y ANY', q: '¿Qué diferencia hay entre declarar un elemento como EMPTY y como ANY?', modelo: 'EMPTY indica que el elemento no puede tener contenido, como <salto/>. ANY indica que puede contener cualquier cosa: texto y otros elementos declarados. Ninguno de los dos lleva paréntesis.', ideas: ['EMPTY: elemento vacío, sin contenido', 'ANY: puede contener cualquier cosa', 'Se escriben sin paréntesis'] },
+  { t: 'DTD interna y externa', q: '¿Qué diferencia hay entre una DTD interna y una externa?', modelo: 'La interna se escribe dentro del propio XML, entre corchetes en el DOCTYPE. La externa está en un fichero .dtd aparte y se enlaza con SYSTEM; así se puede reutilizar en varios documentos. El fichero .dtd no lleva DOCTYPE.', ideas: ['Interna: dentro del XML, entre corchetes', 'Externa: fichero .dtd enlazado con SYSTEM', 'La externa se puede reutilizar'] },
+  { t: 'SYSTEM y PUBLIC', q: '¿Qué diferencia hay entre SYSTEM y PUBLIC en un DOCTYPE?', modelo: 'SYSTEM apunta a una DTD propia mediante su ruta o URL, por ejemplo SYSTEM "tienda.dtd". PUBLIC se usa con DTD públicas y estándar, como la de XHTML, y lleva un identificador público además de una URL.', ideas: ['SYSTEM: DTD propia, con su ruta o URL', 'PUBLIC: DTD estándar con identificador público', 'Ejemplo de cada uno'] },
+  { t: 'Espacios de nombres', q: '¿Para qué sirven los espacios de nombres en XML?', modelo: 'Sirven para mezclar en un mismo documento etiquetas de distintos vocabularios que se llaman igual sin que haya conflicto. Cada vocabulario se identifica con un prefijo asociado a una URI.', ideas: ['Evitan conflictos entre nombres iguales', 'Permiten mezclar vocabularios en un documento', 'Cada uno se identifica con un prefijo y una URI'] },
+  { t: 'Declarar un espacio de nombres', q: '¿Cómo se declara y se usa un espacio de nombres? Pon un ejemplo.', modelo: 'Se declara con el atributo xmlns:prefijo="URI", normalmente en el raíz, y se usa escribiendo el prefijo delante de la etiqueta. Ejemplo: xmlns:geo="http://ejemplo.com/geografia" y después <geo:capital>. La URI no tiene que existir en la web.', ideas: ['Atributo xmlns:prefijo="URI"', 'Se usa como prefijo:etiqueta', 'La URI solo identifica, no tiene que existir'] },
+  { t: 'DOM', q: '¿Qué es DOM en relación con XML?', modelo: 'DOM (Document Object Model) es una forma de representar el documento en memoria como un árbol de nodos, con el raíz arriba y los elementos, atributos y textos como ramas. Los programas lo recorren y lo modifican a través de esa estructura.', ideas: ['Representa el documento como un árbol de nodos', 'Lo carga el analizador en memoria', 'Permite recorrer y modificar el documento desde un programa'] },
+  { t: 'Elemento vacío', q: '¿Cómo se escribe un elemento vacío en XML? Pon dos formas.', modelo: 'Se puede escribir con apertura y cierre seguidos, como <br></br>, o con la forma abreviada <br/>. Lo que no vale es dejarlo sin cerrar, como <br>.', ideas: ['Forma <br></br>', 'Forma abreviada <br/>', 'No vale dejarlo sin cerrar'] },
+  { t: 'Coma y barra', q: 'En una DTD, ¿qué diferencia hay entre separar con coma y separar con barra vertical?', modelo: 'La coma indica una secuencia: aparecen todos los elementos y en ese orden. La barra | indica una elección: aparece uno u otro. Por ejemplo, (nombre, email) exige los dos y (telefono | email) solo uno.', ideas: ['Coma: todos y en el orden indicado', 'Barra: uno u otro', 'Ejemplo de cada uno'] },
+  { t: 'ATTLIST', q: 'Explica las partes de esta línea: <!ATTLIST libro isbn ID #REQUIRED>.', modelo: 'ATTLIST declara atributos. libro es el elemento al que pertenecen, isbn es el nombre del atributo, ID es su tipo (identificador único) y #REQUIRED indica que es obligatorio.', ideas: ['libro es el elemento y isbn el atributo', 'ID es el tipo del atributo', '#REQUIRED indica que es obligatorio'] },
+  { t: 'Entidades', q: '¿Qué es una entidad general en una DTD y cómo se usa?', modelo: 'Es un nombre abreviado para un texto que se repite. Se declara con <!ENTITY centro "CIFP César Manrique"> y se usa en el XML como &centro;, que el analizador sustituye por el texto completo.', ideas: ['Nombre que sustituye a un texto', 'Se declara con <!ENTITY nombre "texto">', 'Se usa como &nombre;'] },
+  { t: 'Etiquetas cruzadas', q: '¿Qué es anidar bien las etiquetas en XML? Da un ejemplo de error.', modelo: 'Es cerrar siempre primero la última etiqueta que se abrió, sin cruzarlas. Por ejemplo, <b><i>hola</b></i> es incorrecto y <b><i>hola</i></b> es correcto.', ideas: ['Se cierra primero la última etiqueta abierta', 'Ejemplo de cruce incorrecto', 'Ejemplo correcto'] },
+  { t: 'Comillas en atributos', q: '¿Cómo deben escribirse los valores de los atributos en XML? ¿Y si el valor lleva comillas dobles?', modelo: 'Siempre entre comillas, dobles o simples. Si el valor contiene comillas dobles, se pueden usar comillas simples por fuera (frase=\'Dijo "hola"\') o escribir la entidad &quot; dentro.', ideas: ['Los valores siempre van entre comillas', 'Se pueden usar simples o dobles', 'Si lleva comillas dobles, usar simples por fuera o &quot;'] },
+  { t: 'IDREFS', q: '¿En qué se diferencia IDREFS de IDREF?', modelo: 'IDREF contiene la referencia a un único ID. IDREFS contiene varias referencias a ID separadas por espacios, por ejemplo "m1 m3".', ideas: ['IDREF: una sola referencia', 'IDREFS: varias referencias', 'Van separadas por espacios'] },
+  { t: 'Contenido mixto', q: '¿Qué es un contenido mixto y cómo se declara en una DTD?', modelo: 'Es un elemento que mezcla texto con otros elementos, como un párrafo con negritas. Se declara con #PCDATA en primer lugar, las barras y el asterisco final: <!ELEMENT p (#PCDATA | b | i)*>.', ideas: ['Mezcla texto con elementos hijos', '#PCDATA va el primero', 'El grupo termina en )*'] },
+  { t: 'Analizador', q: '¿Qué hace un analizador (parser) de XML y en qué se diferencia uno validador de otro que no lo es?', modelo: 'Un analizador lee el documento XML y comprueba que está bien formado. Uno validador, además, lo comprueba contra la DTD y dice si es válido. Si el documento no está bien formado, ninguno puede procesarlo.', ideas: ['Lee el XML y comprueba que está bien formado', 'El validador comprueba además la DTD', 'Con un error de sintaxis no se procesa'] },
+  { t: 'DOCTYPE', q: '¿Qué indica el nombre que se escribe tras DOCTYPE y dónde se coloca la declaración?', modelo: 'El nombre debe ser el del elemento raíz del documento. La declaración se coloca después de <?xml ...?> y antes del elemento raíz.', ideas: ['Es el nombre del elemento raíz', 'Va después de la declaración <?xml?>', 'Va antes del elemento raíz'] }
+];
+
+</script>
+<script>
+// Creador de examen · Lenguajes de marcas y sistemas de gestión de información (LND).
+// Mismo formato que el examen real de UT1–UT2: 5 ejercicios de 2 puntos.
+//   1. Qué es HTML, qué es XML y en qué se diferencian (se corrige marcando ideas).
+//   2. XML corto con 5 fallos: marcar la línea (0,2, automático) + arreglo (0,2, marcando si coincide).
+//   3. Una DTD y 4 XML: valida o no (automático). En los que no validan, 0,25 por acertar y 0,25 por el porqué.
+//   4. DTD con 5 huecos (0,4 cada uno, automático).
+//   5. Tres preguntas cortas de teoría (se corrigen marcando ideas).
+// CONFIG (id, unidades, titulo) lo pone build.js; EJ1…EJ5 vienen del banco.
+'use strict';
+const app = document.getElementById('app');
+const ASIG = 'Lenguajes de Marcas';
+const P_EJ = 2, N_FALLOS = 5, P_LINEA = 0.2, P_ARREGLO = 0.2, P_HUECO = 0.4, N_CORTAS = 3;
+const LETRA = ['A', 'B', 'C', 'D'];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const fmt = n => (Math.round(n * 100) / 100).toFixed(2).replace('.', ',');
+const fmtc = n => fmt(n).replace(/,?0+$/, '') || '0';
+const pl = (n, uno, varios) => n + ' ' + (n === 1 ? uno : varios);
+// Respuesta de un hueco: sin espacios, comillas simples = dobles y, en las listas (a|b) o (#PCDATA|a|b)*, da igual el orden.
+const norm = s => {
+  const t = String(s).replace(/\s+/g, '').replace(/'([^'"]*)'/g, '"$1"');   // solo pares de comillas simples
+  const m = t.match(/^\(([^(),]+\|[^(),]+)\)(\*?)$/);
+  if (!m) return t;
+  const it = m[1].split('|');
+  // en el contenido mixto #PCDATA tiene que ir el primero: solo se ordena lo que va detrás
+  if (it.includes('#PCDATA')) return it[0] === '#PCDATA' ? '(#PCDATA|' + it.slice(1).sort().join('|') + ')' + m[2] : t;
+  return '(' + it.sort().join('|') + ')' + m[2];
+};
+const sinTildes = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+const fichero = (d, ext) => sinTildes((d.tema || 'documento').toLowerCase()).replace(/\s+/g, '_') + ext;
+
+// ---------- almacenamiento ----------
+const K = s => CONFIG.id + '_' + s;
+const MEM = {};
+function store(k, v) {
+  try {
+    if (v === undefined) { const r = localStorage.getItem(k); return r === null ? (MEM[k] ?? null) : JSON.parse(r); }
+    MEM[k] = v; localStorage.setItem(k, JSON.stringify(v));
+  } catch (e) { if (v === undefined) return MEM[k] ?? null; MEM[k] = v; }
+}
+const seenMap = () => store(K('seen')) || {};
+const historial = () => store(K('hist')) || [];
+let tema = (new URLSearchParams(location.search).get('tema') === 'dark' ? 'dark' : 'light');
+
+// Clave estable de cada elemento del banco (para rotar lo menos visto)
+const clave = (ej, d, i) => ej + ':' + (d.q || d.tema || '') + ':' + i;
+EJ1.forEach((d, i) => d._k = clave('ej1', d, i));
+EJ2.forEach((d, i) => d._k = clave('ej2', d, i));
+EJ3.forEach((d, i) => d._k = clave('ej3', d, i));
+EJ4.forEach((d, i) => d._k = clave('ej4', d, i));
+EJ5.forEach((d, i) => d._k = clave('ej5', d, i));
+
+const IC = {
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"/></svg>',
+  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+  save: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>'
+};
+const LOCKUP = '<a class="c-lockup" href="#" data-ir="inicio" aria-label="Inicio"><svg viewBox="0 0 200 200" aria-hidden="true"><use href="#concep-simbolo"/></svg><span class="c-wordmark">Concep</span></a>';
+const NOMBRE = 'Creador de examen ' + CONFIG.unidades;
+
+function mount(html) {
+  document.body.classList.toggle('claro', tema === 'light');
+  const root = document.createElement('div');
+  root.className = tema === 'light' ? 'concep' : 'concep-dark';
+  root.innerHTML = html;
+  app.replaceChildren(root);
+  window.scrollTo(0, 0);
+}
+function topBar(centro, derecha) {
+  return '<header class="top">' + LOCKUP + '<span class="sep" aria-hidden="true"></span>' + centro + '<div class="grow"></div><div class="acc">' + (derecha || '') +
+    '<button class="btn btn--ghost icon-btn" data-tema title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">' + (tema === 'light' ? IC.moon : IC.sun) + '</button></div></header>';
+}
+const MODULO = '<div class="modulo"><b>' + ASIG + '</b><span>' + NOMBRE + '</span></div>';
+const bloque = (fich, texto) => '<div class="codigo">' + (fich ? '<div class="fich">' + esc(fich) + '</div>' : '') + '<pre>' + esc(texto) + '</pre></div>';
+
+// ---------- inicio ----------
+const DESCR = [
+  ['1', 'Qué es HTML, qué es XML y en qué se diferencian.'],
+  ['2', 'Un XML corto con 5 fallos: marca las líneas y escribe cómo se arreglan.'],
+  ['3', 'Una DTD y 4 XML: di cuáles validan y, en los que no, por qué.'],
+  ['4', 'Una DTD con 5 huecos (+, *, ?, IDREF, #REQUIRED…): complétala mirando el XML.'],
+  ['5', 'Tres preguntas cortas de teoría básica.']
+];
+function vistaInicio() {
+  const h = historial();
+  const media = h.length ? h.reduce((s, x) => s + x, 0) / h.length : null;
+  const total = EJ1.length + EJ2.length + EJ3.length + EJ4.length + EJ5.length;
+  mount(topBar(MODULO) +
+    '<main class="page fade-in"><section class="hero"><div class="halo" aria-hidden="true"></div><div><span class="eyebrow">Concep · ' + ASIG + ' · ' + esc(CONFIG.unidades) + '</span>' +
+    '<h1>' + esc(NOMBRE) + '</h1><p>' + esc(CONFIG.titulo) + '. Cinco ejercicios como los del examen real, de 2 puntos cada uno. Lo que se puede corregir solo se corrige solo; lo que escribes lo comparas tú con la solución.</p></div>' +
+    '<div class="hero-stats"><div class="stat"><div class="v">' + total + '</div><div class="l">Ejercicios en el banco</div></div><div class="stat"><div class="v">' + h.length + '</div><div class="l">' + (h.length === 1 ? 'Examen' : 'Exámenes') + '</div></div><div class="stat"><div class="v">' + (media === null ? '—' : fmt(media)) + '</div><div class="l">Nota media</div></div></div></section>' +
+    '<div class="grid2">' +
+    '<section class="card card--accent" aria-labelledby="h-nuevo"><h2 id="h-nuevo">Nuevo examen</h2><p class="sub">Cada examen sale con otras versiones de los ejercicios, primero las que menos has visto.</p>' +
+    '<ul class="reglas"><li>5 ejercicios de 2 puntos: nota sobre 10.</li><li>Se corrigen solos las líneas con fallo, si cada XML valida y los huecos de la DTD.</li><li>Las respuestas escritas las corriges tú marcando las ideas de la solución.</li></ul>' +
+    '<div class="fila"><button class="btn btn--primary btn--lg" data-empezar>' + IC.play + 'Empezar examen</button></div>' +
+    (h.length ? '<div class="hist"><span>Últimos intentos</span>' + h.slice(-8).map(x => '<span class="nota-chip ' + (x >= 5 ? 'ap' : 'su') + '">' + fmt(x) + '</span>').join('') + '</div>' : '') +
+    '</section>' +
+    '<section class="card" aria-labelledby="h-como"><h2 id="h-como">Cómo es el examen</h2><p class="sub">El mismo orden y el mismo tipo de ejercicios que el examen de UT1–UT2.</p>' +
+    '<ol class="lista-ej">' + DESCR.map(([n, t]) => '<li><span class="n">' + n + '</span><span>' + esc(t) + '</span><span class="p">2 p</span></li>').join('') + '</ol></section>' +
+    '</div></main>');
+  document.title = NOMBRE + ' · ' + ASIG;
+}
+
+// ---------- examen ----------
+let examen = null;
+function porVistas(pool) { const seen = seenMap(); return shuffle(pool).sort((a, b) => (seen[a._k] || 0) - (seen[b._k] || 0)); }
+const nueva = d => ({ d, texto: '', marcadas: new Set() });
+function empezar() {
+  const e3 = porVistas(EJ3)[0];
+  examen = {
+    corregido: false, guardado: false,
+    ej1: nueva(porVistas(EJ1)[0]),
+    ej2: { d: porVistas(EJ2)[0], lineas: new Map(), ok: new Set() },          // lineas: nº → texto del arreglo; ok: arreglos que coinciden
+    ej3: { d: e3, orden: shuffle([0, 1, 2, 3]), resp: [null, null, null, null], porque: ['', '', '', ''], ok: new Set() },
+    ej4: { d: porVistas(EJ4)[0], resp: ['', '', '', '', ''] },
+    ej5: porVistas(EJ5).slice(0, N_CORTAS).map(nueva)
+  };
+  vistaExamen();
+}
+const hecho = [
+  () => examen.ej1.texto.trim() !== '',
+  () => examen.ej2.lineas.size === N_FALLOS,
+  () => examen.ej3.resp.every(r => r !== null),
+  () => examen.ej4.resp.every(r => r.trim() !== ''),
+  () => examen.ej5.every(x => x.texto.trim() !== '')
+];
+
+// ----- puntos -----
+const pIdeas = (x, max) => x.d.ideas.length ? max * x.marcadas.size / x.d.ideas.length : 0;
+// Un fallo puede marcarse en su línea o en una alternativa (p. ej. apertura o cierre de una etiqueta que no coincide).
+const lineasDe = f => [f.linea, ...(f.alt || [])];
+const fallosLineas = () => new Set(examen.ej2.d.fallos.flatMap(lineasDe));
+const marcadaDe = f => lineasDe(f).find(n => examen.ej2.lineas.has(n));   // línea con la que el alumno encontró el fallo
+function puntos() {
+  const e = examen;
+  const p1 = pIdeas(e.ej1, P_EJ);
+  const encontrados = e.ej2.d.fallos.filter(f => marcadaDe(f) !== undefined);
+  const aciertosL = encontrados.length;
+  const arreglos = encontrados.filter(f => e.ej2.ok.has(f.linea)).length;
+  const p2 = aciertosL * P_LINEA + arreglos * P_ARREGLO;
+  const pXml = P_EJ / 4;
+  const p3 = e.ej3.d.xmls.reduce((s, x, i) => {
+    const r = e.ej3.resp[i];
+    if (r === null || r !== x.valido) return s;
+    return s + (x.valido ? pXml : pXml / 2 + (e.ej3.ok.has(i) ? pXml / 2 : 0));
+  }, 0);
+  const p4 = e.ej4.d.huecos.reduce((s, h, i) => s + (huecoBien(h, e.ej4.resp[i]) ? P_HUECO : 0), 0);
+  const p5 = e.ej5.reduce((s, x) => s + pIdeas(x, P_EJ / N_CORTAS), 0);
+  const parts = [p1, p2, p3, p4, p5];
+  return { parts, total: parts.reduce((s, x) => s + x, 0), aciertosL, arreglos };
+}
+const huecoBien = (h, r) => r.trim() !== '' && h.ok.some(o => norm(o) === norm(r));
+
+// ----- vistas de cada ejercicio -----
+function cab(n, titulo, c) {
+  return '<div class="meta"><span class="n">Ejercicio ' + n + '</span><span>· ' + titulo + '</span><span class="pts" id="pe' + n + '">' + (c ? fmt(puntos().parts[n - 1]) + ' / ' : '') + P_EJ + ' p</span></div>';
+}
+function ideasHtml(x, id, max) {
+  return '<div class="ideas" role="group" aria-labelledby="ideas-' + id + '"><span class="lbl" id="ideas-' + id + '">Marca las ideas que has puesto en tu respuesta</span>' +
+    x.d.ideas.map((idea, k) => '<label class="idea"><input type="checkbox" data-idea="' + id + ':' + k + '"' + (x.marcadas.has(k) ? ' checked' : '') + (examen.guardado ? ' disabled' : '') + '><span>' + esc(idea) + '</span></label>').join('') +
+    '<div class="puntos-dev" id="pi-' + id + '">' + fmt(pIdeas(x, max)) + ' de ' + fmtc(max) + ' puntos</div></div>';
+}
+function htmlEj1(c) {
+  const x = examen.ej1;
+  return '<article class="q' + (c ? ' hecha' : '') + '" id="p0">' + cab(1, 'HTML y XML', c) +
+    '<h3 id="h-ej1">' + esc(x.d.q) + '</h3>' +
+    '<textarea class="resp" data-txt="ej1" aria-labelledby="h-ej1" placeholder="Escribe tu respuesta…"' + (c ? ' readonly' : '') + '>' + esc(x.texto) + '</textarea>' +
+    (c ? '<div class="modelo"><b>Respuesta modelo</b><br>' + esc(x.d.modelo) + '</div>' + ideasHtml(x, 'ej1', P_EJ) : '') + '</article>';
+}
+function htmlEj2(c) {
+  const e = examen.ej2, fl = fallosLineas();
+  const encontrado = n => e.d.fallos.some(f => marcadaDe(f) !== undefined && lineasDe(f).includes(n));
+  const lineas = e.d.xml.map((txt, i) => {
+    const n = i + 1, marc = e.lineas.has(n);
+    const cls = c ? (marc && fl.has(n) ? ' bien' : marc ? ' mal' : e.d.fallos.some(f => f.linea === n) && !encontrado(n) ? ' falta' : '') : '';
+    return '<label class="ln' + cls + '"><input type="checkbox" data-ln="' + n + '"' + (marc ? ' checked' : '') + (c ? ' disabled' : '') + ' aria-label="Línea ' + n + '"><span class="num">' + n + '</span><code>' + esc(txt) + '</code></label>';
+  }).join('');
+  let pie;
+  if (!c) {
+    pie = '<p class="ayuda">Pulsa una línea para marcarla (máximo ' + N_FALLOS + ') y escribe debajo qué falla y cómo se arregla. <span id="aviso-ej2" role="status"></span></p><div class="marcadas" id="marcadas">' + htmlMarcadas() + '</div>';
+  } else {
+    pie = '<div class="leyenda"><span class="b">Fallo encontrado</span><span class="m">Marcada sin fallo</span><span class="f">Fallo sin marcar</span></div>' +
+      '<div class="sol">' + e.d.fallos.slice().sort((a, b) => a.linea - b.linea).map(f => {
+        const m = marcadaDe(f), marc = m !== undefined, tuyo = marc ? e.lineas.get(m) : '';
+        return '<div class="sol-it"><div class="cab">Línea ' + f.linea + (f.alt ? ' (o ' + f.alt.join(', ') + ')' : '') + (marc ? '<span class="estado bien">Encontrado · +' + fmtc(P_LINEA) + '</span>' : '<span class="estado blanco">No la marcaste</span>') + '</div>' +
+          esc(f.que) + '<br>Queda así: <code>' + esc(f.arreglo.trim()) + '</code>' +
+          (marc ? '<div class="tuyo">Tu respuesta: ' + (tuyo.trim() ? esc(tuyo) : '<i>(vacía)</i>') + '</div>' +
+            '<label class="idea"><input type="checkbox" data-arreglo="' + f.linea + '"' + (e.ok.has(f.linea) ? ' checked' : '') + (examen.guardado ? ' disabled' : '') + '><span>Mi arreglo coincide (+' + fmtc(P_ARREGLO) + ')</span></label>' : '') + '</div>';
+      }).join('') +
+      [...e.lineas.keys()].filter(n => !fl.has(n)).sort((a, b) => a - b).map(n => '<div class="sol-it"><div class="cab">Línea ' + n + '<span class="estado mal">Esta línea está bien · 0</span></div><code>' + esc(e.d.xml[n - 1].trim()) + '</code></div>').join('') + '</div>';
+  }
+  return '<article class="q' + (c ? ' hecha' : '') + '" id="p1">' + cab(2, 'Encuentra los fallos', c) +
+    '<h3>Este XML tiene ' + N_FALLOS + ' fallos que hacen que no esté bien formado. Encuéntralos y corrígelos.</h3>' +
+    '<div class="codigo"><div class="fich">' + esc(fichero(e.d, '.xml')) + '</div><div class="lineas" role="group" aria-label="Líneas del XML">' + lineas + '</div></div>' + pie + '</article>';
+}
+function htmlMarcadas() {
+  const e = examen.ej2;
+  if (!e.lineas.size) return '';
+  return [...e.lineas.keys()].sort((a, b) => a - b).map(n => '<div class="marcada"><b>Línea ' + n + '</b><input class="campo" data-arr="' + n + '" value="' + esc(e.lineas.get(n)) + '" placeholder="Qué falla y cómo queda" aria-label="Arreglo de la línea ' + n + '"></div>').join('');
+}
+function htmlEj3(c) {
+  const e = examen.ej3, pXml = P_EJ / 4;
+  const items = e.orden.map((i, pos) => {
+    const x = e.d.xmls[i], r = e.resp[i], L = LETRA[pos];
+    const op = (val, txt) => {
+      const cls = c ? (val === x.valido ? ' bien' : r === val ? ' mal' : '') : '';
+      return '<label class="' + cls.trim() + '"><input type="radio" name="v' + i + '" data-v="' + i + '" value="' + val + '"' + (r === val ? ' checked' : '') + (c ? ' disabled' : '') + '>' + txt + '</label>';
+    };
+    let sol = '';
+    if (c) {
+      const bien = r === x.valido;
+      const est = r === null ? '<span class="estado blanco">En blanco · 0</span>' : bien ? '<span class="estado bien">' + (x.valido ? 'Correcto · +' + fmtc(pXml) : 'Correcto · +' + fmtc(pXml / 2)) + '</span>' : '<span class="estado mal">Incorrecto · 0</span>';
+      sol = '<div class="expl"><b>' + (x.valido ? 'Valida' : 'No valida') + '.</b> ' + esc(x.motivo) + ' ' + est + '</div>' +
+        (!x.valido && bien ? '<label class="idea"><input type="checkbox" data-porque="' + i + '"' + (e.ok.has(i) ? ' checked' : '') + (examen.guardado ? ' disabled' : '') + '><span>Mi explicación coincide (+' + fmtc(pXml / 2) + ')</span></label>' : '');
+    }
+    return '<div class="xml-it">' + bloque(L + '.xml', x.xml) +
+      '<div class="vnv" role="radiogroup" aria-label="¿Valida ' + L + '.xml?">' + op(true, 'Valida') + op(false, 'No valida') + '</div>' +
+      '<textarea class="resp" data-porque-txt="' + i + '" placeholder="Si no valida, explica por qué" aria-label="Por qué no valida ' + L + '.xml"' + (c ? ' readonly' : '') + '>' + esc(e.porque[i]) + '</textarea>' + sol + '</div>';
+  }).join('');
+  return '<article class="q' + (c ? ' hecha' : '') + '" id="p2">' + cab(3, 'Valida o no valida', c) +
+    '<h3>Los cuatro XML usan esta DTD. Di cuáles son válidos y, en los que no, explica por qué.</h3>' +
+    '<p class="enun">Todos están bien formados: el fallo, si lo hay, es contra la DTD. Cada XML vale ' + fmtc(pXml) + ' (en los que no validan, la mitad es el porqué).</p>' +
+    bloque(e.d.archivo, e.d.dtd) + '<div class="xmls">' + items + '</div></article>';
+}
+function htmlEj4(c) {
+  const e = examen.ej4;
+  let k = 0;
+  const dtd = esc(e.d.dtd).replace(/__(\d)__/g, (_, d) => {
+    const i = +d - 1, h = e.d.huecos[i], r = e.resp[i];
+    const cls = c ? (huecoBien(h, r) ? ' bien' : ' mal') : '';
+    k++;
+    return '<input class="hueco' + cls + '" data-hueco="' + i + '" value="' + esc(r) + '" size="' + Math.max(5, (r || '').length + 1) + '" autocomplete="off" spellcheck="false" aria-label="Hueco ' + d + '"' + (c ? ' readonly' : '') + '><span class="hueco-n" aria-hidden="true">' + d + '</span>';
+  });
+  const sol = c ? '<div class="sol">' + e.d.huecos.map((h, i) => {
+    const bien = huecoBien(h, e.resp[i]);
+    return '<div class="sol-it"><div class="cab">Hueco ' + (i + 1) + ': <code>' + esc(h.ok[0]) + '</code>' + (bien ? '<span class="estado bien">Correcto · +' + fmtc(P_HUECO) + '</span>' : e.resp[i].trim() ? '<span class="estado mal">Pusiste ' + esc(e.resp[i]) + ' · 0</span>' : '<span class="estado blanco">En blanco · 0</span>') + '</div>' +
+      esc(h.explicacion) + (h.ok.length > 1 ? '<div class="tuyo">También vale: ' + h.ok.slice(1).map(o => '<code>' + esc(o) + '</code>').join(' ') + '</div>' : '') + '</div>';
+  }).join('') + '</div>' : '';
+  return '<article class="q' + (c ? ' hecha' : '') + '" id="p3">' + cab(4, 'Completa la DTD', c) +
+    '<h3>A esta DTD le faltan 5 cosas. Complétala para que el XML sea válido.</h3>' +
+    '<p class="enun">Cada hueco vale ' + fmtc(P_HUECO) + '. Puede faltar un símbolo (+, *, ?, |), un tipo (#PCDATA, ID, IDREF, CDATA…) o un modificador (#REQUIRED, #IMPLIED…).</p>' +
+    '<div class="dos">' + bloque(fichero(e.d, '.xml'), e.d.xml) +
+    '<div class="codigo"><div class="fich">' + esc(e.d.archivo) + '</div><pre>' + dtd + '</pre></div></div>' + sol + '</article>';
+}
+function htmlEj5(c) {
+  const max = P_EJ / N_CORTAS;
+  return '<article class="q' + (c ? ' hecha' : '') + '" id="p4">' + cab(5, 'Preguntas cortas', c) +
+    examen.ej5.map((x, i) => '<div class="corta"><h4 id="h-c' + i + '">' + String.fromCharCode(97 + i) + ') ' + esc(x.d.q) + '</h4>' +
+      '<textarea class="resp" data-txt="ej5:' + i + '" aria-labelledby="h-c' + i + '" placeholder="Respuesta corta…"' + (c ? ' readonly' : '') + '>' + esc(x.texto) + '</textarea>' +
+      (c ? '<div class="modelo"><b>Respuesta modelo</b><br>' + esc(x.d.modelo) + '</div>' + ideasHtml(x, 'ej5-' + i, max) : '') + '</div>').join('') + '</article>';
+}
+const EJS = [htmlEj1, htmlEj2, htmlEj3, htmlEj4, htmlEj5];
+
+function vistaExamen() {
+  mount(topBar('<button class="btn btn--ghost btn--sm" data-salir>' + IC.back + 'Salir</button><div class="modulo"><b>Examen</b><span>5 ejercicios · 10 puntos</span></div>',
+    '<span class="progreso" id="prog" aria-live="polite"></span>') +
+    '<main class="examen-page fade-in">' + EJS.map(f => f(false)).join('') + '</main>' +
+    '<div class="barra-fija"><div class="in"><button class="btn btn--primary" data-corregir>' + IC.check + 'Corregir examen</button><nav class="puntos" aria-label="Ir a un ejercicio" id="puntos"></nav><span class="aviso" id="aviso" role="status"></span></div></div>');
+  progreso();
+}
+function progreso() {
+  const r = hecho.filter(f => f()).length;
+  const p = document.getElementById('prog'); if (p) p.textContent = r + '/5';
+  const pt = document.getElementById('puntos');
+  if (pt) pt.innerHTML = hecho.map((f, n) => '<a href="#p' + n + '" class="' + (f() ? 'r' : '') + '" aria-label="Ejercicio ' + (n + 1) + (f() ? ', hecho' : '') + '">' + (n + 1) + '</a>').join('');
+}
+
+// ---------- corrección ----------
+function corregir() {
+  examen.corregido = true;
+  const seen = seenMap();
+  [examen.ej1.d, examen.ej2.d, examen.ej3.d, examen.ej4.d, ...examen.ej5.map(x => x.d)].forEach(d => { seen[d._k] = (seen[d._k] || 0) + 1; });
+  store(K('seen'), seen);
+  vistaResultado();
+}
+// definitiva = false: guardado provisional al ocultar la pestaña; se puede seguir corrigiendo
+// y el siguiente guardado sustituye esa misma entrada del historial en vez de añadir otra.
+function guardarNota(definitiva = true) {
+  if (examen.guardado) return;
+  const h = historial(), nota = Math.round(puntos().total * 100) / 100;
+  if (examen.enHist && h.length) h[h.length - 1] = nota; else h.push(nota);
+  examen.enHist = true;
+  if (definitiva) examen.guardado = true;
+  store(K('hist'), h.slice(-20));
+}
+const NOMBRES = ['HTML y XML', 'Fallos', 'Valida', 'Huecos', 'Cortas'];
+function htmlCabecera() {
+  const p = puntos(), nota = p.total, ap = nota >= 5;
+  return '<div class="resultado"><div class="big">' + fmt(nota) + '<small> /10</small></div>' +
+    '<div><div class="veredicto ' + (ap ? 'ap' : 'su') + '">' + (nota >= 9 ? 'Sobresaliente' : nota >= 7 ? 'Notable' : nota >= 6 ? 'Bien' : ap ? 'Aprobado' : 'Suspenso') + (!examen.guardado ? ' (falta tu parte de la corrección)' : '') + '</div><div class="medidor"><div style="width:' + Math.min(100, nota * 10) + '%"></div></div>' +
+    '<div class="resumen">Ej. 2: ' + pl(p.aciertosL, 'línea encontrada', 'líneas encontradas') + ' de ' + N_FALLOS + ' · Ej. 4: ' + examen.ej4.d.huecos.filter((h, i) => huecoBien(h, examen.ej4.resp[i])).length + ' de 5 huecos</div></div></div>' +
+    '<div class="desglose">' + p.parts.map((x, i) => '<div><div class="v">' + fmt(x) + '</div><div class="l">' + (i + 1) + ' · ' + NOMBRES[i] + '</div></div>').join('') + '</div>';
+}
+function vistaResultado() {
+  mount(topBar('<button class="btn btn--ghost btn--sm" data-ir="inicio">' + IC.back + 'Inicio</button><div class="modulo"><b>Resultado</b><span>' + NOMBRE + '</span></div>') +
+    '<main class="examen-page fade-in"><section class="card card--accent"><div id="cab">' + htmlCabecera() + '</div>' +
+    '<div class="fila" style="margin-top:16px"><button class="btn btn--primary" data-guardar' + (examen.guardado ? ' disabled' : '') + '>' + IC.save + (examen.guardado ? 'Nota guardada' : 'Guardar nota') + '</button>' +
+    '<button class="btn" data-empezar>' + IC.play + 'Nuevo examen</button></div></section>' +
+    (!examen.guardado ? '<p class="pendiente" style="margin-top:18px"><b>Termina tú la corrección.</b> En los ejercicios 1 y 5 marca las ideas de la solución que hayas puesto; en el 2 y el 3, marca si tu arreglo o tu explicación coinciden. Cuando acabes, pulsa «Guardar nota».</p>' : '') +
+    '<h2 class="seccion-t">Corrección</h2>' + EJS.map(f => f(true)).join('') + '</main>');
+}
+function refrescarPuntos() {
+  const p = puntos();
+  p.parts.forEach((x, i) => { const el = document.getElementById('pe' + (i + 1)); if (el) el.textContent = fmt(x) + ' / ' + P_EJ + ' p'; });
+  document.getElementById('cab').innerHTML = htmlCabecera();
+}
+
+// ---------- eventos ----------
+function armar(b, texto, alDesarmar) {
+  if (b.dataset.c) return false;
+  const antes = b.innerHTML;
+  b.dataset.c = '1'; b.lastChild.textContent = texto;
+  setTimeout(() => { if (b.isConnected && b.dataset.c) { delete b.dataset.c; b.innerHTML = antes; if (alDesarmar) alDesarmar(); } }, 4000);
+  return true;
+}
+function cambiarTema(btn) {
+  tema = tema === 'light' ? 'dark' : 'light';
+  const root = app.firstElementChild; root.classList.remove('concep', 'concep-dark'); root.classList.add(tema === 'light' ? 'concep' : 'concep-dark');
+  document.body.classList.toggle('claro', tema === 'light'); btn.innerHTML = tema === 'light' ? IC.moon : IC.sun;
+}
+app.addEventListener('input', ev => {
+  const t = ev.target;
+  if (!examen || examen.corregido) return;
+  const d = t.dataset;
+  if (d.txt === 'ej1') examen.ej1.texto = t.value;
+  else if (d.txt && d.txt.startsWith('ej5:')) examen.ej5[+d.txt.slice(4)].texto = t.value;
+  else if (d.arr) examen.ej2.lineas.set(+d.arr, t.value);
+  else if (d.porqueTxt !== undefined) examen.ej3.porque[+d.porqueTxt] = t.value;
+  else if (d.hueco !== undefined) { examen.ej4.resp[+d.hueco] = t.value; t.size = Math.max(5, t.value.length + 1); }
+  else return;
+  progreso();
+});
+app.addEventListener('change', ev => {
+  const t = ev.target, d = t.dataset;
+  if (examen && !examen.corregido) {
+    if (d.ln) {
+      const n = +d.ln, e = examen.ej2, av = document.getElementById('aviso-ej2');
+      av.textContent = '';
+      if (t.checked) {
+        if (e.lineas.size >= N_FALLOS) { t.checked = false; av.textContent = 'Ya tienes ' + N_FALLOS + ' líneas marcadas: desmarca una antes.'; return; }
+        e.lineas.set(n, '');
+      } else e.lineas.delete(n);
+      document.getElementById('marcadas').innerHTML = htmlMarcadas();
+      if (t.checked) { const inp = document.querySelector('[data-arr="' + n + '"]'); if (inp) inp.focus({ preventScroll: true }); }
+      progreso(); return;
+    }
+    if (d.v !== undefined) { examen.ej3.resp[+d.v] = t.value === 'true'; progreso(); return; }
+  }
+  if (examen && examen.corregido && !examen.guardado) {
+    if (d.idea) {
+      const [id, k] = d.idea.split(':'), x = id === 'ej1' ? examen.ej1 : examen.ej5[+id.split('-')[1]];
+      t.checked ? x.marcadas.add(+k) : x.marcadas.delete(+k);
+      document.getElementById('pi-' + id).textContent = fmt(pIdeas(x, id === 'ej1' ? P_EJ : P_EJ / N_CORTAS)) + ' de ' + fmtc(id === 'ej1' ? P_EJ : P_EJ / N_CORTAS) + ' puntos';
+    } else if (d.arreglo) { t.checked ? examen.ej2.ok.add(+d.arreglo) : examen.ej2.ok.delete(+d.arreglo); }
+    else if (d.porque) { t.checked ? examen.ej3.ok.add(+d.porque) : examen.ej3.ok.delete(+d.porque); }
+    else return;
+    refrescarPuntos();
+  }
+});
+app.addEventListener('click', ev => {
+  const b = ev.target.closest('button, a[data-ir]');
+  if (!b) return;
+  if (b.hasAttribute('data-tema')) return cambiarTema(b);
+  if (b.dataset.ir === 'inicio') {
+    ev.preventDefault();
+    if (examen && !examen.corregido) {   // en pleno examen el logotipo no lo descarta: se sale con «Salir»
+      const s = document.querySelector('[data-salir]'), a = document.getElementById('aviso');
+      if (a) a.textContent = 'Para dejar el examen pulsa «Salir».';
+      if (s) s.focus();
+      return;
+    }
+    if (examen && examen.corregido && !examen.guardado) guardarNota();
+    examen = null; return vistaInicio();
+  }
+  if (b.hasAttribute('data-empezar')) { if (examen && examen.corregido && !examen.guardado) guardarNota(); return empezar(); }
+  if (b.hasAttribute('data-guardar')) { guardarNota(); return vistaResultado(); }
+  if (b.hasAttribute('data-salir')) {
+    if (armar(b, '¿Seguro?')) return;
+    examen = null; return vistaInicio();
+  }
+  if (b.hasAttribute('data-corregir')) {
+    const faltan = hecho.filter(f => !f()).length;
+    const aviso = document.getElementById('aviso');
+    if (faltan && armar(b, 'Corregir igualmente', () => { aviso.textContent = ''; })) { aviso.textContent = (faltan === 1 ? 'Te queda 1 ejercicio' : 'Te quedan ' + faltan + ' ejercicios') + ' sin terminar.'; return; }
+    return corregir();
+  }
+});
+const guardarAlSalir = () => { if (examen && examen.corregido && !examen.guardado) guardarNota(false); };
+window.addEventListener('beforeunload', guardarAlSalir);
+window.addEventListener('pagehide', guardarAlSalir);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') guardarAlSalir(); });
+vistaInicio();
+
+</script>
+</body>
+</html>

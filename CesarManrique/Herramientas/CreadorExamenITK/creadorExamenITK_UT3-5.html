@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Creador de examen UT3–UT5 · Itinerario personal</title>
+<meta name="description" content="Creador de examen de Itinerario personal para la empleabilidad I: 28 preguntas tipo test y 2 de desarrollo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23FF007A'/%3E%3Cstop offset='.5' stop-color='%237A22FF'/%3E%3Cstop offset='1' stop-color='%230052FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%230B0B0C'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='url(%23g)' stroke-width='3' stroke-dasharray='40 6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   ConcepDesign — tokens y componentes base de la marca CONCEP
+   Fuente: Manual de Identidad Visual CONCEP (references/manual-identidad-concep.pdf)
+   Uso: pega este bloque entero en el <style> de la pieza (los artifacts
+   no cargan CSS local) o enlázalo con <link> en un proyecto.
+   Fuentes: añade antes
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+   ===================================================================== */
+
+:root {
+  /* ---- Paleta oficial (estricta) ---- */
+  --c-azul: #0052FF;        /* inicio del degradado: tecnología, estructura */
+  --c-azul-2: #00D2FF;      /* secundario */
+  --c-morado: #7A22FF;      /* transición: creatividad, IA */
+  --c-morado-2: #8A2BE2;    /* secundario */
+  --c-rosa: #FF007A;        /* cierre y destello: energía */
+  --c-rosa-2: #FF2E93;      /* secundario */
+  --c-negro: #0B0B0C;       /* fondo oscuro, texto sobre claro */
+  --c-blanco: #FFFFFF;      /* texto sobre oscuro, fondo PDF */
+
+  /* ---- Degradado oficial ---- */
+  --c-gradiente: linear-gradient(135deg, #0052FF 0%, #7A22FF 50%, #FF007A 100%);
+  --c-gradiente-h: linear-gradient(90deg, #0052FF 0%, #7A22FF 50%, #FF007A 100%);
+
+  /* ---- Tipografía ---- */
+  --f-marca: "Comfortaa", "Poppins", system-ui, sans-serif;   /* SOLO el wordmark CONCEP, nunca párrafos */
+  --f-titulo: "Poppins", "Inter", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+  --t-xs: .75rem;  --t-sm: .875rem; --t-base: 1rem;  --t-lg: 1.125rem;
+  --t-xl: 1.375rem; --t-2xl: 1.75rem; --t-3xl: 2.25rem; --t-4xl: clamp(2.5rem, 5vw, 3.5rem);
+  --t-hero: clamp(3rem, 8vw, 5.5rem);
+
+  /* ---- Espacio (base 4) ---- */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+
+  /* ---- Radios: esquinas suavemente redondeadas ---- */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --r-full: 999px;
+
+  /* ---- Movimiento ---- */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --dur-1: 140ms; --dur-2: 240ms; --dur-3: 420ms;
+
+}
+
+/* ---- Tema CLARO (documentos, PDF) — por defecto, y también en .concep anidado dentro de oscuro ---- */
+:root, .concep {
+  --bg: #FFFFFF;
+  --surface: #F6F6F9;
+  --surface-2: #EEEEF3;
+  --border: #E4E4EB;
+  --border-strong: #CFCFD9;
+  --text: #0B0B0C;
+  --text-2: #4E4E5A;
+  --text-3: #7A7A87;
+  --accent-text: #0047E0;   /* enlaces/acento legible sobre blanco */
+  --th-bg: #0B0B0C;         /* cabecera de tabla */
+  --focus: #7A22FF;
+  --glass: rgba(255, 255, 255, .72);
+  --shadow: 0 1px 2px rgba(11,11,12,.06), 0 8px 24px rgba(11,11,12,.06);
+  --ok: #0E9F6E; --warn: #C27803; --error: #E0115F;
+  color-scheme: light;
+}
+
+/* ---- Tema OSCURO (apps, web) — preferente en interfaces ---- */
+.concep-dark, [data-concep="dark"] {
+  --bg: #0B0B0C;
+  --surface: #131316;
+  --surface-2: #1B1B20;
+  --border: rgba(255, 255, 255, .08);
+  --border-strong: rgba(255, 255, 255, .16);
+  --text: #F5F5F7;
+  --text-2: #A6A6B3;
+  --text-3: #6F6F7C;
+  --accent-text: #7DA2FF;   /* tinte claro del azul: legible sobre negro */
+  --th-bg: #1B1B20;
+  --focus: #A274FF;
+  --glass: rgba(19, 19, 22, .62);
+  --shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 12px 40px rgba(0,0,0,.45);
+  --ok: #34D399; --warn: #FBBF24; --error: #FF2E93;
+  color-scheme: dark;
+}
+
+/* =========================== Base =========================== */
+.concep, .concep-dark { background: var(--bg); color: var(--text); font-family: var(--f-texto); font-size: var(--t-base); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.concep h1, .concep h2, .concep h3, .concep-dark h1, .concep-dark h2, .concep-dark h3 { font-family: var(--f-titulo); font-weight: 600; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 .5em; text-wrap: balance; }
+:where(.concep, .concep-dark) a:where(:not(.c-btn, .c-lockup)) { color: var(--accent-text); text-underline-offset: 3px; }
+.c-lockup { color: var(--text); }
+/* Todo <svg><use href="#concep-simbolo"/></svg> debe llevar viewBox="0 0 200 200" para escalar bien. */
+.concep :focus-visible, .concep-dark :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+/* ========================= Marca ========================= */
+.c-wordmark { font-family: var(--f-marca); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text); }
+.c-lockup { display: inline-flex; align-items: center; gap: .5em; text-decoration: none; }
+.c-lockup svg { width: 1.9em; height: 1.9em; }
+.c-lockup--vertical { flex-direction: column; gap: .35em; }
+.c-eyebrow { font: 600 var(--t-xs)/1 var(--f-titulo); letter-spacing: .18em; text-transform: uppercase; background: var(--c-gradiente-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.c-grad-text { background: var(--c-gradiente-h); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.c-accent-line { height: 3px; border: 0; border-radius: 3px; background: var(--c-gradiente-h); margin: 0; }
+
+/* ======================= Componentes ======================= */
+.c-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-5); border-radius: var(--r-md); border: 1px solid transparent; font: 600 var(--t-sm)/1 var(--f-titulo); letter-spacing: .01em; cursor: pointer; text-decoration: none; transition: transform var(--dur-1) var(--ease-out), background-color var(--dur-2), border-color var(--dur-2), box-shadow var(--dur-2); }
+.c-btn:active { transform: scale(.98); }
+.c-btn--primary { background: var(--c-gradiente); color: #fff; box-shadow: 0 6px 24px -8px rgba(122, 34, 255, .6); }
+.c-btn--primary:hover { box-shadow: 0 10px 32px -8px rgba(255, 0, 122, .55); }
+.c-btn--secondary { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+.c-btn--secondary:hover { background: var(--surface-2); }
+.c-btn--ghost { background: transparent; color: var(--text-2); }
+.c-btn--ghost:hover { color: var(--text); background: var(--surface); }
+.c-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.c-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5); }
+.c-card--glass { background: var(--glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.c-card--accent { position: relative; overflow: hidden; }
+.c-card--accent::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--c-gradiente-h); }
+
+.c-badge { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--r-full); font: 500 var(--t-xs)/1 var(--f-texto); background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
+.c-badge--ai { color: #fff; background: var(--c-gradiente); border: 0; }
+.c-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+
+.c-field { display: grid; gap: 6px; }
+.c-label { font: 500 var(--t-sm)/1.3 var(--f-texto); color: var(--text-2); }
+.c-input { min-height: 44px; padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: 400 var(--t-base)/1 var(--f-texto); transition: border-color var(--dur-2), box-shadow var(--dur-2); }
+.c-input:focus { outline: none; border-color: var(--c-morado); box-shadow: 0 0 0 3px rgba(122, 34, 255, .25); }
+.c-hint { font-size: var(--t-xs); color: var(--text-3); }
+.c-hint--error { color: var(--error); }
+
+/* Tablas: cabecera oscura, filas aireadas (igual que el manual) */
+.c-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-md); }
+.c-table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.c-table th { background: #0B0B0C; color: #fff; text-align: left; font: 600 var(--t-sm)/1.3 var(--f-titulo); padding: 12px 16px; }
+.c-table td { padding: 12px 16px; border-top: 1px solid var(--border); color: var(--text-2); vertical-align: top; }
+.c-table td:first-child { color: var(--text); font-weight: 600; }
+.c-table tr:nth-child(even) td { background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.c-table th { background: var(--th-bg); }
+
+.c-code { font-family: var(--f-mono); font-size: .9em; background: #0B0B0C; color: #fff; padding: 2px 8px; border-radius: 6px; }
+
+/* Al imprimir, el texto con degradado (background-clip:text) deja un recuadro: pásalo a color sólido */
+@media print {
+  .c-eyebrow { background: none; color: var(--c-morado); }
+  .c-grad-text { background: none; color: var(--c-rosa); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concep *, .concep-dark * { transition: none !important; animation: none !important; }
+}
+
+/* ===== CONCEP · Creador de examen ITK — mismo estilo que el menú de repaso y el creador de Java ===== */
+:root {
+  --f-ui: "JetBrains Mono", "Cascadia Code", "Cascadia Mono", Consolas, ui-monospace, monospace;
+  --f-prosa: "Inter", "Segoe UI", system-ui, sans-serif;
+  /* Color de ITK (portada de EVAGD), el mismo que en el menú de repaso */
+  --asig: #A8864D;
+  --asig-tinta: #0B0B0C;
+}
+/* Contraste AA para texto pequeño (los tokens de marca se quedan algo cortos a 11–13 px) */
+.concep { --text-3: #62626E; --ok-txt: #0B7A55; --warn-txt: #8A5500; --err-txt: #B00D4A; }
+.concep-dark { --text-3: #8A8A98; --ok-txt: var(--ok); --warn-txt: var(--warn); --err-txt: var(--error); }
+#app > div { --acento-texto: color-mix(in srgb, var(--asig) 62%, var(--text)); --focus: var(--asig); --ok-bg: color-mix(in srgb, var(--ok) 12%, transparent); --err-bg: color-mix(in srgb, var(--error) 10%, transparent); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: #0B0B0C; }
+body.claro { background: #fff; }
+#app { min-height: 100%; font-family: var(--f-ui); font-size: 13px; line-height: 1.55; }
+#app > div { min-height: 100vh; min-height: 100dvh; }
+#app h1, #app h2, #app h3 { font-family: var(--f-titulo); }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.concep-dark ::-webkit-scrollbar { width: 12px; height: 12px; }
+.concep-dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border: 3px solid transparent; background-clip: content-box; border-radius: 10px; }
+
+/* ---------- botones ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 34px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font: 500 12.5px/1 var(--f-ui); white-space: nowrap; text-decoration: none; transition: background-color var(--dur-1), border-color var(--dur-1), transform var(--dur-1) var(--ease-out), box-shadow var(--dur-2), filter var(--dur-1); }
+.btn:hover { background: var(--surface-2); }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn svg { width: 15px; height: 15px; flex: none; }
+.btn--primary { background: var(--asig); border-color: transparent; color: var(--asig-tinta); font-weight: 600; box-shadow: 0 6px 22px -10px var(--asig); }
+.btn--primary:hover { background: var(--asig); filter: brightness(1.06); }
+.btn--ghost { background: transparent; border-color: transparent; color: var(--text-2); }
+.btn--ghost:hover { background: var(--surface); color: var(--text); }
+.btn--danger { color: var(--err-txt); border-color: color-mix(in srgb, var(--error) 40%, transparent); background: transparent; }
+.btn--sm { min-height: 28px; padding: 0 10px; font-size: 12px; border-radius: 8px; }
+.btn--lg { min-height: 46px; padding: 0 22px; font-size: 14px; border-radius: 12px; }
+.icon-btn { width: 34px; padding: 0; }
+
+/* ---------- barra superior ---------- */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 8px 18px; border-bottom: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.top::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--asig); }
+.top .c-lockup { font-size: 14px; color: var(--text); text-decoration: none; }
+.top .sep { width: 1px; height: 22px; background: var(--border-strong); flex: none; }
+.top .modulo { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.top .modulo b { font: 600 13px var(--f-titulo); letter-spacing: -.01em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top .modulo span { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top .grow { flex: 1; min-width: 0; }
+.top .acc { display: flex; align-items: center; gap: 8px; }
+.progreso { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--border); font: 600 13px var(--f-ui); font-variant-numeric: tabular-nums; color: var(--text); }
+
+/* ---------- página ---------- */
+.page { max-width: 1080px; margin: 0 auto; padding: 28px 24px 64px; }
+.hero { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding: 8px 0 4px; isolation: isolate; }
+.hero h1 { font: 700 clamp(30px, 4.4vw, 46px)/1.05 var(--f-titulo); letter-spacing: -.035em; margin: 10px 0 12px; color: var(--text); max-width: 16ch; text-wrap: balance; }
+.hero p { margin: 0; color: var(--text-2); font: 400 15px/1.6 var(--f-prosa); max-width: 58ch; }
+.hero .halo { position: absolute; inset: -80px auto auto -120px; width: 520px; height: 320px; max-width: 120vw; background: radial-gradient(closest-side, color-mix(in srgb, var(--asig) 28%, transparent), transparent 70%); pointer-events: none; filter: blur(10px); z-index: -1; }
+.eyebrow { font: 600 11px/1 var(--f-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--acento-texto); }
+.hero-stats { display: flex; gap: 10px; }
+.stat { min-width: 120px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); }
+.stat .v { font: 600 26px/1 var(--f-titulo); letter-spacing: -.02em; color: var(--text); font-variant-numeric: tabular-nums; }
+.stat .l { margin-top: 6px; font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 30px; align-items: start; }
+.card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px; overflow: hidden; }
+.card--accent::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--asig); }
+.card h2 { font: 600 17px/1.2 var(--f-titulo); letter-spacing: -.015em; margin: 0 0 4px; color: var(--text); }
+.card .sub { color: var(--text-3); font-size: 12px; margin: 0 0 18px; font-family: var(--f-prosa); line-height: 1.5; }
+.lbl { display: block; font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.reglas { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 8px; }
+.reglas li { display: flex; gap: 10px; align-items: baseline; color: var(--text-2); font: 400 13.5px/1.5 var(--f-prosa); }
+.reglas li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--asig); flex: none; transform: translateY(-2px); }
+.check { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text-2); font-size: 12.5px; cursor: pointer; margin-bottom: 18px; }
+.check input { accent-color: var(--asig); width: 16px; height: 16px; margin: 0; }
+.fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.hist { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 11.5px; color: var(--text-3); }
+.nota-chip { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2); font: 600 11px var(--f-ui); font-variant-numeric: tabular-nums; }
+.nota-chip.ap { color: var(--ok-txt); }
+.nota-chip.su { color: var(--err-txt); }
+.vacio-txt { color: var(--text-3); font: 400 13px/1.55 var(--f-prosa); margin: 0 0 16px; }
+.lista-fallos { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; max-height: 360px; overflow: auto; }
+.lista-fallos li { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); font: 400 13px/1.45 var(--f-prosa); color: var(--text); }
+.lista-fallos li .ok { display: block; margin-top: 4px; color: var(--ok-txt); font-size: 12px; }
+.lista-fallos li .x { float: right; margin-left: 8px; font: 600 11px var(--f-ui); color: var(--err-txt); }
+textarea.copia { width: 100%; min-height: 90px; margin-top: 10px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--bg); font: 400 11.5px/1.4 var(--f-ui); resize: vertical; }
+.msg { font-size: 12px; color: var(--text-3); }
+
+/* ---------- examen ---------- */
+.examen-page { max-width: 820px; margin: 0 auto; padding: 26px 24px 120px; }
+.q { padding: 22px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 14px; scroll-margin-top: 80px; }
+.q .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 11px; color: var(--text-3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .08em; }
+.q .meta .n { color: var(--acento-texto); font-weight: 600; }
+.q h3 { font: 600 17px/1.35 var(--f-titulo); letter-spacing: -.01em; margin: 0 0 14px; color: var(--text); text-wrap: pretty; }
+.opts { display: grid; gap: 8px; }
+.opt { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: 400 14px/1.5 var(--f-prosa); cursor: pointer; transition: border-color var(--dur-1), background-color var(--dur-1); }
+.opt:hover { border-color: var(--border-strong); }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .l { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--border-strong); font: 600 12px var(--f-ui); color: var(--text-2); }
+.opt .t { padding-top: 2px; }
+.opt:has(input:checked) { border-color: var(--asig); background: color-mix(in srgb, var(--asig) 9%, var(--bg)); }
+.opt:has(input:checked) .l { background: var(--asig); border-color: var(--asig); color: var(--asig-tinta); }
+.opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.q.hecha .opt { cursor: default; }
+.q.hecha .opt.bien { border-color: var(--ok); background: var(--ok-bg); }
+.q.hecha .opt.bien .l { background: var(--ok); border-color: var(--ok); color: #0B0B0C; }
+.q.hecha .opt.mal { border-color: var(--error); background: var(--err-bg); }
+.q.hecha .opt.mal .l { background: var(--error); border-color: var(--error); color: #0B0B0C; }
+.concep .q.hecha .opt.mal .l { color: #fff; }
+.estado { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; font: 600 11px var(--f-ui); letter-spacing: 0; text-transform: none; }
+.estado.bien { color: var(--ok-txt); background: var(--ok-bg); }
+.estado.mal { color: var(--err-txt); background: var(--err-bg); }
+.estado.blanco { color: var(--text-2); background: var(--surface-2); }
+.expl { margin-top: 12px; padding: 12px 14px; border-radius: 12px; border-left: 3px solid var(--asig); background: color-mix(in srgb, var(--asig) 6%, transparent); color: var(--text-2); font: 400 13.5px/1.55 var(--f-prosa); }
+.expl b { color: var(--text); font-weight: 600; }
+.barra-fija { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+.barra-fija .in { max-width: 820px; margin: 0 auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.barra-fija .aviso { font-size: 12px; color: var(--warn-txt); }
+.puntos { display: flex; gap: 4px; flex-wrap: wrap; }
+.puntos a { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 6px; border: 1px solid var(--border); font: 600 10px var(--f-ui); color: var(--text-3); text-decoration: none; }
+.puntos a.r { background: color-mix(in srgb, var(--asig) 16%, transparent); border-color: color-mix(in srgb, var(--asig) 50%, transparent); color: var(--acento-texto); }
+
+/* ---------- resultado ---------- */
+.resultado { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; margin-bottom: 22px; }
+.resultado .big { font: 700 64px/1 var(--f-titulo); letter-spacing: -.04em; font-variant-numeric: tabular-nums; color: var(--text); }
+.resultado .big small { font-size: 18px; color: var(--text-3); font-weight: 500; letter-spacing: 0; }
+.resultado .veredicto { font: 600 15px var(--f-titulo); margin-bottom: 8px; }
+.resultado .veredicto.ap { color: var(--ok-txt); }
+.resultado .veredicto.su { color: var(--err-txt); }
+.medidor { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.medidor > div { height: 100%; border-radius: inherit; background: var(--asig); }
+.resumen { margin-top: 10px; color: var(--text-2); font-size: 12.5px; }
+.seccion-t { font: 600 11px var(--f-ui); letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); margin: 26px 0 12px; }
+
+.fade-in { animation: entra var(--dur-3) var(--ease-out) both; }
+@keyframes entra { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } .btn, .opt { transition: none; } }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; }
+  .stat { flex: 1; min-width: 96px; }
+  .grid2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .top { gap: 10px; padding: 8px 16px; }
+  .top .c-wordmark, .top .sep { display: none; }
+  .page, .examen-page { padding-left: 16px; padding-right: 16px; }
+  .q, .card { padding: 18px 16px; }
+  .resultado { grid-template-columns: 1fr; gap: 10px; }
+  .resultado .big { font-size: 52px; }
+  .barra-fija { padding-left: 16px; padding-right: 16px; }
+  .puntos { display: none; }
+}
+
+/* ---------- ITK: desarrollo y autocorrección ---------- */
+.q .tipo { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; background: color-mix(in srgb, var(--asig) 16%, transparent); color: var(--acento-texto); font: 600 10.5px var(--f-ui); letter-spacing: .04em; }
+.q textarea.resp { width: 100%; min-height: 120px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: 400 14px/1.55 var(--f-prosa); resize: vertical; }
+.q textarea.resp::placeholder { color: var(--text-3); opacity: 1; }
+.q textarea.resp:focus { outline: none; border-color: var(--asig); box-shadow: 0 0 0 3px color-mix(in srgb, var(--asig) 25%, transparent); }
+.q textarea.resp[readonly] { background: var(--surface-2); }
+.contador { margin-top: 6px; font-size: 11px; color: var(--text-3); text-align: right; }
+.modelo { margin-top: 12px; padding: 12px 14px; border-radius: 12px; border-left: 3px solid var(--ok); background: var(--ok-bg); color: var(--text-2); font: 400 13.5px/1.55 var(--f-prosa); }
+.modelo b { color: var(--text); }
+.ideas { margin-top: 12px; display: grid; gap: 6px; }
+.ideas .lbl { margin: 0 0 2px; }
+.idea { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: 400 13.5px/1.45 var(--f-prosa); cursor: pointer; }
+.idea input { accent-color: var(--asig); width: 16px; height: 16px; margin: 2px 0 0; flex: none; }
+.idea:has(input:checked) { border-color: color-mix(in srgb, var(--ok) 55%, transparent); background: var(--ok-bg); }
+.puntos-dev { margin-top: 8px; font: 600 12px var(--f-ui); color: var(--acento-texto); }
+.pendiente { margin: 0 0 14px; padding: 12px 14px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--asig) 45%, transparent); background: color-mix(in srgb, var(--asig) 8%, transparent); color: var(--text-2); font: 400 13.5px/1.5 var(--f-prosa); }
+.pendiente b { color: var(--text); }
+.desglose { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 12px; }
+.desglose div { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); }
+.desglose .v { font: 600 17px var(--f-titulo); color: var(--text); font-variant-numeric: tabular-nums; }
+.desglose .l { font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; }
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="cg" x1="20" y1="180" x2="180" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FF007A"/><stop offset=".5" stop-color="#7A22FF"/><stop offset="1" stop-color="#0052FF"/></linearGradient>
+    <radialGradient id="cf"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".25" stop-color="#FF2E93" stop-opacity=".9"/><stop offset="1" stop-color="#FF007A" stop-opacity="0"/></radialGradient>
+  </defs>
+  <symbol id="concep-simbolo" viewBox="0 0 200 200">
+    <g fill="none" stroke="url(#cg)">
+      <circle cx="100" cy="100" r="80" pathLength="100" stroke-width="8" stroke-dasharray="30 3 28 3 22 14" transform="rotate(-20 100 100)"/>
+      <circle cx="100" cy="100" r="64" pathLength="100" stroke-width="7" stroke-dasharray="18 4 40 4 20 14" transform="rotate(-8 100 100)"/>
+      <circle cx="100" cy="100" r="48" pathLength="100" stroke-width="6" stroke-dasharray="44 5 36 15" transform="rotate(-34 100 100)"/>
+    </g>
+    <g transform="translate(152 48)">
+      <circle r="22" fill="url(#cf)"/>
+      <path d="M1.4 -1.4 L-46 46 L-1.4 1.4 Z" fill="#FF2E93" opacity=".85"/>
+      <path d="M-1 1 L30 -30 L1 -1 Z" fill="#7A9BFF"/>
+      <path d="M0 -24 L2.6 -2.6 L24 0 L2.6 2.6 L0 24 L-2.6 2.6 L-24 0 L-2.6 -2.6 Z" fill="#FFFFFF"/>
+      <path d="M0 -12 L1.6 -1.6 L12 0 L1.6 1.6 L0 12 L-1.6 1.6 L-12 0 L-1.6 -1.6 Z" fill="#FF2E93" transform="rotate(45)"/>
+      <circle r="3.2" fill="#FFFFFF"/>
+    </g>
+  </symbol>
+</svg>
+
+<div id="app"></div>
+<noscript><p style="padding:24px;color:#fff;font-family:sans-serif">Este creador de examen necesita JavaScript activado.</p></noscript>
+<script>
+const CONFIG = {"id":"itk_ut35","unidades":"UT3–UT5","titulo":"Factores de riesgo y primeros auxilios"};
+</script>
+<script>
+// Banco ITK · PRL UT3–UT5 (Factores de riesgo y primeros auxilios). Fuente: apuntes UT3-5_T01.
+// BANK: tipo test. o[0] es SIEMPRE la correcta (se barajan al mostrar). e: explicación breve con el dato de los apuntes.
+const BANK = [
+// ---------- UT3 · Factores de riesgo ----------
+{t:"Factores de riesgo",q:"¿Qué es el riesgo laboral?",o:["La posibilidad de que el trabajador sufra un daño por las condiciones en que realiza su trabajo","Todo daño que sufre el trabajador durante su jornada, sea cual sea la causa","El conjunto de normas que obliga a la empresa a proteger a sus trabajadores","Cualquier lesión que el trabajador se produce por no usar los equipos de protección"],e:"Según los apuntes, riesgo laboral es la posibilidad de que el trabajador sufra un determinado daño como consecuencia de las condiciones en que realiza su trabajo."},
+{t:"Factores de riesgo",q:"¿Cuáles son los cuatro grandes grupos de factores de riesgo en una empresa?",o:["Condiciones de seguridad, medioambientales, ergonómicos y psicosociales","Mecánicos, eléctricos, químicos y biológicos","Físicos, químicos, biológicos y psicosociales","Condiciones de seguridad, de higiene industrial, de formación y de organización"],e:"Los principales factores son los derivados de las condiciones de seguridad, los medioambientales, los relacionados con la ergonomía y los psicosociales."},
+{t:"Factores de riesgo",q:"Una caída de una persona al mismo nivel, un golpe o un corte son riesgos…",o:["Mecánicos, derivados de las condiciones de seguridad","Ergonómicos, derivados de la carga de trabajo","Físicos, derivados del ambiente de trabajo","Psicosociales, derivados de la organización del trabajo"],e:"Los riesgos mecánicos incluyen caídas (al mismo y a distinto nivel), choques, golpes, cortes, enganches y aplastamientos."},
+{t:"Factores de riesgo",q:"¿Cuál de los siguientes elementos se considera un equipo de trabajo y no un lugar de trabajo?",o:["La maquinaria","Los pasillos","Las escaleras","Las instalaciones"],e:"Los lugares de trabajo son espacios, instalaciones, pasillos y escaleras; los equipos de trabajo son maquinaria, herramientas y equipos de transporte."},
+{t:"Factores de riesgo",q:"¿Qué significa el marcado «CE» que deben llevar los equipos de trabajo?",o:["Conformidad Europea","Control de Empresa","Calidad Extrema","Certificado de Exportación"],e:"Con el marcado CE (Conformidad Europea) el fabricante declara que cumple las obligaciones que le corresponden según las Directivas comunitarias."},
+{t:"Factores de riesgo",q:"Los riesgos derivados de las condiciones de seguridad pueden provocar principalmente…",o:["Accidentes de trabajo","Enfermedades profesionales","Insatisfacción laboral","Envejecimiento prematuro"],e:"El lugar y los equipos de trabajo conllevan riesgos que pueden provocar accidentes de trabajo."},
+{t:"Factores de riesgo",q:"¿Qué es la carga de trabajo?",o:["El conjunto de requisitos psicofísicos a los que se ve sometido el trabajador a lo largo de su jornada","La cantidad de tareas que la empresa reparte entre los trabajadores cada semana","El peso máximo que un trabajador puede levantar sin sufrir una lesión","El tiempo que el trabajador dedica a descansar durante su jornada laboral"],e:"La carga de trabajo es el conjunto de requisitos psicofísicos a los que se ve sometido un trabajador a lo largo de su jornada; puede ser física o mental."},
+{t:"Factores de riesgo",q:"¿Cuál de estos factores forma parte de la carga física?",o:["La manipulación de cargas","El contenido de la tarea","La organización del trabajo","El clima laboral"],e:"La carga física comprende posturas, manipulación de cargas, esfuerzos físicos y factores individuales; la carga mental, el contenido de la tarea y las características individuales."},
+{t:"Factores de riesgo",q:"¿Qué daños puede provocar una carga de trabajo excesiva?",o:["Fatiga y envejecimiento prematuro","Mobbing y burnout","Intoxicaciones y quemaduras","Insatisfacción y accidentes in itinere"],e:"La carga de trabajo puede provocar daños como fatiga y envejecimiento prematuro."},
+// ---------- UT3 · Riesgos ambientales ----------
+{t:"Riesgos ambientales",q:"¿Qué tres tipos de agentes del ambiente de trabajo pueden dañar la salud de los trabajadores?",o:["Físicos, químicos y biológicos","Mecánicos, eléctricos y térmicos","Humanos, técnicos y mixtos","Físicos, ergonómicos y psicosociales"],e:"En el ambiente de trabajo hay agentes físicos, químicos o biológicos que pueden producir enfermedades profesionales."},
+{t:"Riesgos ambientales",q:"¿De qué dos factores depende principalmente el daño que produce un agente ambiental?",o:["De su nivel de concentración y del tiempo de exposición","De la edad del trabajador y de su categoría profesional","Del tamaño de la empresa y del número de trabajadores","De la hora de la jornada y de la temperatura exterior"],e:"El daño depende de la concentración (cantidad de sustancia) y del tiempo de exposición."},
+{t:"Riesgos ambientales",q:"El ruido, las vibraciones y la iluminación son ejemplos de riesgos…",o:["Físicos","Químicos","Biológicos","Psicosociales"],e:"Los riesgos físicos son ruido, vibraciones, radiaciones, temperatura y humedad, e iluminación."},
+{t:"Riesgos ambientales",q:"¿Cuál de los siguientes es un riesgo biológico?",o:["Los virus","Las radiaciones ionizantes","Los agentes corrosivos","La humedad"],e:"Los riesgos biológicos son virus, bacterias, hongos, gusanos y la vía parenteral."},
+{t:"Riesgos ambientales",q:"¿Qué es el VLA (Valor Límite Ambiental)?",o:["Un índice que indica la concentración máxima de un contaminante para que no resulte dañino para la salud","El tiempo máximo que un trabajador puede permanecer en un puesto con riesgo","El nivel de ruido a partir del cual es obligatorio llevar protección auditiva","La cantidad de sustancias peligrosas que una empresa puede almacenar"],e:"Los VLA son índices que indican los niveles máximos de concentración de un contaminante para que no resulte dañino para la salud humana."},
+{t:"Riesgos ambientales",q:"¿Cuál de las siguientes es una radiación ionizante?",o:["Los rayos X","Las microondas","La luz ultravioleta","El infrarrojo"],e:"En el esquema de radiaciones, las ionizantes (más energía y frecuencia) son los rayos X y los rayos gamma."},
+{t:"Riesgos ambientales",q:"¿Cuál de las siguientes es una radiación no ionizante?",o:["La telefonía móvil","Los rayos gamma","Los rayos X","Los rayos gamma y los rayos X juntos"],e:"Son no ionizantes las líneas de alta tensión, radio y TV, telefonía móvil, microondas, infrarrojo, luz visible y UV."},
+{t:"Riesgos ambientales",q:"Los explosivos, los comburentes, los corrosivos y los cancerígenos se consideran…",o:["Agentes químicos clasificados como sustancias peligrosas","Agentes físicos clasificados como riesgos de temperatura","Agentes biológicos de transmisión parenteral","Riesgos mecánicos de los equipos de trabajo"],e:"Los agentes químicos incluyen sustancias o preparados peligrosos: explosivos, comburentes, inflamables, tóxicos, nocivos, corrosivos, irritantes, sensibilizantes, carcinogénicos y mutagénicos, entre otros."},
+// ---------- UT4 · Accidente de trabajo ----------
+{t:"Accidente de trabajo",q:"¿Cuáles son los tres elementos para que se considere accidente de trabajo?",o:["Lesión corporal, trabajo por cuenta ajena y relación de causalidad entre el trabajo y la lesión","Lesión corporal, baja médica y culpa probada del empresario","Daño en la salud, contrato indefinido y accidente dentro de la empresa","Lesión corporal, horario de trabajo y presencia de un testigo"],e:"Se exige lesión corporal, trabajo por cuenta ajena (hoy también cuenta propia) y relación de causalidad entre trabajo y lesión."},
+{t:"Accidente de trabajo",q:"¿Cómo se llama el accidente que sufre el trabajador al ir o volver del lugar de trabajo?",o:["Accidente in itinere","Accidente de salvamento","Accidente mixto","Accidente por factor técnico"],e:"La Ley General de la Seguridad Social amplía el accidente de trabajo al que ocurre al ir y volver del trabajo (accidente in itinere)."},
+{t:"Accidente de trabajo",q:"¿Cuál de estos casos se considera accidente de trabajo según la Ley General de la Seguridad Social?",o:["El ocurrido durante un acto de salvamento","El sufrido durante las vacaciones del trabajador","El sufrido en un desplazamiento por motivos personales","El ocurrido practicando deporte en tiempo libre"],e:"La LGSS incluye expresamente los accidentes acaecidos en actos de salvamento."},
+{t:"Accidente de trabajo",q:"Una enfermedad común contraída por el trabajador se considera accidente de trabajo cuando…",o:["Se prueba que tuvo por causa exclusiva la ejecución del trabajo","El trabajador la ha padecido alguna vez durante su vida laboral","El médico de cabecera cree que el trabajo pudo influir","La empresa reconoce que hay compañeros con los mismos síntomas"],e:"Las enfermedades comunes cuentan como accidente de trabajo siempre que se pruebe que su causa exclusiva fue la ejecución del trabajo."},
+{t:"Accidente de trabajo",q:"Un accidente ocurrido al realizar tareas distintas a las de la categoría profesional del trabajador…",o:["Se considera accidente de trabajo","No se considera accidente de trabajo","Solo es accidente de trabajo si ocurre en horario de tarde","Solo es accidente de trabajo si lo autoriza un sindicato"],e:"La Ley General de la Seguridad Social incluye los accidentes ocurridos por realizar tareas distintas a las de su categoría profesional."},
+{t:"Accidente de trabajo",q:"Los defectos de la maquinaria, de los dispositivos de seguridad o de las instalaciones son causas de accidente por…",o:["Factor técnico o condiciones inseguras","Factor humano o actos inseguros del propio trabajador","Factor mixto","Factor psicosocial"],e:"El factor técnico o de condiciones inseguras agrupa los defectos ambientales, de maquinaria, de dispositivos de seguridad, de instalaciones o del proceso."},
+{t:"Accidente de trabajo",q:"La imprudencia, la ignorancia, el descuido o la falta de formación son causas de accidente por…",o:["Factor humano o actos inseguros","Factor técnico o condiciones inseguras","Factor mixto","Factor ergonómico"],e:"El factor humano o actos inseguros incluye imprudencia, ignorancia, descuido y falta de información y formación."},
+{t:"Accidente de trabajo",q:"¿Cuándo se habla de factor mixto como causa de un accidente?",o:["Cuando concurren el factor técnico y el factor humano","Cuando el accidente afecta a varios trabajadores a la vez","Cuando el accidente ocurre en el trayecto al trabajo","Cuando la lesión se complica con una enfermedad previa"],e:"El factor mixto aparece cuando concurren a la vez condiciones inseguras y actos inseguros."},
+// ---------- UT4 · Enfermedad profesional y patologías ----------
+{t:"Enfermedad profesional y patologías",q:"¿Qué es una enfermedad profesional?",o:["El daño o alteración de la salud causada por las condiciones físicas, químicas o biológicas presentes en el trabajo","Una lesión corporal súbita que el trabajador sufre durante la jornada laboral","Cualquier enfermedad que el trabajador padece mientras tiene contrato en vigor","El malestar psicológico que provoca una mala relación con los compañeros"],e:"Es el daño o alteración de la salud causada por las condiciones físicas, químicas o biológicas presentes en el trabajo."},
+{t:"Enfermedad profesional y patologías",q:"¿Qué norma establece el cuadro de enfermedades profesionales?",o:["El Real Decreto 1299/2006","La Ley General de la Seguridad Social","El Estatuto de los Trabajadores","El Código Técnico de la Edificación"],e:"Para ser profesional, la enfermedad debe estar en el cuadro de enfermedades profesionales establecido en el Real Decreto 1299/2006."},
+{t:"Enfermedad profesional y patologías",q:"¿En cuántos grupos clasifica las enfermedades profesionales el Real Decreto 1299/2006?",o:["6","3","4","10"],e:"El Real Decreto 1299/2006 clasifica las enfermedades profesionales en 6 grupos."},
+{t:"Enfermedad profesional y patologías",q:"¿A qué se refiere el grupo 3 del Real Decreto 1299/2006?",o:["A las enfermedades causadas por agentes biológicos","A las enfermedades causadas por agentes químicos","A las enfermedades causadas por agentes físicos","A las enfermedades causadas por la inhalación de polvo"],e:"El grupo 3 se refiere a enfermedades profesionales causadas por agentes biológicos."},
+{t:"Enfermedad profesional y patologías",q:"¿Cuál de estas patologías es inespecífica, es decir, puede tener también factores no laborales?",o:["La fatiga","El accidente in itinere","La enfermedad profesional","El accidente de salvamento"],e:"Las patologías inespecíficas son fatiga, insatisfacción laboral, estrés, envejecimiento prematuro, mobbing y burnout."},
+{t:"Enfermedad profesional y patologías",q:"La disminución de la capacidad física y mental de una persona trabajadora se denomina…",o:["Fatiga","Estrés","Insatisfacción laboral","Burnout"],e:"La fatiga es la disminución de la capacidad física y mental de una persona trabajadora."},
+{t:"Enfermedad profesional y patologías",q:"¿Qué es el estrés laboral?",o:["La tensión provocada por demandas del entorno de trabajo que superan la capacidad de la persona para afrontarlas","El malestar del trabajador con su empleo que reduce de forma notable su rendimiento","La presión psicológica extrema y sistemática que una persona ejerce sobre otra","El desgaste de quien trata con clientes, usuarios o pacientes"],e:"Estrés es la tensión provocada por las demandas del entorno de trabajo que superan la capacidad de la persona para hacerles frente, y afecta a su salud psíquica y física."},
+{t:"Enfermedad profesional y patologías",q:"¿Qué situación acelera el envejecimiento prematuro de las personas trabajadoras?",o:["La exposición a altas temperaturas o los esfuerzos físicos y psíquicos considerables","El trabajo en horario nocturno de forma ocasional","El contacto habitual con clientes, usuarios o pacientes","La falta de formación en el manejo de los equipos de protección"],e:"El envejecimiento prematuro es un proceso natural que se acelera en personas expuestas a altas temperaturas o que realizan esfuerzos físicos y psíquicos considerables."},
+{t:"Enfermedad profesional y patologías",q:"¿Cuándo se habla de mobbing en el lugar de trabajo?",o:["Cuando hay presión psicológica extrema y sistemática, al menos una vez por semana y durante más de seis meses","Cuando un trabajador discute con un compañero en una reunión de trabajo","Cuando el trabajador siente agotamiento emocional por atender a muchos clientes","Cuando hay presión psicológica un día al mes durante más de un año"],e:"Mobbing es la presión psicológica extrema, sistemática (al menos una vez por semana) y prolongada (más de seis meses) sobre otra persona en el lugar de trabajo."},
+{t:"Enfermedad profesional y patologías",q:"El síndrome de «estar quemado» o burnout es el desgaste emocional, la despersonalización y la menor realización personal que sufren…",o:["Quienes están en contacto con clientes, usuarios o pacientes","Quienes trabajan con maquinaria peligrosa","Quienes realizan trabajos con posturas forzadas","Quienes trabajan en ambientes muy ruidosos"],e:"El burnout se produce entre las personas trabajadoras que están en contacto con clientes, usuarios o pacientes."},
+// ---------- UT4 · Prevención y técnicas ----------
+{t:"Prevención y técnicas",q:"¿Qué es la prevención?",o:["El conjunto de medidas adoptadas en todas las fases de la actividad de la empresa para evitar la aparición de riesgos laborales","El conjunto de medidas que eliminan o disminuyen los daños que los riesgos ya previstos ocasionan al trabajador","La obligación del trabajador de informar de cualquier defecto o daño que observe","El documento que recoge las actuaciones previstas ante una emergencia"],e:"Prevención es el conjunto de medidas adoptadas o previstas en todas las fases de la actividad de la empresa, dirigidas a evitar la aparición de riesgos laborales."},
+{t:"Prevención y técnicas",q:"¿Cuál es la diferencia entre prevención y protección?",o:["La prevención actúa sobre la causa del riesgo; la protección actúa sobre el trabajador y reduce las consecuencias","La prevención actúa sobre el trabajador; la protección actúa sobre la causa del riesgo","La prevención reduce las consecuencias del riesgo; la protección lo elimina","La prevención es obligatoria para la empresa; la protección es opcional"],e:"La prevención evita o reduce el riesgo y actúa sobre su causa; la protección no evita el riesgo, trata de reducir sus consecuencias y actúa sobre el trabajador."},
+{t:"Prevención y técnicas",q:"¿Qué técnica actúa frente a los contaminantes ambientales para prevenir enfermedades profesionales?",o:["La higiene industrial","La seguridad en el trabajo","La psicología laboral","La ergonomía"],e:"La higiene industrial actúa frente a los contaminantes ambientales derivados del trabajo para prevenir enfermedades profesionales."},
+{t:"Prevención y técnicas",q:"Para valorar el riesgo, la higiene industrial compara la medición del contaminante con…",o:["Los valores de referencia (VLA)","El número de bajas de la empresa","Las normas del marcado CE","El cuadro del Real Decreto 1299/2006"],e:"La higiene industrial valora el riesgo comparándolo con los valores de referencia (VLA)."},
+{t:"Prevención y técnicas",q:"¿Qué técnica estudia la adaptación del trabajo a las condiciones fisiológicas y psicológicas del trabajador para evitar la fatiga?",o:["La ergonomía","La higiene industrial","La seguridad en el trabajo","La psicología laboral"],e:"La ergonomía estudia la adaptación del trabajo a las condiciones fisiológicas y psicológicas del trabajador para evitar la fatiga física o mental."},
+{t:"Prevención y técnicas",q:"El diseño de mobiliario con reposapiés o reposamuñecas para favorecer posturas adecuadas corresponde a…",o:["La ergonomía","La medicina laboral","La higiene industrial","La seguridad en el trabajo"],e:"La ergonomía se encarga, entre otras cosas, del diseño del mobiliario (reposapiés, reposamuñecas) para favorecer posturas adecuadas."},
+{t:"Prevención y técnicas",q:"¿Qué técnica preventiva se ocupa de la prevención, la curación y la reparación (rehabilitación) de los daños a la salud del trabajador?",o:["La medicina laboral","La psicología laboral","La higiene industrial","La ergonomía"],e:"La medicina laboral mantiene la salud del trabajador en estado óptimo; realiza la vigilancia de la salud y la educación sanitaria."},
+// ---------- UT4 · Protección y señalización ----------
+{t:"Protección y señalización",q:"Según el principio de la acción preventiva, ¿qué medidas de protección tienen prioridad?",o:["Las colectivas sobre las individuales","Las individuales sobre las colectivas","Las dos tienen la misma prioridad","Las que decida el trabajador"],e:"Hay que adoptar medidas que antepongan la protección colectiva a la individual; los EPI se usan como complemento."},
+{t:"Protección y señalización",q:"¿Cuál de estos es un ejemplo de medida de protección colectiva?",o:["Las barandillas","Los tapones para los oídos","Las gafas de protección","Los guantes"],e:"Las barandillas, redes de seguridad, insonorización, extractores y dispositivos de protección de máquinas son colectivas; tapones, gafas y guantes son EPI."},
+{t:"Protección y señalización",q:"La insonorización, el aislamiento o el encapsulamiento son medidas de protección colectiva frente a…",o:["El ruido y las vibraciones","Las caídas de altura","Los agentes biológicos","Las radiaciones ionizantes"],e:"Insonorización, aislamiento o encapsulamiento actúan frente al ruido y las vibraciones."},
+{t:"Protección y señalización",q:"¿Qué es un equipo de protección individual (EPI)?",o:["Un equipo destinado a ser llevado o sujetado por el trabajador para protegerle de uno o varios riesgos","Un dispositivo instalado en la máquina para evitar que ocurran accidentes","Un documento que informa a cada trabajador de los riesgos de su puesto","Un equipo de personas que interviene cuando se produce una emergencia"],e:"Los EPI son equipos destinados a ser llevados o sujetados por el trabajador para protegerle de uno o varios riesgos para su seguridad o su salud."},
+{t:"Protección y señalización",q:"¿Qué marca deben llevar los EPI para estar homologados?",o:["La marca CE","La marca PAE","La marca VLA","La marca RCP"],e:"Los EPI deben estar homologados con la marca CE."},
+{t:"Protección y señalización",q:"¿Cuál es una obligación del empresario respecto de los EPI?",o:["Proporcionarlos gratis a los trabajadores","Cobrarlos al trabajador a final de mes","Dejar que cada trabajador compre los suyos","Guardarlos en su lugar después de cada uso"],e:"El empresario debe proporcionar gratis los EPI adecuados, velar por su uso, informar, dar instrucciones y enseñar a utilizarlos."},
+{t:"Protección y señalización",q:"¿Qué parte del cuerpo protegen los tapones, las orejeras y los cascos antirruido?",o:["El oído","La cabeza","Los ojos y la cara","Las vías respiratorias"],e:"Los protectores de oído son tapones, orejeras y cascos."},
+{t:"Protección y señalización",q:"El arnés, la ropa antigás y la ropa de señalización pertenecen a los protectores…",o:["Totales del cuerpo","De tronco y abdomen","De pies y piernas","De manos y brazos"],e:"En la clasificación de EPI, arnés, ropa antigás y ropa y accesorios de señalización son protección total del cuerpo."},
+{t:"Protección y señalización",q:"Las gafas y las pantallas faciales son EPI que protegen…",o:["Los ojos y la cara","La cabeza","Las vías respiratorias","La piel"],e:"Los protectores de ojos y cara son gafas y pantallas faciales."},
+{t:"Protección y señalización",q:"¿Cuál de estos es un tipo de señalización de seguridad?",o:["Las señales gestuales","Las señales táctiles","Las señales olfativas","Las señales térmicas"],e:"Se clasifican en señales en forma de panel, luminosas, acústicas, comunicaciones verbales y señales gestuales."},
+{t:"Protección y señalización",q:"¿Qué indica el color rojo en la señalización de seguridad?",o:["Prohibición y material de lucha contra incendios","Advertencia y precaución","Obligación de utilizar un EPI","Salvamento o auxilio"],e:"El rojo se usa en señales de prohibición, comportamientos peligrosos y material y equipos de lucha contra incendios."},
+{t:"Protección y señalización",q:"¿Qué indica el color amarillo en la señalización de seguridad?",o:["Advertencia, atención o precaución","Prohibición","Obligación","Salvamento o auxilio"],e:"El amarillo es el color de las señales de advertencia: atención y precaución."},
+{t:"Protección y señalización",q:"Una señal azul, por ejemplo la que obliga a utilizar un casco, es una señal de…",o:["Obligación","Prohibición","Advertencia","Salvamento"],e:"El azul indica obligación: un comportamiento o acción específica, como utilizar un equipo de protección individual."},
+{t:"Protección y señalización",q:"Las salidas, los pasajes y los puestos de socorro se señalizan con el color…",o:["Verde","Rojo","Amarillo","Azul"],e:"El verde es el color de las señales de salvamento o de auxilio: puertas, salidas, pasajes, material y puestos de socorro."},
+// ---------- UT5 · Emergencias ----------
+{t:"Emergencias",q:"¿Qué es el plan de autoprotección (PAU)?",o:["El documento que establece las actuaciones previstas por un centro para prevenir y controlar riesgos y responder a emergencias","La secuencia de actuaciones que debe seguir cada trabajador cuando suena la alarma","El listado de los equipos de protección individual que entrega la empresa","El protocolo de primeros auxilios que se aplica ante un herido"],e:"El PAU establece las actuaciones previstas por un centro para prevenir y controlar los riesgos y dar respuesta a posibles emergencias, integrado en el sistema público de Protección Civil."},
+{t:"Emergencias",q:"¿Cuál es la relación entre el plan de actuación ante emergencias (PAE) y el plan de autoprotección (PAU)?",o:["El PAE es parte del contenido del PAU","El PAU es parte del contenido del PAE","Son dos documentos totalmente independientes","El PAE sustituye al PAU en las empresas pequeñas"],e:"El plan de actuación ante emergencias es parte del contenido del plan de autoprotección y es la herramienta de intervención en emergencias y evacuación."},
+{t:"Emergencias",q:"¿Quién coordina los equipos de emergencia, da la alarma y se coordina con los servicios externos?",o:["El jefe o jefa de emergencias","El jefe o jefa de intervención","El equipo de primeros auxilios","El equipo de segunda intervención"],e:"El jefe o jefa de emergencias es la persona coordinadora de los equipos, da la alarma y se coordina con los servicios externos."},
+{t:"Emergencias",q:"¿Qué función tiene el jefe o jefa de intervención?",o:["Acudir al lugar de la emergencia para dirigir los equipos de emergencia","Dar la alarma en su zona y dirigir la evacuación","Atender a las personas heridas con los medios del botiquín","Coordinarse con los servicios externos desde el exterior del centro"],e:"El jefe o jefa de intervención acude al lugar de emergencias para dirigir los equipos de emergencias."},
+{t:"Emergencias",q:"¿Qué equipo de emergencia da la alarma en su zona y dirige la evacuación?",o:["El equipo de alarma y evacuación","El equipo de primera intervención","El equipo de segunda intervención","El equipo de primeros auxilios"],e:"El equipo de alarma y evacuación da la alarma en su zona y dirige la evacuación."},
+{t:"Emergencias",q:"¿Qué equipo controla la emergencia con los medios de que dispone en su zona, como los extintores?",o:["El equipo de primera intervención","El equipo de segunda intervención","El equipo de alarma y evacuación","El equipo de primeros auxilios"],e:"El equipo de primera intervención controla la emergencia con los medios de la zona (extintores, por ejemplo) y colabora con los servicios externos."},
+{t:"Emergencias",q:"Una emergencia que puede controlarse y solucionarse fácil y rápidamente por el personal con los recursos del centro es un…",o:["Conato de emergencia","Emergencia parcial","Emergencia general","Plan de autoprotección"],e:"El conato de emergencia se controla fácil y rápidamente con personal y recursos del centro de trabajo."},
+{t:"Emergencias",q:"¿Qué tipo de emergencia puede controlarse, pero necesita la actuación de equipos de intervención con formación especial?",o:["La emergencia parcial","El conato de emergencia","La emergencia general","La emergencia total"],e:"La emergencia parcial puede controlarse, pero necesita equipos de intervención con formación especial para emergencias."},
+{t:"Emergencias",q:"En una emergencia general, ¿qué ocurre?",o:["Hay un peligro grave y hacen falta medios de salvamento externos; puede suponer evacuar total o parcialmente","El personal la soluciona de forma rápida con los medios propios que hay en el centro de trabajo","Se controla con los equipos de intervención y sin ayuda de servicios externos de ningún tipo","Solo se avisa al jefe de emergencias y no hace falta iniciar ninguna evacuación"],e:"La emergencia general implica un peligro grave que precisa equipos y medios propios de protección y medios de salvamento externos; puede suponer la evacuación total o parcial."},
+// ---------- UT5 · Fuego y extintores ----------
+{t:"Fuego y extintores",q:"¿Qué tres elementos forman el triángulo del fuego?",o:["Combustible, comburente (oxígeno) y calor (energía de activación)","Combustible, humo y calor","Comburente, agua y energía","Combustible, oxígeno y reacción en cadena"],e:"El triángulo del fuego se compone de combustible, comburente (oxígeno) y calor (energía de activación)."},
+{t:"Fuego y extintores",q:"En el triángulo del fuego, ¿qué papel tiene el oxígeno?",o:["Es el comburente","Es el combustible","Es el calor","Es la reacción en cadena"],e:"El comburente es el oxígeno."},
+{t:"Fuego y extintores",q:"Los fuegos de sólidos como la madera, el plástico, el carbón o la tela son de clase…",o:["A","B","C","D"],e:"Clase A: sólidos (maderas, plástico, carbón, tela, etc.)."},
+{t:"Fuego y extintores",q:"El fuego de gasolina, disolventes o pinturas es de clase…",o:["B","A","C","D"],e:"Clase B: líquidos y sólidos licuables (disolventes, pinturas, gasolina, alquitrán, etc.)."},
+{t:"Fuego y extintores",q:"El butano, el gas natural, el propano y el hidrógeno son combustibles de fuegos de clase…",o:["C","A","B","D"],e:"Clase C: gases (butano, gas natural, propano, hidrógeno, etc.)."},
+{t:"Fuego y extintores",q:"¿Qué clase de fuego es el de metales como el aluminio en polvo o el magnesio?",o:["D","A","B","C"],e:"Clase D: metales (aluminio en polvo, magnesio, etc.), que se apagan con polvos químicos especiales."},
+{t:"Fuego y extintores",q:"En un fuego de gases (clase C), además de usar polvo, ¿qué conviene hacer siempre que sea posible?",o:["Cerrar la válvula","Rociarlo con agua a chorro","Cubrirlo con una manta ignífuga","Ventilar la zona con un extractor"],e:"Para la clase C, los apuntes indican cerrar la válvula siempre que sea posible."},
+{t:"Fuego y extintores",q:"¿Qué agente extintor es excelente para los fuegos de clase B?",o:["El polvo BC","El agua pulverizada","El anhídrido carbónico (CO2)","El agua a chorro"],e:"Para la clase B, el polvo BC es excelente; espuma física y polvo ABC son adecuados, y CO2 y agua pulverizada, aceptables."},
+{t:"Fuego y extintores",q:"¿Qué agente extintor se considera excelente en los fuegos de clase A?",o:["El agua pulverizada","El polvo ABC","La espuma física","El anhídrido carbónico (CO2)"],e:"En la clase A el agua en forma de chorro es adecuada y el agua pulverizada, excelente."},
+{t:"Fuego y extintores",q:"¿Por qué se llama polivalente al polvo ABC?",o:["Porque es un agente adecuado para fuegos de clase A, B y C","Porque sirve para apagar cualquier clase de fuego, incluida la D","Porque puede usarse junto con agua a chorro","Porque solo sirve en lugares cerrados y con poca ventilación"],e:"El polvo ABC (polivalente) figura como adecuado en las clases A, B y C; la clase D requiere polvos químicos especiales."},
+// ---------- UT5 · Primeros auxilios ----------
+{t:"Primeros auxilios",q:"¿Cuál es el objetivo de los primeros auxilios?",o:["Preservar la vida, aliviar el sufrimiento y prevenir secuelas","Curar al herido antes de que llegue el personal sanitario","Diagnosticar la lesión y administrar medicamentos","Trasladar al herido al centro médico más cercano lo antes posible"],e:"Los primeros auxilios son las pautas y conocimientos mínimos ante una emergencia, con el objetivo de preservar la vida, aliviar el sufrimiento y prevenir secuelas."},
+{t:"Primeros auxilios",q:"¿Qué significan las siglas del protocolo PAS?",o:["Proteger, Avisar, Socorrer","Prevenir, Actuar, Salvar","Proteger, Atender, Sanar","Parar, Avisar, Sacar"],e:"El protocolo PAS es Proteger, Avisar, Socorrer, y es lo principal en una intervención de primeros auxilios."},
+{t:"Primeros auxilios",q:"En el primer paso del PAS, «proteger», ¿qué se hace?",o:["Autoprotección, mantener la calma, localizar riesgos y proteger la zona y a las personas heridas","Comprobar si la persona herida está consciente y respira","Realizar la reanimación cardiopulmonar y usar el desfibrilador","Llamar al 112 e indicar qué ha pasado"],e:"Proteger incluye autoprotección, mantener la calma, localizar riesgos y proteger la zona y a las personas heridas."},
+{t:"Primeros auxilios",q:"¿A qué número de teléfono se llama en el paso «avisar» del PAS?",o:["Al 112","Al 091","Al 010","Al 012"],e:"En el paso Avisar se llama al 112."},
+{t:"Primeros auxilios",q:"¿Cuándo debe socorrerse a una persona herida según el protocolo PAS?",o:["Solo si sabemos qué hacer","Siempre, aunque no sepamos qué hacer","Solo si el herido lo pide","Antes de proteger la zona y de avisar"],e:"El paso Socorrer se aplica solo si sabemos qué hacer."},
+{t:"Primeros auxilios",q:"¿Qué se comprueba en la valoración primaria?",o:["La consciencia y la respiración","Las fracturas, quemaduras y hemorragias","La temperatura y el pulso del herido","El nombre del herido y sus antecedentes médicos"],e:"La valoración primaria comprueba la consciencia y la respiración."},
+{t:"Primeros auxilios",q:"¿Qué se valora en la valoración secundaria?",o:["Fracturas, quemaduras y hemorragias","La consciencia y la respiración","La reanimación cardiopulmonar","La necesidad de usar el desfibrilador"],e:"La valoración secundaria atiende a fracturas, quemaduras y hemorragias."},
+{t:"Primeros auxilios",q:"¿Cuál de estos elementos NO debe contener el botiquín de primeros auxilios?",o:["Medicamentos","Esparadrapo","Pinzas","Gasas estériles"],e:"El botiquín debe contener vendas, algodón, desinfectantes, apósitos, esparadrapo, gasas, tijeras, pinzas y guantes, y no debe contener medicamentos."},
+{t:"Primeros auxilios",q:"¿Qué desinfectantes y antisépticos se citan entre el contenido del botiquín?",o:["Agua oxigenada y alcohol","Lejía y amoniaco","Vinagre y sal","Acetona y alcohol de quemar"],e:"Los apuntes citan desinfectantes y antisépticos como agua oxigenada y alcohol."},
+{t:"Primeros auxilios",q:"¿Qué empresas deben tener un botiquín de primeros auxilios a disposición del personal?",o:["Todas las empresas","Solo las empresas con más de cincuenta trabajadores","Solo las empresas industriales","Solo las que tienen un equipo de primeros auxilios"],e:"En todas las empresas es obligatorio tener a disposición del personal un botiquín de primeros auxilios."},
+];
+// DESARROLLO: preguntas cortas (3–6 líneas de respuesta). ideas: 3–5 ideas clave que debe contener una buena respuesta, cada una comprobable por el alumno.
+const DESARROLLO = [
+{t:"Primeros auxilios",q:"Explica el protocolo PAS de primeros auxilios.",modelo:"PAS significa Proteger, Avisar y Socorrer. Proteger: autoprotección, mantener la calma, localizar riesgos y proteger la zona y a las personas heridas. Avisar: llamar al 112. Socorrer: solo si sabemos qué hacer; primero la valoración primaria (consciencia y respiración), después la actuación (RCP y desfibrilador DESA/DEA) y por último la valoración secundaria (fracturas, quemaduras y hemorragias).",ideas:["Las siglas PAS: Proteger, Avisar, Socorrer, en ese orden","Proteger: autoprotección, calma, localizar riesgos y proteger la zona y a los heridos","Avisar: llamar al 112","Socorrer solo si se sabe qué hacer, con valoración primaria (consciencia y respiración) y RCP/DESA","Valoración secundaria: fracturas, quemaduras y hemorragias"]},
+{t:"Prevención y técnicas",q:"Explica la diferencia entre prevención y protección y pon ejemplos.",modelo:"La prevención evita o reduce el riesgo y actúa sobre su causa; incluye detectar, evaluar y eliminar riesgos. La protección no evita el riesgo, sino que trata de reducir sus consecuencias, y actúa sobre el trabajador. Ejemplos de protección colectiva: barandillas, redes de seguridad, insonorización. Ejemplos de protección individual: casco, guantes, tapones, gafas.",ideas:["La prevención evita o reduce el riesgo y actúa sobre su causa","La protección no evita el riesgo, reduce sus consecuencias y actúa sobre el trabajador","Ejemplo de prevención: detectar, evaluar y eliminar riesgos","Ejemplos de protección: barandillas o redes (colectiva) y EPI como casco o guantes (individual)"]},
+{t:"Protección y señalización",q:"¿Qué prioridad tienen la protección colectiva y la individual? Pon ejemplos de cada una e indica quién debe proporcionar los EPI.",modelo:"Se antepone la protección colectiva a la individual; los EPI se usan como complemento cuando no basta la colectiva. Ejemplos colectivos: barandillas, redes de seguridad, insonorización, extractores, protecciones de máquinas. Ejemplos de EPI: cascos, tapones, gafas, guantes, calzado de seguridad. El empresario debe proporcionar gratis los EPI, informar y enseñar a usarlos, y los EPI deben llevar la marca CE.",ideas:["Prioridad a la protección colectiva y EPI como complemento","Ejemplos colectivos: barandillas, redes, insonorización, extractores o protecciones de máquinas","Ejemplos de EPI: casco, tapones, gafas, guantes o calzado de seguridad","El empresario proporciona gratis los EPI, que deben llevar la marca CE"]},
+{t:"Protección y señalización",q:"Indica las obligaciones del empresario y del trabajador respecto de los EPI.",modelo:"El empresario debe proporcionar gratis los EPI adecuados, velar por su uso efectivo, informar antes del uso de los riesgos que cubren y de cuándo usarlos, dar instrucciones de uso y mantenimiento y enseñar a utilizarlos. El trabajador debe utilizarlos y cuidarlos correctamente, colocarlos en el lugar indicado después de usarlos e informar de inmediato a un superior de cualquier defecto o daño.",ideas:["Empresario: proporcionar los EPI gratis y velar por su uso","Empresario: informar de los riesgos, dar instrucciones y enseñar a usarlos","Trabajador: utilizarlos y cuidarlos correctamente","Trabajador: colocarlos en su sitio y avisar de inmediato a un superior de cualquier daño"]},
+{t:"Accidente de trabajo",q:"¿Qué requisitos debe tener un accidente de trabajo y qué casos añade la Ley General de la Seguridad Social? Cita al menos tres.",modelo:"Debe haber lesión corporal, trabajo por cuenta ajena (hoy también cuenta propia) y relación de causalidad entre el trabajo y la lesión. La Ley General de la Seguridad Social añade, entre otros, el accidente in itinere (al ir o volver del trabajo), los ocurridos en actos de salvamento, los sufridos por tareas distintas a la categoría profesional y por cargos electivos sindicales.",ideas:["Lesión corporal, trabajo por cuenta ajena y relación de causalidad","Accidente in itinere (al ir o volver del trabajo)","Actos de salvamento","Tareas distintas a la categoría profesional o cargos electivos sindicales"]},
+{t:"Accidente de trabajo",q:"Explica las causas de los accidentes de trabajo: factor técnico, factor humano y factor mixto.",modelo:"El factor técnico o condiciones inseguras son los defectos del ambiente, de la maquinaria, de los dispositivos de seguridad y protecciones, de las instalaciones o del proceso. El factor humano o actos inseguros son la imprudencia, la ignorancia, el descuido y la falta de información y formación. El factor mixto se da cuando concurren ambos factores.",ideas:["Factor técnico o condiciones inseguras: defectos de maquinaria, instalaciones, protecciones o ambiente","Factor humano o actos inseguros: imprudencia, ignorancia, descuido, falta de formación","Factor mixto: cuando concurren ambos a la vez"]},
+{t:"Enfermedad profesional y patologías",q:"Diferencia accidente de trabajo y enfermedad profesional.",modelo:"El accidente de trabajo es una lesión corporal causada por el trabajo, con relación de causalidad, y puede incluir casos como el accidente in itinere. La enfermedad profesional es un daño o alteración de la salud causada por condiciones físicas, químicas o biológicas del trabajo; debe estar en el cuadro de enfermedades profesionales del Real Decreto 1299/2006 y proceder de las sustancias o elementos indicados en él.",ideas:["Accidente de trabajo: lesión corporal con relación de causalidad con el trabajo","Enfermedad profesional: daño por condiciones físicas, químicas o biológicas del trabajo","La enfermedad profesional debe figurar en el cuadro del Real Decreto 1299/2006","Ambas son patologías específicas del trabajo"]},
+{t:"Enfermedad profesional y patologías",q:"Define mobbing y burnout y explica en qué se diferencian.",modelo:"El mobbing es la presión psicológica extrema y sistemática (al menos una vez por semana) durante un tiempo prolongado (más de seis meses) que una persona o grupo ejerce sobre otra en el lugar de trabajo. El burnout o síndrome de estar quemado es el desgaste emocional, la despersonalización y la menor realización personal de quienes están en contacto con clientes, usuarios o pacientes. El mobbing viene de otra persona; el burnout, del desgaste del propio trabajo.",ideas:["Mobbing: presión psicológica extrema y sistemática ejercida por una persona o grupo sobre otra","Mobbing: al menos una vez por semana y durante más de seis meses","Burnout: desgaste emocional, despersonalización y menor realización personal","Burnout: afecta a quienes están en contacto con clientes, usuarios o pacientes"]},
+{t:"Prevención y técnicas",q:"Cita las cinco técnicas de prevención y explica brevemente el objetivo de cada una.",modelo:"Seguridad en el trabajo: lucha contra los accidentes. Higiene industrial: actúa frente a los contaminantes ambientales para prevenir enfermedades profesionales. Ergonomía: adapta el trabajo a la persona para evitar la fatiga física o mental. Psicología laboral: previene los daños psicológicos y favorece ambientes adecuados. Medicina laboral: mantiene la salud del trabajador, con vigilancia de la salud, prevención, curación y rehabilitación.",ideas:["Seguridad en el trabajo: lucha contra los accidentes de trabajo","Higiene industrial: contaminantes ambientales y enfermedades profesionales","Ergonomía: adaptar el trabajo a la persona para evitar la fatiga","Psicología laboral: prevenir los daños psicológicos y riesgos psicosociales","Medicina laboral: vigilancia de la salud, prevención, curación y reparación"]},
+{t:"Riesgos ambientales",q:"Clasifica los factores de riesgo medioambientales y pon dos ejemplos de cada tipo. Explica qué es el VLA.",modelo:"Los agentes son físicos (ruido, vibraciones, radiaciones, temperatura y humedad, iluminación), químicos (sustancias peligrosas como explosivas, inflamables, tóxicas o corrosivas) y biológicos (virus, bacterias, hongos, gusanos). El daño depende de la concentración y del tiempo de exposición. El VLA (Valor Límite Ambiental) indica la concentración máxima de un contaminante para que no resulte dañino para la salud.",ideas:["Tres tipos: físicos, químicos y biológicos","Ejemplos físicos: ruido, vibraciones, radiaciones, temperatura o iluminación","Ejemplos químicos (sustancias peligrosas) y biológicos (virus, bacterias, hongos)","El daño depende de la concentración y del tiempo de exposición","VLA: concentración máxima de un contaminante sin daño para la salud"]},
+{t:"Emergencias",q:"Explica los tipos de emergencia según su gravedad y cita cuatro equipos de emergencia con su función.",modelo:"Conato de emergencia: se controla fácil y rápido con los recursos del centro. Emergencia parcial: controlable, pero necesita equipos de intervención con formación especial. Emergencia general: peligro grave que exige medios propios y de salvamento externos y puede suponer evacuación. Equipos: jefe de emergencias (coordina y da la alarma), jefe de intervención (dirige los equipos en el lugar), alarma y evacuación, y primera intervención (controla con los medios de su zona, como los extintores).",ideas:["Conato de emergencia: se controla fácil y rápido con medios del centro","Emergencia parcial: necesita equipos de intervención con formación especial","Emergencia general: peligro grave, medios externos y posible evacuación","Cuatro equipos con su función, por ejemplo jefe de emergencias, jefe de intervención, alarma y evacuación y primera intervención"]},
+{t:"Fuego y extintores",q:"Explica el triángulo y el tetraedro del fuego y cita las clases de fuego A, B, C y D con un ejemplo de cada una.",modelo:"El triángulo del fuego tiene tres elementos: combustible, comburente (oxígeno) y calor (energía de activación); el tetraedro añade la reacción en cadena. Clase A: sólidos (madera, tela). Clase B: líquidos y sólidos licuables (gasolina, pinturas). Clase C: gases (butano, propano). Clase D: metales (magnesio, aluminio en polvo). El polvo ABC es polivalente para A, B y C.",ideas:["Triángulo del fuego: combustible, comburente y calor","El tetraedro añade la reacción en cadena","Clase A sólidos y clase B líquidos, cada una con un ejemplo","Clase C gases y clase D metales, cada una con un ejemplo"]},
+{t:"Primeros auxilios",q:"Describe el botiquín de primeros auxilios: dónde debe estar y qué debe contener.",modelo:"Es obligatorio en todas las empresas y debe estar señalizado, en un lugar accesible, seco, fresco y protegido de la luz solar. Debe contener vendas, algodón hidrófilo, desinfectantes y antisépticos (agua oxigenada, alcohol), apósitos adhesivos, esparadrapo, gasas estériles, tijeras, pinzas y guantes. No debe contener medicamentos.",ideas:["Obligatorio en todas las empresas y señalizado","Lugar accesible, seco, fresco y protegido de la luz solar","Contenido: vendas, gasas, apósitos, esparadrapo, desinfectantes, tijeras, pinzas y guantes","No debe contener medicamentos"]},
+];
+
+</script>
+<script>
+// Creador de examen · Itinerario personal para la empleabilidad I (ITK), PRL.
+// Examen como el real: 30 preguntas = 28 tipo test + 2 de desarrollo cortas.
+// Cada pregunta vale 0,3; un fallo en el test resta 0,1; en blanco no resta. Máximo 9 puntos → la nota se pasa a 10.
+// El desarrollo lo corrige el alumno marcando las ideas clave de la respuesta modelo.
+// CONFIG (id, unidades, titulo) lo pone build.js; BANK y DESARROLLO vienen del banco de cada examen.
+'use strict';
+const app = document.getElementById('app');
+const N_TEST = 28, N_DEV = 2, N_FALLOS = 10;
+const P_OK = 0.3, P_MAL = 0.1, P_DEV = 0.3;
+const L = ['A', 'B', 'C', 'D'];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const fmt = n => (Math.round(n * 100) / 100).toFixed(2).replace('.', ',');
+const pl = (n, uno, varios) => n + ' ' + (n === 1 ? uno : varios);
+
+// ---------- almacenamiento (claves propias de cada examen) ----------
+const K = s => CONFIG.id + '_' + s;
+const MEM = {};
+function store(k, v) {
+  try {
+    if (v === undefined) { const r = localStorage.getItem(k); return r === null ? (MEM[k] ?? null) : JSON.parse(r); }
+    MEM[k] = v; localStorage.setItem(k, JSON.stringify(v));
+  } catch (e) { if (v === undefined) return MEM[k] ?? null; MEM[k] = v; }
+}
+const validas = new Set(BANK.map(q => q.q));
+const seenMap = () => store(K('seen')) || {};
+function failMap() { const f = store(K('fails')) || {}; Object.keys(f).forEach(k => { if (!validas.has(k)) delete f[k]; }); return f; }
+const historial = () => store(K('hist')) || [];
+// Tema: siempre claro al abrir; si lo abre el menú de repaso, usa el tema del menú (?tema=dark|light)
+let tema = (new URLSearchParams(location.search).get('tema') === 'dark' ? 'dark' : 'light');
+
+const IC = {
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"/></svg>',
+  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+  redo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>',
+  save: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>'
+};
+const LOCKUP = '<a class="c-lockup" href="#" data-ir="inicio" aria-label="Inicio"><svg viewBox="0 0 200 200" aria-hidden="true"><use href="#concep-simbolo"/></svg><span class="c-wordmark">Concep</span></a>';
+const NOMBRE = 'Creador de examen ' + CONFIG.unidades;
+
+function mount(html) {
+  document.body.classList.toggle('claro', tema === 'light');
+  const root = document.createElement('div');
+  root.className = tema === 'light' ? 'concep' : 'concep-dark';
+  root.innerHTML = html;
+  app.replaceChildren(root);
+  window.scrollTo(0, 0);
+}
+function topBar(centro, derecha) {
+  return '<header class="top">' + LOCKUP + '<span class="sep" aria-hidden="true"></span>' + centro + '<div class="grow"></div><div class="acc">' + (derecha || '') +
+    '<button class="btn btn--ghost icon-btn" data-tema title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">' + (tema === 'light' ? IC.moon : IC.sun) + '</button></div></header>';
+}
+const MODULO = '<div class="modulo"><b>Itinerario personal</b><span>' + NOMBRE + '</span></div>';
+
+// ---------- inicio ----------
+function vistaInicio(abrir) {
+  const h = historial(), f = failMap();
+  const nf = Object.keys(f).length;
+  const media = h.length ? h.reduce((s, x) => s + x, 0) / h.length : null;
+  const fallos = BANK.filter(q => f[q.q]).sort((a, b) => f[b.q] - f[a.q]);
+  mount(topBar(MODULO) +
+    '<main class="page fade-in"><section class="hero"><div class="halo" aria-hidden="true"></div><div><span class="eyebrow">Concep · Itinerario personal · ' + esc(CONFIG.unidades) + '</span>' +
+    '<h1>' + esc(NOMBRE) + '</h1><p>' + esc(CONFIG.titulo) + '. Treinta preguntas como en el examen: 28 tipo test y 2 de desarrollo cortas. Al corregir ves la nota, la respuesta buena y por qué; el desarrollo lo comparas tú con la respuesta modelo.</p></div>' +
+    '<div class="hero-stats"><div class="stat"><div class="v">' + (BANK.length + DESARROLLO.length) + '</div><div class="l">Preguntas</div></div><div class="stat"><div class="v">' + h.length + '</div><div class="l">' + (h.length === 1 ? 'Examen' : 'Exámenes') + '</div></div><div class="stat"><div class="v">' + (media === null ? '—' : fmt(media)) + '</div><div class="l">Nota media</div></div></div></section>' +
+    '<div class="grid2">' +
+    '<section class="card card--accent" aria-labelledby="h-nuevo"><h2 id="h-nuevo">Nuevo examen</h2><p class="sub">Preguntas de todo el temario de ' + esc(CONFIG.unidades) + ', primero las que menos has visto.</p>' +
+    '<ul class="reglas"><li>28 preguntas tipo test con una sola respuesta correcta y 2 de desarrollo cortas.</li><li>Cada pregunta vale 0,3. Un fallo en el test resta 0,1; dejarla en blanco no resta.</li><li>El máximo son 9 puntos; la nota se pasa a 10.</li></ul>' +
+    '<div class="fila"><button class="btn btn--primary btn--lg" data-empezar="normal">' + IC.play + 'Empezar examen</button></div>' +
+    (h.length ? '<div class="hist"><span>Últimos intentos</span>' + h.slice(-8).map(x => '<span class="nota-chip ' + (x >= 5 ? 'ap' : 'su') + '">' + fmt(x) + '</span>').join('') + '</div>' : '') +
+    '</section>' +
+    '<section class="card" aria-labelledby="h-fallos"><h2 id="h-fallos">Mis fallos</h2>' +
+    (nf ? '<p class="sub">' + pl(nf, 'pregunta guardada', 'preguntas guardadas') + ' del test. Cada fallo o pregunta en blanco suma 1 y cada acierto resta 1; al llegar a 0 sale de la lista.</p>'
+      : '<p class="vacio-txt">Aún no tienes fallos guardados. Haz un examen y aquí aparecerán las preguntas del test que falles o dejes en blanco.</p>') +
+    '<div class="fila"><button class="btn btn--primary" data-empezar="fallos"' + (nf ? '' : ' disabled') + '>' + IC.redo + 'Examen de mis fallos' + (nf ? ' (' + Math.min(N_FALLOS, nf) + ')' : '') + '</button>' +
+    '<button class="btn" data-ver-fallos' + (nf ? '' : ' disabled') + ' aria-expanded="' + (abrir === 'lista') + '">Ver lista</button><button class="btn btn--ghost" data-copia aria-expanded="' + (abrir === 'copia') + '">Copia de seguridad</button></div>' +
+    '<div id="lista"' + (abrir === 'lista' && nf ? '' : ' hidden') + '><ol class="lista-fallos">' + fallos.map(q => '<li><span class="x">×' + f[q.q] + '</span>' + esc(q.q) + '<span class="ok">✓ ' + esc(q.o[0]) + '</span></li>').join('') + '</ol>' +
+    '<div class="fila" style="margin-top:10px"><button class="btn btn--danger btn--sm" data-vaciar>Vaciar lista de fallos</button></div></div>' +
+    '<div id="copia"' + (abrir === 'copia' ? '' : ' hidden') + '><p class="vacio-txt" style="margin:16px 0 0">Los fallos se guardan solo en este navegador. Copia este texto para no perderlos, o pega uno para restaurarlos.</p>' +
+    '<textarea class="copia" id="copiaTxt" spellcheck="false" aria-label="Copia de seguridad de los fallos">' + esc(JSON.stringify(f)) + '</textarea>' +
+    '<div class="fila" style="margin-top:8px"><button class="btn btn--sm" data-copiar>Copiar</button><button class="btn btn--sm" data-restaurar>Restaurar desde el texto</button><span class="msg" id="copiaMsg" role="status"></span></div></div>' +
+    '</section></div></main>');
+  document.title = NOMBRE + ' · Itinerario personal';
+}
+
+// ---------- examen ----------
+// examen = { modo, items: [{tipo:'test', q, opts, resp, prev} | {tipo:'dev', d, texto, marcadas:Set}], corregido, guardado }
+let examen = null;
+function porVistas(pool) { const seen = seenMap(); return shuffle(pool).sort((a, b) => (seen[a.q] || 0) - (seen[b.q] || 0)); }
+function empezar(modo) {
+  const f = failMap();
+  let test, dev = [];
+  if (modo === 'fallos') {
+    test = shuffle(shuffle(BANK.filter(q => f[q.q])).sort((a, b) => f[b.q] - f[a.q]).slice(0, N_FALLOS));
+    if (!test.length) return;
+  } else {
+    test = porVistas(BANK).slice(0, N_TEST);
+    dev = porVistas(DESARROLLO).slice(0, N_DEV);
+  }
+  examen = {
+    modo, corregido: false, guardado: false,
+    items: [...test.map(q => ({ tipo: 'test', q, opts: shuffle(q.o.map((text, k) => ({ text, ok: k === 0 }))), resp: null, prev: f[q.q] || 0 })),
+      ...dev.map(d => ({ tipo: 'dev', d, texto: '', marcadas: new Set() }))]
+  };
+  vistaExamen();
+}
+const respondida = x => x.tipo === 'test' ? x.resp !== null : x.texto.trim() !== '';
+function htmlTest(it, n, corregida) {
+  const ci = it.opts.findIndex(o => o.ok);
+  let estado = '';
+  if (corregida) estado = it.resp === null ? '<span class="estado blanco">En blanco · 0</span>' : it.resp === ci ? '<span class="estado bien">Correcta · +0,3</span>' : '<span class="estado mal">Incorrecta · −0,1</span>';
+  return '<article class="q' + (corregida ? ' hecha' : '') + '" id="p' + n + '"><div class="meta"><span class="n">Pregunta ' + (n + 1) + '</span><span>· ' + esc(it.q.t) + '</span>' +
+    (it.prev && !corregida ? '<span>· fallada ' + pl(it.prev, 'vez', 'veces') + '</span>' : '') + estado + '</div>' +
+    '<h3 id="h' + n + '">' + esc(it.q.q) + '</h3><div class="opts" role="radiogroup" aria-labelledby="h' + n + '">' +
+    it.opts.map((o, k) => {
+      const cls = corregida ? (k === ci ? ' bien' : (k === it.resp ? ' mal' : '')) : '';
+      return '<label class="opt' + cls + '"><input type="radio" name="q' + n + '" value="' + k + '"' + (it.resp === k ? ' checked' : '') + (corregida ? ' disabled' : '') + '><span class="l">' + L[k] + '</span><span class="t">' + esc(o.text) + '</span></label>';
+    }).join('') + '</div>' +
+    (corregida ? '<div class="expl"><b>Respuesta correcta: ' + L[ci] + ') ' + esc(it.opts[ci].text) + '</b><br>' + esc(it.q.e) + '</div>' : '') + '</article>';
+}
+const puntosDev = it => P_DEV * it.marcadas.size / it.d.ideas.length;
+function htmlDev(it, n, corregida) {
+  return '<article class="q' + (corregida ? ' hecha' : '') + '" id="p' + n + '"><div class="meta"><span class="n">Pregunta ' + (n + 1) + '</span><span class="tipo">Desarrollo</span><span>· ' + esc(it.d.t) + '</span></div>' +
+    '<h3 id="h' + n + '">' + esc(it.d.q) + '</h3>' +
+    '<textarea class="resp" data-dev="' + n + '" aria-labelledby="h' + n + '" placeholder="Escribe tu respuesta en unas pocas líneas…"' + (corregida ? ' readonly' : '') + '>' + esc(it.texto) + '</textarea>' +
+    (corregida ? '<div class="modelo"><b>Respuesta modelo</b><br>' + esc(it.d.modelo) + '</div>' +
+      '<div class="ideas" role="group" aria-labelledby="ideas' + n + '"><span class="lbl" id="ideas' + n + '">Marca las ideas que has puesto en tu respuesta</span>' +
+      it.d.ideas.map((idea, k) => '<label class="idea"><input type="checkbox" data-idea="' + n + ':' + k + '"' + (it.marcadas.has(k) ? ' checked' : '') + (examen.guardado ? ' disabled' : '') + '><span>' + esc(idea) + '</span></label>').join('') +
+      '<div class="puntos-dev" id="pd' + n + '">' + fmt(puntosDev(it)) + ' de 0,30 puntos</div></div>' : '') + '</article>';
+}
+function vistaExamen() {
+  const it = examen.items;
+  const nTest = it.filter(x => x.tipo === 'test').length, nDev = it.length - nTest;
+  mount(topBar('<button class="btn btn--ghost btn--sm" data-salir>' + IC.back + 'Salir</button><div class="modulo"><b>' + (examen.modo === 'fallos' ? 'Examen de mis fallos' : 'Examen') + '</b><span>' + pl(nTest, 'pregunta tipo test', 'preguntas tipo test') + (nDev ? ' + ' + nDev + ' de desarrollo' : '') + '</span></div>',
+    '<span class="progreso" id="prog" aria-live="polite"></span>') +
+    '<main class="examen-page fade-in">' + it.map((x, n) => x.tipo === 'test' ? htmlTest(x, n, false) : htmlDev(x, n, false)).join('') + '</main>' +
+    '<div class="barra-fija"><div class="in"><button class="btn btn--primary" data-corregir>' + IC.check + 'Corregir examen</button><nav class="puntos" aria-label="Ir a una pregunta" id="puntos"></nav><span class="aviso" id="aviso" role="status"></span></div></div>');
+  progreso();
+}
+function progreso() {
+  const r = examen.items.filter(respondida).length;
+  const p = document.getElementById('prog'); if (p) p.textContent = r + '/' + examen.items.length;
+  const pt = document.getElementById('puntos');
+  if (pt) pt.innerHTML = examen.items.map((x, n) => '<a href="#p' + n + '" class="' + (respondida(x) ? 'r' : '') + '" aria-label="Pregunta ' + (n + 1) + (respondida(x) ? ', respondida' : '') + '">' + (n + 1) + '</a>').join('');
+}
+
+// ---------- corrección ----------
+function cuentas() {
+  let ok = 0, mal = 0, blanco = 0, dev = 0;
+  examen.items.forEach(x => {
+    if (x.tipo === 'dev') { dev += puntosDev(x); return; }
+    const ci = x.opts.findIndex(o => o.ok);
+    if (x.resp === null) blanco++; else if (x.resp === ci) ok++; else mal++;
+  });
+  const test = ok * P_OK - mal * P_MAL;
+  const maximo = examen.items.length * P_OK;
+  const bruto = Math.max(0, test + dev);
+  return { ok, mal, blanco, test, dev, maximo, bruto, nota: bruto * 10 / maximo };
+}
+function corregir() {
+  examen.corregido = true;
+  const tests = examen.items.filter(x => x.tipo === 'test');
+  // preguntas vistas y registro de fallos del test (se guarda al corregir)
+  const seen = seenMap(); examen.items.forEach(x => { const k = x.tipo === 'test' ? x.q.q : x.d.q; seen[k] = (seen[k] || 0) + 1; }); store(K('seen'), seen);
+  const f = failMap(); let nuevas = 0, superadas = 0;
+  tests.forEach(x => {
+    const bien = x.resp !== null && x.opts[x.resp].ok;
+    if (!bien) { if (!f[x.q.q]) nuevas++; f[x.q.q] = (f[x.q.q] || 0) + 1; }
+    else if (f[x.q.q]) { f[x.q.q]--; if (f[x.q.q] <= 0) { delete f[x.q.q]; superadas++; } }
+  });
+  store(K('fails'), f);
+  examen.fallosInfo = { nuevas, superadas, quedan: Object.keys(f).length };
+  if (!examen.items.some(x => x.tipo === 'dev')) guardarNota();
+  vistaResultado();
+}
+function guardarNota() {
+  if (examen.guardado) return;
+  examen.guardado = true;
+  const h = historial(); h.push(cuentas().nota); store(K('hist'), h.slice(-20));
+}
+function htmlCabecera() {
+  const c = cuentas(), ap = c.nota >= 5, fi = examen.fallosInfo, hayDev = examen.items.some(x => x.tipo === 'dev');
+  return '<div class="resultado"><div class="big">' + fmt(c.nota) + '<small> /10</small></div>' +
+    '<div><div class="veredicto ' + (ap ? 'ap' : 'su') + '">' + (c.nota >= 9 ? 'Sobresaliente' : c.nota >= 7 ? 'Notable' : c.nota >= 6 ? 'Bien' : ap ? 'Aprobado' : 'Suspenso') + (hayDev && !examen.guardado ? ' (falta corregir el desarrollo)' : '') + '</div><div class="medidor"><div style="width:' + Math.min(100, c.nota * 10) + '%"></div></div>' +
+    '<div class="resumen">' + fmt(c.bruto) + ' de ' + fmt(c.maximo).replace(/,00$/, '') + ' puntos · ' + pl(c.ok, 'correcta', 'correctas') + ' · ' + pl(c.mal, 'incorrecta', 'incorrectas') + ' · ' + c.blanco + ' en blanco</div>' +
+    '<div class="resumen">Lista de fallos: ' + (fi.nuevas ? '+' + pl(fi.nuevas, 'nueva', 'nuevas') : 'ninguna nueva') + (fi.superadas ? ' · ' + pl(fi.superadas, 'superada', 'superadas') : '') + ' · ' + fi.quedan + ' en total.</div></div></div>' +
+    '<div class="desglose"><div><div class="v">+' + fmt(c.ok * P_OK) + '</div><div class="l">Aciertos test</div></div><div><div class="v">' + (c.mal ? '−' : '') + fmt(c.mal * P_MAL) + '</div><div class="l">Fallos test</div></div>' +
+    (hayDev ? '<div><div class="v">+' + fmt(c.dev) + '</div><div class="l">Desarrollo</div></div>' : '') + '<div><div class="v">' + fmt(c.bruto) + '</div><div class="l">Total (sobre ' + fmt(c.maximo).replace(/,00$/, '') + ')</div></div></div>';
+}
+function vistaResultado() {
+  const it = examen.items, hayDev = it.some(x => x.tipo === 'dev');
+  const quedan = examen.fallosInfo.quedan;
+  const orden = hayDev ? [...it.map((x, n) => [x, n]).filter(([x]) => x.tipo === 'dev'), ...it.map((x, n) => [x, n]).filter(([x]) => x.tipo === 'test')] : it.map((x, n) => [x, n]);
+  mount(topBar('<button class="btn btn--ghost btn--sm" data-ir="inicio">' + IC.back + 'Inicio</button><div class="modulo"><b>Resultado</b><span>' + (examen.modo === 'fallos' ? 'Examen de mis fallos' : NOMBRE) + '</span></div>') +
+    '<main class="examen-page fade-in"><section class="card card--accent"><div id="cab">' + htmlCabecera() + '</div>' +
+    '<div class="fila" style="margin-top:16px">' + (hayDev ? '<button class="btn btn--primary" data-guardar' + (examen.guardado ? ' disabled' : '') + '>' + IC.save + (examen.guardado ? 'Nota guardada' : 'Guardar nota') + '</button>' : '') +
+    '<button class="btn' + (hayDev ? '' : ' btn--primary') + '" data-empezar="normal">' + IC.play + 'Nuevo examen</button><button class="btn" data-empezar="fallos"' + (quedan ? '' : ' disabled') + '>' + IC.redo + 'Examen de mis fallos' + (quedan ? ' (' + Math.min(N_FALLOS, quedan) + ')' : '') + '</button></div></section>' +
+    (hayDev && !examen.guardado ? '<p class="pendiente" style="margin-top:18px"><b>Corrige tu desarrollo.</b> Compara cada respuesta con la modelo y marca las ideas que hayas puesto: cada pregunta vale 0,3 repartidos entre sus ideas. Cuando acabes, pulsa «Guardar nota».</p>' : '') +
+    '<h2 class="seccion-t">Corrección</h2>' + orden.map(([x, n]) => x.tipo === 'test' ? htmlTest(x, n, true) : htmlDev(x, n, true)).join('') + '</main>');
+}
+
+// ---------- eventos ----------
+function armar(b, texto, alDesarmar) {
+  if (b.dataset.c) return false;
+  const antes = b.innerHTML;
+  b.dataset.c = '1'; b.lastChild.textContent = texto;
+  setTimeout(() => { if (b.isConnected && b.dataset.c) { delete b.dataset.c; b.innerHTML = antes; if (alDesarmar) alDesarmar(); } }, 4000);
+  return true;
+}
+function cambiarTema(btn) {
+  tema = tema === 'light' ? 'dark' : 'light'; store('concep_tema', tema);
+  const root = app.firstElementChild; root.classList.remove('concep', 'concep-dark'); root.classList.add(tema === 'light' ? 'concep' : 'concep-dark');
+  document.body.classList.toggle('claro', tema === 'light'); btn.innerHTML = tema === 'light' ? IC.moon : IC.sun;
+}
+app.addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.dataset.dev !== undefined && examen && !examen.corregido) { examen.items[+t.dataset.dev].texto = t.value; progreso(); }
+});
+app.addEventListener('change', ev => {
+  const t = ev.target;
+  if (t.type === 'radio' && examen && !examen.corregido) { examen.items[+t.name.slice(1)].resp = +t.value; progreso(); const a = document.getElementById('aviso'); if (a) a.textContent = ''; }
+  if (t.dataset.idea && examen && examen.corregido && !examen.guardado) {
+    const [n, k] = t.dataset.idea.split(':').map(Number), it = examen.items[n];
+    t.checked ? it.marcadas.add(k) : it.marcadas.delete(k);
+    document.getElementById('pd' + n).textContent = fmt(puntosDev(it)) + ' de 0,30 puntos';
+    document.getElementById('cab').innerHTML = htmlCabecera();
+  }
+});
+app.addEventListener('click', async ev => {
+  const b = ev.target.closest('button, a[data-ir]');
+  if (!b) return;
+  if (b.hasAttribute('data-tema')) return cambiarTema(b);
+  if (b.dataset.ir === 'inicio') {
+    ev.preventDefault();
+    if (examen && examen.corregido && !examen.guardado) guardarNota(); // no se pierde la nota si sales sin pulsar «Guardar»
+    examen = null; return vistaInicio();
+  }
+  if (b.dataset.empezar) { if (examen && examen.corregido && !examen.guardado) guardarNota(); return empezar(b.dataset.empezar); }
+  if (b.hasAttribute('data-guardar')) { guardarNota(); return vistaResultado(); }
+  if (b.hasAttribute('data-salir')) {
+    if (armar(b, '¿Seguro?')) return;
+    examen = null; return vistaInicio();
+  }
+  if (b.hasAttribute('data-corregir')) {
+    const blancas = examen.items.filter(x => !respondida(x)).length;
+    const aviso = document.getElementById('aviso');
+    if (blancas && armar(b, 'Corregir igualmente', () => { aviso.textContent = ''; })) { aviso.textContent = (blancas === 1 ? 'Te queda 1 pregunta' : 'Te quedan ' + blancas + ' preguntas') + ' sin responder.'; return; }
+    return corregir();
+  }
+  if (b.hasAttribute('data-ver-fallos')) { const l = document.getElementById('lista'); l.hidden = !l.hidden; b.setAttribute('aria-expanded', !l.hidden); return; }
+  if (b.hasAttribute('data-copia')) { const c = document.getElementById('copia'); c.hidden = !c.hidden; b.setAttribute('aria-expanded', !c.hidden); return; }
+  if (b.hasAttribute('data-vaciar')) {
+    if (armar(b, 'Pulsa otra vez para vaciarla')) return;
+    store(K('fails'), {}); return vistaInicio();
+  }
+  if (b.hasAttribute('data-copiar')) {
+    const ta = document.getElementById('copiaTxt'), m = document.getElementById('copiaMsg');
+    try { await navigator.clipboard.writeText(ta.value); m.textContent = 'Copiado'; } catch (e) { ta.select(); m.textContent = 'Selecciona el texto y cópialo a mano'; }
+    return;
+  }
+  if (b.hasAttribute('data-restaurar')) {
+    const m = document.getElementById('copiaMsg');
+    try {
+      const data = JSON.parse(document.getElementById('copiaTxt').value);
+      if (typeof data !== 'object' || Array.isArray(data) || !data) throw 0;
+      const limpio = {}; Object.entries(data).forEach(([k, v]) => { if (validas.has(k) && +v > 0) limpio[k] = Math.round(+v); });
+      if (!Object.keys(limpio).length) { m.textContent = 'La copia no tiene ninguna pregunta válida; no se ha cambiado nada. Para borrar la lista usa «Vaciar».'; return; }
+      store(K('fails'), limpio); vistaInicio('copia');
+      document.getElementById('copiaMsg').textContent = Object.keys(limpio).length === 1 ? 'Restaurada 1 pregunta' : 'Restauradas ' + Object.keys(limpio).length + ' preguntas';
+    } catch (e) { m.textContent = 'El texto no es una copia válida'; }
+  }
+});
+// Si se cierra la pestaña o el menú cambia de vista (el iframe recibe pagehide, no beforeunload), la nota no se pierde
+const guardarAlSalir = () => { if (examen && examen.corregido && !examen.guardado) guardarNota(); };
+window.addEventListener('beforeunload', guardarAlSalir);
+window.addEventListener('pagehide', guardarAlSalir);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') guardarAlSalir(); });
+vistaInicio();
+
+</script>
+</body>
+</html>
