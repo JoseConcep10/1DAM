@@ -322,6 +322,7 @@ textarea.copia { width: 100%; min-height: 90px; margin-top: 10px; padding: 10px;
 /* ---------- ITK: desarrollo y autocorrección ---------- */
 .q .tipo { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; background: color-mix(in srgb, var(--asig) 16%, transparent); color: var(--acento-texto); font: 600 10.5px var(--f-ui); letter-spacing: .04em; }
 .q textarea.resp { width: 100%; min-height: 120px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: 400 14px/1.55 var(--f-prosa); resize: vertical; }
+.q textarea.resp.corta { min-height: 64px; }
 .q textarea.resp::placeholder { color: var(--text-3); opacity: 1; }
 .q textarea.resp:focus { outline: none; border-color: var(--asig); box-shadow: 0 0 0 3px color-mix(in srgb, var(--asig) 25%, transparent); }
 .q textarea.resp[readonly] { background: var(--surface-2); }
@@ -503,6 +504,10 @@ const DESARROLLO = [
 const app = document.getElementById('app');
 const N_TEST = 28, N_DEV = 2, N_FALLOS = 10;
 const P_OK = 0.3, P_MAL = 0.1, P_DEV = 0.3;
+// Textos de las preguntas escritas: desarrollo (por defecto) o respuesta corta (CONFIG.corta, p. ej. «¿Qué es el PAU?»).
+const DEV = CONFIG.corta
+  ? { tipo: 'Respuesta corta', de: 'de respuesta corta', las: 'las respuestas cortas', tus: 'tus respuestas cortas', ph: 'Responde en una o dos líneas…' }
+  : { tipo: 'Desarrollo', de: 'de desarrollo', las: 'el desarrollo', tus: 'tu desarrollo', ph: 'Escribe tu respuesta en unas pocas líneas…' };
 const L = ['A', 'B', 'C', 'D'];
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -559,11 +564,11 @@ function vistaInicio(abrir) {
   const fallos = BANK.filter(q => f[q.q]).sort((a, b) => f[b.q] - f[a.q]);
   mount(topBar(MODULO) +
     '<main class="page fade-in"><section class="hero"><div class="halo" aria-hidden="true"></div><div><span class="eyebrow">Concep · Itinerario personal · ' + esc(CONFIG.unidades) + '</span>' +
-    '<h1>' + esc(NOMBRE) + '</h1><p>' + esc(CONFIG.titulo) + '. Treinta preguntas como en el examen: 28 tipo test y 2 de desarrollo cortas. Al corregir ves la nota, la respuesta buena y por qué; el desarrollo lo comparas tú con la respuesta modelo.</p></div>' +
+    '<h1>' + esc(NOMBRE) + '</h1><p>' + esc(CONFIG.titulo) + '. Treinta preguntas como en el examen: 28 tipo test y 2 ' + DEV.de + (CONFIG.corta ? '' : ' cortas') + '. Al corregir ves la nota, la respuesta buena y por qué; ' + DEV.las + (CONFIG.corta ? ' las comparas' : ' lo comparas') + ' tú con la respuesta modelo.</p></div>' +
     '<div class="hero-stats"><div class="stat"><div class="v">' + (BANK.length + DESARROLLO.length) + '</div><div class="l">Preguntas</div></div><div class="stat"><div class="v">' + h.length + '</div><div class="l">' + (h.length === 1 ? 'Examen' : 'Exámenes') + '</div></div><div class="stat"><div class="v">' + (media === null ? '—' : fmt(media)) + '</div><div class="l">Nota media</div></div></div></section>' +
     '<div class="grid2">' +
     '<section class="card card--accent" aria-labelledby="h-nuevo"><h2 id="h-nuevo">Nuevo examen</h2><p class="sub">Preguntas de todo el temario de ' + esc(CONFIG.unidades) + ', primero las que menos has visto.</p>' +
-    '<ul class="reglas"><li>28 preguntas tipo test con una sola respuesta correcta y 2 de desarrollo cortas.</li><li>Cada pregunta vale 0,3. Un fallo en el test resta 0,1; dejarla en blanco no resta.</li><li>El máximo son 9 puntos; la nota se pasa a 10.</li></ul>' +
+    '<ul class="reglas"><li>28 preguntas tipo test con una sola respuesta correcta y 2 ' + DEV.de + (CONFIG.corta ? '' : ' cortas') + '.</li><li>Cada pregunta vale 0,3. Un fallo en el test resta 0,1; dejarla en blanco no resta.</li><li>El máximo son 9 puntos; la nota se pasa a 10.</li></ul>' +
     '<div class="fila"><button class="btn btn--primary btn--lg" data-empezar="normal">' + IC.play + 'Empezar examen</button></div>' +
     (h.length ? '<div class="hist"><span>Últimos intentos</span>' + h.slice(-8).map(x => '<span class="nota-chip ' + (x >= 5 ? 'ap' : 'su') + '">' + fmt(x) + '</span>').join('') + '</div>' : '') +
     '</section>' +
@@ -618,9 +623,9 @@ function htmlTest(it, n, corregida) {
 }
 const puntosDev = it => P_DEV * it.marcadas.size / it.d.ideas.length;
 function htmlDev(it, n, corregida) {
-  return '<article class="q' + (corregida ? ' hecha' : '') + '" id="p' + n + '"><div class="meta"><span class="n">Pregunta ' + (n + 1) + '</span><span class="tipo">Desarrollo</span><span>· ' + esc(it.d.t) + '</span></div>' +
+  return '<article class="q' + (corregida ? ' hecha' : '') + '" id="p' + n + '"><div class="meta"><span class="n">Pregunta ' + (n + 1) + '</span><span class="tipo">' + DEV.tipo + '</span><span>· ' + esc(it.d.t) + '</span></div>' +
     '<h3 id="h' + n + '">' + esc(it.d.q) + '</h3>' +
-    '<textarea class="resp" data-dev="' + n + '" aria-labelledby="h' + n + '" placeholder="Escribe tu respuesta en unas pocas líneas…"' + (corregida ? ' readonly' : '') + '>' + esc(it.texto) + '</textarea>' +
+    '<textarea class="resp' + (CONFIG.corta ? ' corta' : '') + '" data-dev="' + n + '" aria-labelledby="h' + n + '" placeholder="' + DEV.ph + '"' + (corregida ? ' readonly' : '') + '>' + esc(it.texto) + '</textarea>' +
     (corregida ? '<div class="modelo"><b>Respuesta modelo</b><br>' + esc(it.d.modelo) + '</div>' +
       '<div class="ideas" role="group" aria-labelledby="ideas' + n + '"><span class="lbl" id="ideas' + n + '">Marca las ideas que has puesto en tu respuesta</span>' +
       it.d.ideas.map((idea, k) => '<label class="idea"><input type="checkbox" data-idea="' + n + ':' + k + '"' + (it.marcadas.has(k) ? ' checked' : '') + (examen.guardado ? ' disabled' : '') + '><span>' + esc(idea) + '</span></label>').join('') +
@@ -629,7 +634,7 @@ function htmlDev(it, n, corregida) {
 function vistaExamen() {
   const it = examen.items;
   const nTest = it.filter(x => x.tipo === 'test').length, nDev = it.length - nTest;
-  mount(topBar('<button class="btn btn--ghost btn--sm" data-salir>' + IC.back + 'Salir</button><div class="modulo"><b>' + (examen.modo === 'fallos' ? 'Examen de mis fallos' : 'Examen') + '</b><span>' + pl(nTest, 'pregunta tipo test', 'preguntas tipo test') + (nDev ? ' + ' + nDev + ' de desarrollo' : '') + '</span></div>',
+  mount(topBar('<button class="btn btn--ghost btn--sm" data-salir>' + IC.back + 'Salir</button><div class="modulo"><b>' + (examen.modo === 'fallos' ? 'Examen de mis fallos' : 'Examen') + '</b><span>' + pl(nTest, 'pregunta tipo test', 'preguntas tipo test') + (nDev ? ' + ' + nDev + ' ' + DEV.de : '') + '</span></div>',
     '<span class="progreso" id="prog" aria-live="polite"></span>') +
     '<main class="examen-page fade-in">' + it.map((x, n) => x.tipo === 'test' ? htmlTest(x, n, false) : htmlDev(x, n, false)).join('') + '</main>' +
     '<div class="barra-fija"><div class="in"><button class="btn btn--primary" data-corregir>' + IC.check + 'Corregir examen</button><nav class="puntos" aria-label="Ir a una pregunta" id="puntos"></nav><span class="aviso" id="aviso" role="status"></span></div></div>');
@@ -679,11 +684,11 @@ function guardarNota() {
 function htmlCabecera() {
   const c = cuentas(), ap = c.nota >= 5, fi = examen.fallosInfo, hayDev = examen.items.some(x => x.tipo === 'dev');
   return '<div class="resultado"><div class="big">' + fmt(c.nota) + '<small> /10</small></div>' +
-    '<div><div class="veredicto ' + (ap ? 'ap' : 'su') + '">' + (c.nota >= 9 ? 'Sobresaliente' : c.nota >= 7 ? 'Notable' : c.nota >= 6 ? 'Bien' : ap ? 'Aprobado' : 'Suspenso') + (hayDev && !examen.guardado ? ' (falta corregir el desarrollo)' : '') + '</div><div class="medidor"><div style="width:' + Math.min(100, c.nota * 10) + '%"></div></div>' +
+    '<div><div class="veredicto ' + (ap ? 'ap' : 'su') + '">' + (c.nota >= 9 ? 'Sobresaliente' : c.nota >= 7 ? 'Notable' : c.nota >= 6 ? 'Bien' : ap ? 'Aprobado' : 'Suspenso') + (hayDev && !examen.guardado ? ' (falta corregir ' + DEV.las + ')' : '') + '</div><div class="medidor"><div style="width:' + Math.min(100, c.nota * 10) + '%"></div></div>' +
     '<div class="resumen">' + fmt(c.bruto) + ' de ' + fmt(c.maximo).replace(/,00$/, '') + ' puntos · ' + pl(c.ok, 'correcta', 'correctas') + ' · ' + pl(c.mal, 'incorrecta', 'incorrectas') + ' · ' + c.blanco + ' en blanco</div>' +
     '<div class="resumen">Lista de fallos: ' + (fi.nuevas ? '+' + pl(fi.nuevas, 'nueva', 'nuevas') : 'ninguna nueva') + (fi.superadas ? ' · ' + pl(fi.superadas, 'superada', 'superadas') : '') + ' · ' + fi.quedan + ' en total.</div></div></div>' +
     '<div class="desglose"><div><div class="v">+' + fmt(c.ok * P_OK) + '</div><div class="l">Aciertos test</div></div><div><div class="v">' + (c.mal ? '−' : '') + fmt(c.mal * P_MAL) + '</div><div class="l">Fallos test</div></div>' +
-    (hayDev ? '<div><div class="v">+' + fmt(c.dev) + '</div><div class="l">Desarrollo</div></div>' : '') + '<div><div class="v">' + fmt(c.bruto) + '</div><div class="l">Total (sobre ' + fmt(c.maximo).replace(/,00$/, '') + ')</div></div></div>';
+    (hayDev ? '<div><div class="v">+' + fmt(c.dev) + '</div><div class="l">' + DEV.tipo + '</div></div>' : '') + '<div><div class="v">' + fmt(c.bruto) + '</div><div class="l">Total (sobre ' + fmt(c.maximo).replace(/,00$/, '') + ')</div></div></div>';
 }
 function vistaResultado() {
   const it = examen.items, hayDev = it.some(x => x.tipo === 'dev');
@@ -693,7 +698,7 @@ function vistaResultado() {
     '<main class="examen-page fade-in"><section class="card card--accent"><div id="cab">' + htmlCabecera() + '</div>' +
     '<div class="fila" style="margin-top:16px">' + (hayDev ? '<button class="btn btn--primary" data-guardar' + (examen.guardado ? ' disabled' : '') + '>' + IC.save + (examen.guardado ? 'Nota guardada' : 'Guardar nota') + '</button>' : '') +
     '<button class="btn' + (hayDev ? '' : ' btn--primary') + '" data-empezar="normal">' + IC.play + 'Nuevo examen</button><button class="btn" data-empezar="fallos"' + (quedan ? '' : ' disabled') + '>' + IC.redo + 'Examen de mis fallos' + (quedan ? ' (' + Math.min(N_FALLOS, quedan) + ')' : '') + '</button></div></section>' +
-    (hayDev && !examen.guardado ? '<p class="pendiente" style="margin-top:18px"><b>Corrige tu desarrollo.</b> Compara cada respuesta con la modelo y marca las ideas que hayas puesto: cada pregunta vale 0,3 repartidos entre sus ideas. Cuando acabes, pulsa «Guardar nota».</p>' : '') +
+    (hayDev && !examen.guardado ? '<p class="pendiente" style="margin-top:18px"><b>Corrige ' + DEV.tus + '.</b> Compara cada respuesta con la modelo y marca las ideas que hayas puesto: cada pregunta vale 0,3 repartidos entre sus ideas. Cuando acabes, pulsa «Guardar nota».</p>' : '') +
     '<h2 class="seccion-t">Corrección</h2>' + orden.map(([x, n]) => x.tipo === 'test' ? htmlTest(x, n, true) : htmlDev(x, n, true)).join('') + '</main>');
 }
 
